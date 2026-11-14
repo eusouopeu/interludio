@@ -1,0 +1,363 @@
+import { useEffect, useRef, useState } from 'react'
+import { App as CapApp } from '@capacitor/app'
+import { ArrowUpTrayIcon, ChevronRightIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { useLoja } from './store'
+import {
+  agoraHora, arquivosCsv, entradasParaMesa, fecharCasa, hojeIso, sincronizarPortaMesas, novasMesas, novoId, registroAberto, visitaAtiva, visitaAtual, acervoVazio,
+  type Estado, type Registro, type Unidade as TUnidade,
+} from './domain/model'
+import { compartilhar } from './storage/exportar'
+import { BotaoTema, useTemaEfetivo } from './ui/tema'
+import { voltarCamada } from './ui/voltar'
+import { Avisos, avisar } from './ui/aviso'
+import { BarraVisita } from './ui/BarraVisita'
+import { Unidade, type Aba, type Pagina } from './screens/Unidade'
+import { FormMesa } from './screens/FormMesa'
+import { FormAcervo } from './screens/FormAcervo'
+import { FolhaAcoes, FolhaEditar, FolhaRegistros } from './screens/Folhas'
+import { AbaMesas } from './screens/abas/Mesas'
+import { AbaFluxo } from './screens/abas/Fluxo'
+import { AbaAmbiente } from './screens/abas/Ambiente'
+import { AbaTemporizador } from './screens/abas/Temporizador'
+import { PaginaVisita } from './screens/Visita'
+import { PaginaResumo } from './screens/Resumo'
+import { PaginaAjustes } from './screens/Ajustes'
+import { FolhaComecar, FolhaEncerrar, FolhaNovaUnidade } from './screens/FolhasVisita'
+
+type Tela = {
+  unidadeId?: string
+  aba: Aba
+  pagina: Pagina
+  /** grupo aberto no formulário: existente ou novo (rascunho) */
+  form?: { registro: Registro; novo: boolean }
+  acervo?: boolean
+  folha?: 'registros' | 'editar' | 'acoes'
+  /** folha de começar a visita aberta; `depois` = o que o observador tocou e esperava a visita */
+  comecar?: { depois?: () => void }
+  /** visita na folha de encerrar */
+  encerrar?: string
+  novaUnidade?: boolean
+}
+
+export function App() {
+  const { pronto, estado, iniciar, mudar, comecar, encerrar, gravarJa } = useLoja()
+  useTemaEfetivo()
+  const [tela, setTela] = useState<Tela>({ aba: 'mesas', pagina: 'inicio' })
+  const telaRef = useRef(tela)
+  telaRef.current = tela
+  const muda = (p: Partial<Tela>) => setTela((t) => ({ ...t, ...p }))
+
+  useEffect(() => {
+    void iniciar()
+  }, [iniciar])
+
+  // botão voltar do Android: fecha o que está por cima, depois volta às unidades, depois sai
+  useEffect(() => {
+    const h = CapApp.addListener('backButton', () => {
+      // formulários e folhas abertos fecham por conta própria (e gravam o que mudou)
+      if (voltarCamada()) return
+      const t = telaRef.current
+      if (t.folha) setTela({ ...t, folha: undefined })
+      else if (t.unidadeId && t.pagina !== 'inicio') setTela({ ...t, pagina: 'inicio' })
+      else if (t.unidadeId) setTela({ aba: 'mesas', pagina: 'inicio' })
+      else void CapApp.exitApp()
+    })
+    return () => void h.then((x) => x.remove())
+  }, [])
+
+  // app indo para o fundo (tela apagada, outro app): grava já, sem esperar o agrupamento
+  useEffect(() => {
+    const h = CapApp.addListener('appStateChange', ({ isActive }) => !isActive && void gravarJa())
+    const oculto = () => document.visibilityState === 'hidden' && void gravarJa()
+    document.addEventListener('visibilitychange', oculto)
+    return () => {
+      void h.then((x) => x.remove())
+      document.removeEventListener('visibilitychange', oculto)
+    }
+  }, [gravarJa])
+
+  if (!pronto) return null
+  const unidade = estado.unidades.find((u) => u.id === tela.unidadeId)
+
+  if (!unidade) {
+    return (
+      <>
+        <Inicio
+          estado={estado}
+          onAbrir={(id) => setTela({ unidadeId: id, aba: 'mesas', pagina: 'inicio' })}
+          onNova={() => muda({ novaUnidade: true })}
+          onExportar={() => void compartilhar(arquivosCsv(estado))}
+        />
+        {tela.novaUnidade && (
+          <FolhaNovaUnidade
+            onFechar={() => muda({ novaUnidade: false })}
+            onCriar={({ nome, sigla, cnpj }) => {
+              const id = novoId()
+              mudar((e) => ({ ...e, unidades: [...e.unidades, { id, nome, sigla, cnpj, acervo: acervoVazio(), mesas: novasMesas([], 6) }] }))
+              setTela({ unidadeId: id, aba: 'mesas', pagina: 'inicio' })
+            }}
+          />
+        )}
+      </>
+    )
+  }
+
+  /** Abre a folha de começar (unidade, observador e papel). `depois` roda quando a visita começar. */
+  const comecarVisita = (depois?: () => void) => {
+    muda({ comecar: { depois }, folha: undefined })
+    return false
+  }
+  /** Sem visita em andamento: abre a folha de começar e devolve false; `depois` roda ao começar. */
+  const garantirVisita = (depois?: () => void) => visitaAtiva(useLoja.getState().estado, unidade.id) ? true : comecarVisita(depois)
+  /** Abre a folha de encerrar (hora do fim, condição do dia). */
+  const encerrarVisita = (visitaId: string) => muda({ encerrar: visitaId, folha: undefined })
+  /** Fechamento da casa: todos os grupos saem agora, marcados como saída por fechamento. */
+  const fechamento = (visitaId: string) => {
+    const antes = useLoja.getState().estado
+    const r = fecharCasa(antes, visitaId, agoraHora())
+    if (!r.mesas && !r.porta) return avisar('Nenhum grupo dentro para fechar.')
+    if (!confirm(`Fechamento da casa: ${r.mesas} grupo(s) nas mesas e ${r.porta} na porta saem agora, marcados como fechamento. Continuar?`)) return
+    mudar(() => r.estado)
+    avisar(`Fechamento às ${agoraHora()}: ${r.mesas} mesa(s), ${r.porta} grupo(s) na porta.`, {
+      rotulo: 'Desfazer',
+      fazer: () => mudar((e) => ({ ...e, registros: antes.registros, fluxos: antes.fluxos })),
+    })
+  }
+
+  /** Abre o grupo da mesa; `inicial` = grupo que já estava sentado quando a visita começou (contagem inicial). */
+  function abrirMesa(mesaId: string, inicial = false) {
+    if (!garantirVisita(() => abrirMesa(mesaId, inicial))) return
+    const visita = visitaAtiva(useLoja.getState().estado, unidade!.id)!
+    const aberto = registroAberto(useLoja.getState().estado, visita.id, mesaId)
+    const registro: Registro = aberto ?? {
+      id: novoId(), visitaId: visita.id, unidadeId: unidade!.id, mesaId, data: inicial ? visita.inicio.slice(0, 10) : hojeIso(), aniversario: false,
+      entrada: inicial ? visita.inicio.slice(11, 16) : agoraHora(), saida: null, saidaTipo: '', pessoas: 2, criancas: 0, pessoasEstimado: false, fluxos: [], inicial,
+      instrutor: 0, jogos: [], jogosIncertos: [], notas: '', pedidos: [],
+    }
+    muda({ form: { registro, novo: !aberto } })
+  }
+
+  const mesaDoForm = tela.form && unidade.mesas.find((m) => m.id === tela.form!.registro.mesaId)
+  // gravar ou tirar um grupo acerta o destino das entradas da porta ligadas a ele
+  const gravarRegistro = (r: Registro) =>
+    mudar((e) =>
+      sincronizarPortaMesas({ ...e, registros: e.registros.some((x) => x.id === r.id) ? e.registros.map((x) => (x.id === r.id ? r : x)) : [...e.registros, r] }, r.visitaId),
+    )
+  const tirarRegistro = (id: string) =>
+    mudar((e) => {
+      const r = e.registros.find((x) => x.id === id)
+      const sem = { ...e, registros: e.registros.filter((x) => x.id !== id) }
+      return r ? sincronizarPortaMesas(sem, r.visitaId) : sem
+    })
+  const mudarUnidade = (u: TUnidade) => mudar((e) => ({ ...e, unidades: e.unidades.map((x) => (x.id === u.id ? u : x)) }))
+  const ativa = visitaAtiva(estado, unidade.id)
+
+  return (
+    <>
+      <Unidade
+        unidade={unidade}
+        aba={tela.aba}
+        pagina={tela.pagina}
+        onAba={(aba) => muda({ aba })}
+        onPagina={(pagina) => muda({ pagina })}
+        onVoltar={() => setTela({ aba: 'mesas', pagina: 'inicio' })}
+        barra={<BarraVisita unidade={unidade} onComecar={() => comecarVisita()} onTemporizador={() => muda({ aba: 'timer' })} />}
+        onExportar={() => {
+          // exporta a visita atual com os nomes do pipeline (AAAA-MM-DD_SJBV_POV1_contagem_*.csv)
+          const v = visitaAtual(estado, unidade.id)
+          void compartilhar(v ? arquivosCsv(estado, unidade.id, v.id) : arquivosCsv(estado, unidade.id), `Observação ${unidade.nome}`)
+        }}
+      >
+        {tela.pagina === 'inicio' && tela.aba === 'mesas' && (
+          <AbaMesas
+            unidade={unidade}
+            onMesa={abrirMesa}
+            onAcervo={() => muda({ acervo: true })}
+            onAcoes={() => muda({ folha: 'acoes' })}
+          />
+        )}
+        {tela.pagina === 'inicio' && tela.aba === 'fluxo' && <AbaFluxo unidade={unidade} semVisita={garantirVisita} />}
+        {tela.pagina === 'inicio' && tela.aba === 'acustica' && <AbaAmbiente unidade={unidade} semVisita={garantirVisita} />}
+        {tela.pagina === 'inicio' && tela.aba === 'timer' && (
+          <AbaTemporizador
+            unidade={unidade}
+            onMesa={abrirMesa}
+            onComecar={() => comecarVisita()}
+            onEncerrar={encerrarVisita}
+            onFechamento={fechamento}
+            onIr={(destino) =>
+              destino === 'acervo' ? muda({ acervo: true }) : destino === 'visita' ? muda({ pagina: 'visita' }) : muda({ aba: destino })
+            }
+          />
+        )}
+        {tela.pagina === 'visita' && <PaginaVisita unidade={unidade} />}
+        {tela.pagina === 'resumo' && <PaginaResumo unidade={unidade} />}
+        {tela.pagina === 'ajustes' && (
+          <PaginaAjustes
+            unidade={unidade}
+            onEditar={() => muda({ folha: 'editar' })}
+            onApagar={() => {
+              const n = estado.registros.filter((r) => r.unidadeId === unidade.id).length
+              if (!confirm(`Apagar a unidade ${unidade.nome}${n ? ` e os ${n} registros dela` : ''}? Não dá para desfazer.`)) return
+              const vs = new Set(estado.visitas.filter((v) => v.unidadeId === unidade.id).map((v) => v.id))
+              mudar((e) => ({
+                ...e,
+                unidades: e.unidades.filter((u) => u.id !== unidade.id),
+                visitas: e.visitas.filter((v) => !vs.has(v.id)),
+                registros: e.registros.filter((r) => !vs.has(r.visitaId)),
+                fluxos: e.fluxos.filter((f) => !vs.has(f.visitaId)),
+                contagens: e.contagens.filter((c) => !vs.has(c.visitaId)),
+                medicoes: e.medicoes.filter((m) => !vs.has(m.visitaId)),
+              }))
+              setTela({ aba: 'mesas', pagina: 'inicio' })
+            }}
+          />
+        )}
+      </Unidade>
+
+      {tela.folha === 'acoes' && (
+        <FolhaAcoes
+          ativa={!!ativa}
+          onFechar={() => muda({ folha: undefined })}
+          onComecar={() => comecarVisita()}
+          onEncerrar={() => ativa && encerrarVisita(ativa.id)}
+          onFechamento={() => {
+            muda({ folha: undefined })
+            if (ativa) fechamento(ativa.id)
+          }}
+          onRegistros={() => muda({ folha: 'registros' })}
+          onEditar={() => muda({ folha: 'editar' })}
+        />
+      )}
+      {tela.folha === 'registros' && (
+        <FolhaRegistros
+          estado={estado}
+          unidade={unidade}
+          onFechar={() => muda({ folha: undefined })}
+          onAbrir={(id) => {
+            const registro = estado.registros.find((r) => r.id === id)
+            if (registro) muda({ folha: undefined, form: { registro, novo: false } })
+          }}
+        />
+      )}
+      {tela.folha === 'editar' && (
+        <FolhaEditar estado={estado} unidade={unidade} onFechar={() => muda({ folha: undefined })} onMudar={mudarUnidade} />
+      )}
+      {tela.acervo && (
+        <FormAcervo
+          acervo={unidade.acervo}
+          onFechar={() => muda({ acervo: false })}
+          onMudar={(acervo) => mudarUnidade({ ...useLoja.getState().estado.unidades.find((x) => x.id === unidade.id)!, acervo })}
+        />
+      )}
+      {tela.form && (
+        <FormMesa
+          key={tela.form.registro.id}
+          titulo={mesaDoForm?.nome ?? 'Mesa'}
+          registro={tela.form.registro}
+          acervo={unidade.acervo.jogos}
+          novo={tela.form.novo}
+          entradas={entradasParaMesa(estado, estado.registros.find((x) => x.id === tela.form!.registro.id) ?? tela.form.registro)}
+          onMudar={gravarRegistro}
+          onFechar={(r) => {
+            const { novo, registro: original } = tela.form!
+            gravarRegistro(r)
+            muda({ form: undefined })
+            const mesa = mesaDoForm?.nome ?? 'mesa'
+            if (novo) avisar(`Grupo de ${r.pessoas} registrado na ${mesa}, entrada ${r.entrada}.`, { rotulo: 'Desfazer', fazer: () => tirarRegistro(r.id) })
+            else if (JSON.stringify(r) !== JSON.stringify(original)) avisar(`${mesa}: alterações salvas.`, { rotulo: 'Desfazer', fazer: () => gravarRegistro(original) })
+          }}
+          onDesfazer={() => {
+            const { novo, registro: original } = tela.form!
+            if (novo) tirarRegistro(original.id)
+            else gravarRegistro(original)
+            muda({ form: undefined })
+          }}
+          onApagar={() => {
+            if (!confirm('Apagar este registro?')) return
+            tirarRegistro(tela.form!.registro.id)
+            muda({ form: undefined })
+          }}
+        />
+      )}
+      {tela.comecar && (
+        <FolhaComecar
+          estado={estado}
+          unidade={unidade}
+          onFechar={() => muda({ comecar: undefined })}
+          onTrocar={() => setTela({ aba: 'mesas', pagina: 'inicio' })}
+          onComecar={(quem) => {
+            const { depois } = tela.comecar!
+            comecar(unidade.id, quem)
+            muda({ comecar: undefined })
+            avisar(`Visita começada em ${unidade.nome} (${quem.observador}). Leia a NFC-e de início na página Visita.`)
+            depois?.()
+          }}
+        />
+      )}
+      {tela.encerrar && estado.visitas.find((v) => v.id === tela.encerrar) && (
+        <FolhaEncerrar
+          estado={estado}
+          visita={estado.visitas.find((v) => v.id === tela.encerrar)!}
+          onFechar={() => muda({ encerrar: undefined })}
+          onFechamento={() => fechamento(tela.encerrar!)}
+          onEncerrar={(fim, diaComum) => {
+            const id = tela.encerrar!
+            if (diaComum) mudar((e) => ({ ...e, visitas: e.visitas.map((x) => (x.id === id ? { ...x, ficha: { ...x.ficha, condicoes: ['Dia comum'] } } : x)) }))
+            encerrar(id, fim)
+            muda({ encerrar: undefined })
+            avisar(`Visita encerrada às ${fim.slice(11, 16)}. Exporte os CSVs pelo botão de envio no topo.`)
+          }}
+        />
+      )}
+      <Avisos />
+    </>
+  )
+}
+
+function Inicio({ estado, onAbrir, onNova, onExportar }: { estado: Estado; onAbrir: (id: string) => void; onNova: () => void; onExportar: () => void }) {
+  return (
+    <div className="min-h-dvh bg-papel px-4 safe-bottom">
+      <header className="sticky top-0 z-20 -mx-4 flex items-center bg-papel px-4 pb-4 pt-6 safe-top">
+        <div className="flex-1">
+          <h1 className="text-2xl font-extrabold">Observação</h1>
+        </div>
+        <BotaoTema />
+        <button onClick={onExportar} className="p-2 text-caneta-700" aria-label="Exportar tudo em CSV">
+          <ArrowUpTrayIcon className="size-6" />
+        </button>
+      </header>
+      <ul className="space-y-3">
+        {estado.unidades.map((u) => {
+          const ativa = visitaAtiva(estado, u.id)
+          const n = estado.registros.filter((r) => r.unidadeId === u.id).length
+          return (
+            <li key={u.id}>
+              <button onClick={() => onAbrir(u.id)} className="flex w-full items-center gap-3 rounded-xl bg-neutro-100 p-4 text-left">
+                <span className="min-w-0 flex-1">
+                  <span className="block text-lg font-bold uppercase">{u.nome}</span>
+                  <span className="block text-xs text-neutro-500">
+                    {u.sigla}
+                    {u.cnpj ? ' · CNPJ cadastrado' : ' · sem CNPJ'}
+                  </span>
+                </span>
+                {ativa ? (
+                  <span className="rounded-full bg-caneta-600 px-2 py-0.5 text-[13px] font-bold text-sobre">
+                    {ativa.observador} desde {ativa.inicio.slice(11, 16)}
+                  </span>
+                ) : (
+                  <span className="text-sm text-neutro-500">{n} grupos · {u.mesas.length} mesas</span>
+                )}
+                <ChevronRightIcon className="size-5" />
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+      <button onClick={onNova} className="mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-neutro-200 font-semibold text-neutro-600">
+        <PlusIcon className="size-5" /> Nova unidade
+      </button>
+      <p className="mt-8 text-center text-xs text-neutro-400">v{__APP_VERSION__}</p>
+    </div>
+  )
+}
