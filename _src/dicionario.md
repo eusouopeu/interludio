@@ -77,6 +77,7 @@ Nomes com hífen não podem ser importados como módulo Python. Por isso, códig
 | Exportação do app de observação | `contagem_<conteúdo>.csv` | `contagem_visitas.csv`, `contagem_30min.csv` |
 | Log de execução | `<script>_AAAA-MM-DD_HHMM.log`, em `logs/` do bloco (fora do git) | `B1b_planilha_2026-10-14_0930.log` |
 | PDF da bibliografia | `Sobrenome[ e Sobrenome \| et al.] (ano) - Título curto.pdf`; TCC com a sigla da instituição no fim; sem autor, `Sem autor (s.d.)`. Trecho fotografado, em `trechos_citados/`, `Autor (ano) - p. <páginas>.pdf` | `F3_Livros/Assaf Neto (2014) - Finanças corporativas e valor.pdf`, `F4_TCC_plano_negocios/Coelho (2021) - Plano de negócios Casa 388 bar e restaurante (UFMG).pdf` |
+| Planilha de plano (caps. 5 a 10: mercado, marketing, operacional, jurídico, financeiro, riscos), com tabelas ou quadros | `P<cap>_<tema>[_<conteúdo>].xlsx` (`P` de plano, `<cap>` o número do capítulo). Com mais de uma aba, a primeira é `sumario`, com o nome de cada aba (link) e o conteúdo | `textos/planilhas/P9_financeiro.xlsx`, `textos/capitulos/modelo_financeiro/P9_premissas_autor.xlsx` |
 
 Códigos das partes do nome das saídas:
 
@@ -100,6 +101,7 @@ Códigos das partes do nome das saídas:
 | 14/10/2026 | Coletas do Instagram soltas em `redes_sociais/`; cardápios originais em `cardapios/<Nome do estabelecimento>/` (com espaço e acento, às vezes com `Cardápio ` na frente) | `redes_sociais/rs_<cidade>/rs_<perfil>/`; `_dados-brutos/cardapios/ca_<cidade>/ca_<estabelecimento>/` |
 | 14/10/2026 | Brutos do Google Places soltos em `_dados-brutos/` | `_dados-brutos/estabelecimentos/` |
 | 14/10/2026 | Originais transcritos à mão soltos em `_dados-brutos/cardapios/` (`<estabelecimento>_cardapio*.{pdf,html,jpg}`) ou em pastas sem prefixo (`boardz/`, `castelos/`, `placegames/`) | `_dados-brutos/cardapios/ca_<cidade>/ca_<estabelecimento>/` |
+| 14/11/2026 | `9_plano_financeiro_modelo.xlsx`, `premissas_autor.xlsx`, `premissas_registro.xlsx`, sem aba de sumário | `P9_financeiro.xlsx`, `P9_premissas_autor.xlsx`, `P9_premissas_registro.xlsx`, com a aba `sumario` |
 
 ## 4. Colunas (variáveis) dos dados
 

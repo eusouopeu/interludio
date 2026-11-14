@@ -1,8 +1,8 @@
 """
 Cap. 9 - modelo financeiro da luderia (_docs/_instrucoes/8_financeiro.md).
 
-Gera `textos/planilhas/9_plano_financeiro_modelo.xlsx`, dirigido por premissas:
-abas premissas, pessoal, simples, receitas, custos, investimento, dre,
+Gera `textos/planilhas/P9_financeiro.xlsx`, dirigido por premissas:
+aba sumario (índice das abas), abas premissas, pessoal, simples, receitas, custos, investimento, dre,
 fluxo_caixa, indicadores, sensibilidade e checagens. Toda fórmula de cálculo lê
 a aba premissas (coluna "Valor usado", escolhida pelo cenário ativo em
 premissas!D2: 1 pessimista, 2 provável, 3 otimista) pelos nomes definidos
@@ -62,11 +62,11 @@ B2a_gasto_por_pessoa.py), B3 (contagem_resumo_visitas.csv,
 contagem_notas_intervalo.csv), B5 (orçamento e anúncios de aluguel), B4 (CAGED,
 BCB, Simples Nacional, IBGE PAS e população). As premissas de valor fixo
 (decisões e estimativas do autor) ficam em textos/capitulos/modelo_financeiro/
-premissas_autor.xlsx, com fonte, nível e justificativa: muda-se a planilha, não
+P9_premissas_autor.xlsx, com fonte, nível e justificativa: muda-se a planilha, não
 o código. As que saem de dados são calculadas em premissas().
 
 Saídas: o .xlsx em textos/capitulos/ (Apêndice E), o registro completo em
-textos/capitulos/modelo_financeiro/premissas_registro.xlsx e as figuras 9-2_tornado.png e
+textos/capitulos/modelo_financeiro/P9_premissas_registro.xlsx e as figuras 9-2_tornado.png e
 G-1_monte_carlo.png (apêndice G) em textos/graficos/; imprime os números citados no
 texto do capítulo. Log em _src/outros/G3_modelo_financeiro/logs/.
 Uso: python3 "_src/outros/G3_modelo_financeiro/gerar_modelo_financeiro.py"
@@ -99,11 +99,11 @@ DADOS = ROOT / "dados"
 DADOS_AGREGADOS = ROOT / "dados-agregados"
 DADOS_BRUTOS = ROOT / "dados-brutos"
 MODELO = ROOT / "textos" / "capitulos" / "modelo_financeiro"
-PREMISSAS_AUTOR = MODELO / "premissas_autor.xlsx"  # entrada: premissas de valor fixo (decisões e estimativas do autor)
-REGISTRO = MODELO / "premissas_registro.xlsx"  # saída: as premissas com os valores resolvidos
+PREMISSAS_AUTOR = MODELO / "P9_premissas_autor.xlsx"  # entrada: premissas de valor fixo (decisões e estimativas do autor)
+REGISTRO = MODELO / "P9_premissas_registro.xlsx"  # saída: as premissas com os valores resolvidos
 COLS_PREMISSAS = ["id", "nome", "unidade", "pessimista", "provavel", "otimista", "fonte", "nivel", "justificativa"]
 B3 = DADOS_AGREGADOS / "B3_contagem"
-SAIDA = ROOT / "textos" / "planilhas" / "9_plano_financeiro_modelo.xlsx"
+SAIDA = ROOT / "textos" / "planilhas" / "P9_financeiro.xlsx"
 FIGURA = ROOT / "textos" / "graficos" / "9-2_tornado.png"
 FIGURA_MC = ROOT / "textos" / "graficos" / "G-1_monte_carlo.png"
 SOFFICE = "/Applications/LibreOffice.app/Contents/MacOS/soffice"
@@ -393,7 +393,7 @@ def premissas(f) -> list[dict]:
     q_ = quadro_pessoal(f)
     refeicoes = refeicoes_mes()
     R = lambda *x: dict(zip(("id", "nome", "unidade", "pess", "prov", "otim", "fonte", "nivel", "just"), x))
-    # premissas de valor fixo: lidas de textos/capitulos/modelo_financeiro/premissas_autor.xlsx (edita-se a planilha, não o código)
+    # premissas de valor fixo: lidas de textos/capitulos/modelo_financeiro/P9_premissas_autor.xlsx (edita-se a planilha, não o código)
     au = pd.read_excel(PREMISSAS_AUTOR, sheet_name="premissas", dtype={"id": str}).set_index("id")
     num = lambda x: int(x) if float(x).is_integer() else float(x)
     A = lambda pid: R(pid, au.at[pid, "nome"], au.at[pid, "unidade"], *[num(au.at[pid, c]) for c in ("pessimista", "provavel", "otimista")],
@@ -708,6 +708,40 @@ FINA = Side(style="thin", color="000000")
 MOEDA, PCT, DEC1, DEC2, INT = "#,##0.00", "0.00%", "#,##0.0", "#,##0.00", "#,##0"
 COL_MES = [get_column_letter(3 + i) for i in range(MESES)]  # C..BJ
 
+
+
+SUMARIO_ABAS = {
+    "premissas": "Premissas do modelo, com os três cenários, a fonte e o nível de evidência; o cenário ativo fica em D2",
+    "pessoal": "Quadro de pessoal, salários, encargos e benefícios",
+    "simples": "Tributação pelo Simples Nacional",
+    "receitas": "Receitas projetadas",
+    "custos": "Custos fixos e variáveis",
+    "investimento": "Investimento inicial",
+    "dre": "Demonstração do resultado do exercício",
+    "fluxo_caixa": "Fluxo de caixa projetado",
+    "indicadores": "VPL, TIR, payback e ponto de equilíbrio",
+    "sensibilidade": "Tornado e ponto de ruptura das premissas",
+    "monte_carlo": "Simulação de Monte Carlo do VPL",
+    "checagens": "Conferências de consistência do modelo",
+    "sobre": "Origem do arquivo e sincronia com o modelo",
+}
+
+
+def sumario(wb, titulo_planilha):
+    """Primeira aba: lista as demais abas, com link e descrição (regra das planilhas dos planos)."""
+    ws = wb.create_sheet("sumario", 0)
+    ws["A1"] = titulo_planilha
+    ws["A1"].font = NEGRITO
+    ws["A3"], ws["B3"] = "Aba", "Conteúdo"
+    ws["A3"].font = ws["B3"].font = NEGRITO
+    for i, nome in enumerate(wb.sheetnames[1:], 4):
+        c = ws.cell(i, 1, nome)
+        c.hyperlink = f"#'{nome}'!A1"
+        c.font = Font(name="Arial", size=10, color="0563C1", underline="single")
+        ws.cell(i, 2, SUMARIO_ABAS.get(nome, ""))
+    ws.column_dimensions["A"].width = 16
+    ws.column_dimensions["B"].width = 100
+    wb.active = 0
 
 def titulo(ws, texto, ncol):
     ws.cell(1, 1, texto)
@@ -1237,6 +1271,7 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
     nota(ws, rt + 2, "Fonte: abas do modelo e Blocos B1, B3 e B4. A comparação com as notas é de ordem de grandeza: a NFC-e só é emitida quando o cliente pede.", 4)
     for col, w in zip("ABCD", (48, 18, 18, 70)):
         ws.column_dimensions[col].width = w
+    sumario(wb, "P9 - Plano financeiro: modelo da luderia")
     return wb
 
 
@@ -1322,6 +1357,7 @@ def gravar_premissas(df: pd.DataFrame, destino: Path, titulo_aba: str) -> None:
         info["A1"] = titulo_aba
         info["A2"] = (f"Sincronizado com textos/planilhas/{SAIDA.name} (aba premissas): o modelo confere a cada execução, "
                       "e python3 _src/outros/G3_modelo_financeiro/gerar_modelo_financeiro.py --conferir confere sem regerar.")
+        sumario(xw.book, titulo_aba)
 
 
 def conferir_sincronia() -> None:
