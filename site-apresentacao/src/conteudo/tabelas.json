@@ -1,0 +1,1950 @@
+{
+ "Quadro 10.1": {
+  "titulo": "Matriz SWOT",
+  "colunas": [
+   "",
+   "Pontos",
+   "Evidência"
+  ],
+  "linhas": [
+   [
+    "Forças",
+    "Taxa de entrada de R$ 19,62, perto da mediana dos concorrentes (R$ 20,00) e abaixo da São Jogue (R$ 28,00 no fim de semana, com 4,8 estrelas em 787 avaliações)",
+    "Seções 6.3 e 9.6"
+   ],
+   [
+    "",
+    "Ponto na Pituba, 2ª da matriz de bairros e entre os três primeiros em todos os pesos testados, a até 1.000 m do metrô, com área para a etapa de mesas",
+    "Seções 6.4 e 7.1"
+   ],
+   [
+    "",
+    "Dois instrutores e o sócio no salão em todas as horas abertas, com carga de até 7 mesas para 3 pessoas",
+    "Seções 7.3 e 7.5"
+   ],
+   [
+    "",
+    "Desenho enxuto: 6 mesas, 45 horas por semana, de terça a sábado, que cobrem o pico de cada dia aberto, equipe de 3 e o sócio e investimento por etapas, pago com o caixa gerado",
+    "Seções 7.2 e 10.4"
+   ],
+   [
+    "Fraquezas",
+    "Aluguel com condomínio de 18,6% da receita, contra 4,0% no setor, com a área da etapa de mesas paga desde a abertura",
+    "Seção 9.6; IBGE, PAS 2024"
+   ],
+   [
+    "",
+    "Viabilidade concentrada na circulação no pico e no gasto por pessoa, com ruptura cerca de 11% a 12% abaixo do provável; ruptura da circulação acima da mediana das visitas",
+    "Seções 9.4 e 9.5"
+   ],
+   [
+    "",
+    "Circulação de dia útil sem medida própria: índice \"Horários de pico\" de concorrentes de fora de Salvador (N3)",
+    "Seções 9.1 e 11.3"
+   ],
+   [
+    "",
+    "Investimento orçado sem projeto do ponto: quantidades da reforma, do mobiliário e da cozinha em N6",
+    "Seção 9.2"
+   ],
+   [
+    "",
+    "Marca nova contra uma rede com duas unidades",
+    "Seção 5.3"
+   ],
+   [
+    "Oportunidades",
+    "Salvador com uma só luderia no recorte do B1, a São Jogue",
+    "Seção 5.3"
+   ],
+   [
+    "",
+    "Nenhuma unidade da São Jogue entre os bairros mais bem colocados da matriz",
+    "Seção 6.4"
+   ],
+   [
+    "Ameaças",
+    "Selic de 14,0% e TMA real de 15%",
+    "BCB, set/2026; seção 9.1"
+   ],
+   [
+    "",
+    "Aluguel comercial de Salvador com alta de 18,9% em 12 meses",
+    "FipeZap, jul/2026"
+   ],
+   [
+    "",
+    "Reação da São Jogue com uma terceira unidade ou preço menor",
+    "Seções 5.3 e 6.3"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base nos capítulos 5 a 9.",
+  "nota": ""
+ },
+ "Quadro 10.2": {
+  "titulo": "Matriz de riscos",
+  "colunas": [
+   "Risco",
+   "Probabilidade",
+   "Impacto",
+   "VPL com a premissa no pessimista (R$)",
+   "Gatilho",
+   "Evidência"
+  ],
+  "linhas": [
+   [
+    "Gasto por pessoa abaixo de R$ 71,91",
+    "Média",
+    "Alto",
+    "-670.025",
+    "G2",
+    "Gasto médio de R$ 40,00 a R$ 111,09 nos 18 concorrentes (B2)"
+   ],
+   [
+    "Circulação no pico abaixo de 5,89 pessoas por hora",
+    "Média",
+    "Alto",
+    "-594.792",
+    "G4",
+    "Média de 6,40 nas visitas, de 4,03 a 11,43, mediana de 5,08, e 3,87 pelas NFC-e (B3)"
+   ],
+   [
+    "Abertura de unidade da São Jogue perto do ponto, ou preço menor",
+    "Média",
+    "Alto",
+    "n.a.",
+    "G4",
+    "Rede com duas unidades (B3)"
+   ],
+   [
+    "Aluguel acima de R$ 63,79 por m² na Pituba",
+    "Média",
+    "Médio",
+    "25.259",
+    "G5",
+    "Preço pedido em 17 anúncios de 150 a 200 m², de R$ 50,00 a R$ 75,00 por m² do 1º ao 3º quartil (B5); alta de 18,9% em 12 meses em Salvador (FipeZap)"
+   ],
+   [
+    "CMV acima de 30% do A&B",
+    "Média",
+    "Médio",
+    "60.799",
+    "G2",
+    "29,6% no setor (IBGE, PAS 2023)"
+   ],
+   [
+    "Circulação de dia útil abaixo da curva média dos concorrentes",
+    "Média",
+    "Médio",
+    "102.644",
+    "G3",
+    "4,51 a 4,98 horas de pico equivalentes por dia útil, curvas mediana e média do índice de 47 concorrentes (B1); nenhuma visita em dia útil"
+   ],
+   [
+    "Reforma e cozinha acima do provável",
+    "Média",
+    "Médio",
+    "106.637",
+    "n.a.",
+    "Orçamento do B5: SINAPI e anúncios de sites (N2 e N3), quantidades sem projeto (N6)"
+   ],
+   [
+    "Lotação dos bombeiros abaixo de 40 assentos (8 mesas)",
+    "Baixa",
+    "Médio",
+    "n.a.",
+    "n.a.",
+    "Depende do projeto do imóvel (seção 7.2)"
+   ],
+   [
+    "Salários acima da admissão do Novo CAGED",
+    "Média",
+    "Baixo",
+    "173.957",
+    "G5",
+    "Acréscimo de 11,4% no pessimista (seção 9.1)"
+   ],
+   [
+    "Perda e desgaste do acervo acima de 10% ao ano",
+    "Média",
+    "Baixo",
+    "233.790",
+    "n.a.",
+    "N6 (C13)"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base nos capítulos 5 a 9.",
+  "nota": "riscos do mais para o menos grave. Probabilidade, pelo critério do autor (N6): alta, se a evidência disponível já aponta para o valor adverso; média, se a faixa medida ou estimada inclui o valor adverso; baixa, se o risco depende de um fato que o projeto controla antes da abertura. Impacto, pelo VPL com a premissa no pessimista e as demais no provável, de R$ 245.175 (Figura 9.2): alto, VPL negativo; médio, queda de R$ 100 mil ou mais, com VPL positivo; baixo, queda menor que R$ 100 mil. Aluguel: preço por m² e condomínio com IPTU no pessimista; reforma e cozinha: premissas I01 e I03. Gatilhos G1 a G6 no Quadro 10.4. n.a.: risco sem premissa própria no modelo (a São Jogue atua sobre a circulação e o gasto; a lotação, sobre o número de mesas) ou sem gatilho na operação."
+ },
+ "Quadro 10.3": {
+  "titulo": "Etapas de expansão",
+  "colunas": [
+   "Etapa",
+   "O que muda",
+   "Gatilho (3 meses seguidos, depois da maturação)"
+  ],
+  "linhas": [
+   [
+    "1. Abertura",
+    "6 mesas, num ponto que comporta 8; terça a sábado, das 14h às 23h; 2 instrutores, 1 cozinheiro e o sócio; acervo de 175 títulos; cozinha completa",
+    "-"
+   ],
+   [
+    "2. Acervo",
+    "Acervo até 322 títulos, a mediana do B1",
+    "Jogos fora do acervo pedidos em pelo menos 10% das mesas; fila pelo mesmo jogo em um dia de pico por semana; ou buscas frequentes no site por jogos para um número de pessoas ou de uma mecânica com pouca oferta"
+   ],
+   [
+    "3. Mesas",
+    "Mais 2 mesas (8 no total), com um instrutor a mais pela carga de até 7 mesas para 3 pessoas no salão; segundo cozinheiro e abertura no domingo, das 14h às 20h",
+    "Ocupação média acima de 85% das mesas nos dias e horários de maior movimento, ou grupos recusados por lotação em todos os fins de semana"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor. Limites dos gatilhos propostos pelo autor (N6).",
+  "nota": ""
+ },
+ "Quadro 10.4": {
+  "titulo": "Gatilhos de perda máxima, em ordem de análise",
+  "colunas": [
+   "Gatilho",
+   "Condição",
+   "Medidas"
+  ],
+  "linhas": [
+   [
+    "G1. Pouca gente por mesa",
+    "Média de pessoas por mesa abaixo de 3 por 3 meses",
+    "→ Taxa de entrada por mesa em vez de por pessoa; · → Desconto progressivo na taxa de entrada conforme o número de pessoas na mesa"
+   ],
+   [
+    "G2. Consumo baixo",
+    "Gasto médio por pessoa abaixo de R$ 71,91 (ruptura, Tabela 9.5) por 3 meses",
+    "→ Taxa de entrada mais cara, revertida em consumação; · → Combos de entrada com bebidas"
+   ],
+   [
+    "G3. Dia útil fraco",
+    "Circulação de terça a quinta abaixo de 50% da do fim de semana por 3 meses",
+    "→ Passaporte mensal com direito a um número de dias e de acompanhantes, vendido para os dias úteis; · → Eventos fechados e aluguel do espaço; · → Se persistir, fechar na terça e reduzir staff"
+   ],
+   [
+    "G4. Demanda baixa",
+    "Receita abaixo do equilíbrio operacional (R$ 49,6 mil por mês) por 2 meses, sem causa apontada por G1, G2 ou G3",
+    "→ Marketing dirigido a escolas, empresas e grupos de jogos; · → Eventos de comunidade nos dias fracos; · → Reserva com sinal; · → Taxa de entrada mais barata, e redução da sessão para a média vista nas visitas (1h50)"
+   ],
+   [
+    "G5. Caixa negativo",
+    "EBITDA negativo por 3 meses seguidos, ou caixa abaixo de 1 mês de custo fixo",
+    "→ Renegociação do aluguel; · → Suspensão das etapas de expansão; · → Passaporte mensal e pré-venda para antecipar caixa; · → Troca do cardápio por comidas recebidas prontas (salgados como coxinha e quibe), com a dispensa de um cozinheiro"
+   ],
+   [
+    "G6. Saída",
+    "EBITDA acumulado de 6 meses negativo depois do mês 12, com G5 ativo e as medidas de G1 a G4 já aplicadas",
+    "→ Troca de formato (só eventos, aluguel e venda de jogos, com comidas recebidas prontas); · → Encerramento, com venda do acervo e do mobiliário para limitar a perda ao investimento menos o valor de revenda"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor. Limites propostos pelo autor (N6), salvo o equilíbrio operacional, do modelo do capítulo 9.",
+  "nota": ""
+ },
+ "Quadro 2.1": {
+  "titulo": "Conceitos do referencial teórico e sua aplicação no plano",
+  "colunas": [
+   "Conceito ou ferramenta",
+   "Decisão que apoia",
+   "Aplicação"
+  ],
+  "linhas": [
+   [
+    "Economia da experiência; competitive socialising; ambiente de convívio",
+    "A ocasião social como produto",
+    "Seções 5.1, 5.2 e 6.1"
+   ],
+   [
+    "Cinco forças; PESTEL",
+    "Espaço para um novo concorrente; limites externos",
+    "Seções 5.2 e 5.3"
+   ],
+   [
+    "Modelo Kano e PRC",
+    "Atributos que não podem ser reduzidos",
+    "Seções 6.1 e 6.2"
+   ],
+   [
+    "Ambiente físico; capacidade e lei de Little",
+    "Ambiente, mesas, giro e equipe",
+    "Cap. 7 e seção 9.1"
+   ],
+   [
+    "SWOT",
+    "Diagnóstico estratégico",
+    "Seção 10.1"
+   ],
+   [
+    "VPL, TIR, payback descontado, ponto de equilíbrio",
+    "Investir ou não",
+    "Seção 9.4"
+   ],
+   [
+    "Gestão baseada em evidências",
+    "Que dado sustenta cada premissa",
+    "Cap. 3; capítulo 11"
+   ],
+   [
+    "Sensibilidade, tornado e ponto de ruptura",
+    "Sob quais condições o negócio se sustenta",
+    "Seções 9.5 e 10.3"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor.",
+  "nota": ""
+ },
+ "Quadro 3.1": {
+  "titulo": "Níveis de evidência das premissas",
+  "colunas": [
+   "Nível",
+   "Tipo de evidência",
+   "Exemplo no trabalho"
+  ],
+  "linhas": [
+   [
+    "N1",
+    "Orçamento, cotação, contrato ou tabela oficial",
+    "Alíquotas do Simples Nacional"
+   ],
+   [
+    "N2",
+    "Dado público estruturado",
+    "IBGE, Novo CAGED, FipeZap, Banco Central"
+   ],
+   [
+    "N3",
+    "Benchmark de concorrentes a partir de rastros digitais (Google Maps, redes sociais dos estabelecimentos etc.)",
+    "Preços, horários e acervos do Bloco B1"
+   ],
+   [
+    "N4",
+    "Referência setorial ou relatório",
+    "Margens típicas de bares e restaurantes"
+   ],
+   [
+    "N5",
+    "Coleta primária comportamental própria",
+    "Contagem direta de ocupação (Bloco B3)"
+   ],
+   [
+    "N6",
+    "Estimativa do autor",
+    "Rampa de maturação"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor.",
+  "nota": ""
+ },
+ "Quadro 3.2": {
+  "titulo": "Blocos de coleta",
+  "colunas": [
+   "Bloco",
+   "Fonte",
+   "Recorte",
+   "Uso no plano"
+  ],
+  "linhas": [
+   [
+    "B1 – Concorrentes",
+    "Google Places API; Google Maps; Instagram; Ludopedia; Acervo de Jogos; sites próprios de cada concorrente",
+    "Luderias com mais de 100 avaliações nas 14 metrópoles da REGIC 2018 (IBGE): 54 concorrentes",
+    "Concorrência, preço, cardápio, ponto, acervo, ticket médio"
+   ],
+   [
+    "B2 – Avaliações recentes",
+    "Página de avaliações de cada concorrente no Google Maps",
+    "Avaliações com rótulo de data até \"3 meses atrás\", inclusive",
+    "Proposta de valor, reclamações, jogos citados"
+   ],
+   [
+    "B3 – Contagem direta",
+    "Observação nas duas unidades da São Jogue, com leitura da NFC-e",
+    "4 visitas, sexta e sábado à noite, out/2026",
+    "Taxa de ocupação, permanência, tamanho do grupo, fluxo"
+   ],
+   [
+    "B4 – Bases públicas",
+    "IBGE, Novo CAGED, FipeZap, Simples Nacional, Banco Central, CONCLA",
+    "Salvador e demais capitais; 2017 a 2026",
+    "Público, aluguel, salários, tributos, taxa de desconto"
+   ],
+   [
+    "B5 – Ativos fixos",
+    "SINAPI (Caixa); anúncios da Amazon e do Mercado Livre",
+    "Bahia, set/2026; até 5 anúncios por item e site, nov/2026",
+    "Investimento em reforma, mobiliário, cozinha e informática"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor.",
+  "nota": ""
+ },
+ "Tabela 3.1": {
+  "titulo": "Visitas à São Jogue",
+  "colunas": [
+   "Visita",
+   "Horas observadas",
+   "Entrada: grupos",
+   "Entrada: pessoas",
+   "Circulação (pessoas por hora)",
+   "Mesas: grupos",
+   "Mesas: pessoas"
+  ],
+  "linhas": [
+   [
+    "Bela Vista, sáb. 10/10",
+    "3,32",
+    "14",
+    "38",
+    "11,43",
+    "9",
+    "41"
+   ],
+   [
+    "Bela Vista, sex. 16/10",
+    "2,48",
+    "4",
+    "10",
+    "4,03",
+    "7",
+    "17"
+   ],
+   [
+    "Paralela, sáb. 17/10",
+    "2,47",
+    "3",
+    "13",
+    "5,26",
+    "4",
+    "12"
+   ],
+   [
+    "Paralela, sex. 30/10",
+    "2,65",
+    "7",
+    "13",
+    "4,90",
+    "7",
+    "31"
+   ],
+   [
+    "Total",
+    "10,92",
+    "28",
+    "74",
+    "6,78",
+    "27",
+    "101"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no Bloco B3 (10/10/2026 a 30/10/2026).",
+  "nota": "entrada: grupos e pessoas que passaram pela porta durante a observação, sem quem já estava dentro na chegada; circulação = pessoas que entraram ÷ horas observadas. Mesas: grupos acompanhados nas mesas, inclusive os que já estavam sentados na chegada (por isso, em 30/10, há mais pessoas nas mesas que na entrada); nem todo grupo que entra senta a uma mesa observada. Na linha do total, a circulação é a das 74 pessoas em 10,92 horas; a média simples das quatro visitas é de 6,40, e a mediana, de 5,08."
+ },
+ "Quadro 3.3": {
+  "titulo": "Validação por bloco",
+  "colunas": [
+   "Bloco",
+   "Erro a validar",
+   "Instrumento"
+  ],
+  "linhas": [
+   [
+    "B1 e B2",
+    "Fidelidade do script à página; codificação dos temas; cobertura do Google Maps",
+    "Amostra de auditoria sorteada (conferência pendente); recodificação cega; buscas com 15 termos"
+   ],
+   [
+    "B3",
+    "Omissão de registro; erro de contagem",
+    "Comparação entre porta, mesas e notas"
+   ],
+   [
+    "B4",
+    "Código, filtro, unidade, deflação",
+    "Reconciliação com a tabela publicada; soma das linhas igual ao total"
+   ],
+   [
+    "B5",
+    "Anúncio fora da especificação; kit lido como unidade",
+    "Requisitos mínimos por item; preço por unidade do kit; faixa em torno da mediana"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor.",
+  "nota": ""
+ },
+ "Quadro 3.4": {
+  "titulo": "Limitações e tratamento",
+  "colunas": [
+   "Limitação",
+   "Efeito",
+   "Tratamento"
+  ],
+  "linhas": [
+   [
+    "Autosseleção de quem avalia",
+    "Experiências extremas sobrerrepresentadas",
+    "Peso igual por concorrente"
+   ],
+   [
+    "Recorte de três meses e corte de 100 avaliações",
+    "Sem sazonalidade; casas novas fora",
+    "Sazonalidade como premissa com faixa"
+   ],
+   [
+    "Contagem em um só estabelecimento, em quatro noites de pico",
+    "Ocupação acima da média da semana",
+    "Contagem como limite superior; notas como piso"
+   ],
+   [
+    "Índice \"Horários de pico\" do Google Maps, relativo à hora mais cheia de cada lugar",
+    "Proporção entre índice e circulação suposta, sem teste (quatro visitas); sem comparação de volume entre casas",
+    "Índice só para a forma da curva, com o nível pela contagem direta; premissa declarada; pessimista pela curva mediana dos concorrentes"
+   ],
+   [
+    "Índice \"Horários de pico\" lido da altura das barras do histograma, conferido por inteligência artificial, sem conferência manual",
+    "Erro de leitura sem taxa medida",
+    "Curva pela média de 47 concorrentes, que dilui o erro de uma casa; pessimista pela curva mediana"
+   ],
+   [
+    "Luderias parecidas com lojas de jogos de cartas colecionáveis (trading card games, TCG) nas fotos: estantes de caixas semelhantes e mesas de jogo no local, com tapetes de TCG que lembram tabuleiros",
+    "Loja de TCG aprovada como luderia, ou o contrário",
+    "Curadoria manual pelas fotos e pelo cardápio, com o critério de alimentos e bebidas e acervo de jogos para uso no local"
+   ],
+   [
+    "Casas que funcionam como luderia e como ponto de encontro do público de TCG",
+    "Receita, gasto declarado e índice \"Horários de pico\" sem separação entre o público dos jogos de tabuleiro e o de TCG",
+    "Limitação declarada; os dados não permitem a separação"
+   ],
+   [
+    "NFC-e só a pedido, um intervalo por unidade",
+    "Vendas subestimadas; sem variação do mês",
+    "Notas como limite inferior, em faixa"
+   ],
+   [
+    "Registros incompletos nas visitas (nota fiscal do início, contagem de mesas a cada 30 minutos, quem já estava no salão na chegada)",
+    "Pessoas por nota sem medida; contagens da porta e das mesas diferentes",
+    "Circulação só pela porta; ocupação, grupo e permanência só pelas mesas; dado faltante declarado, sem imputação"
+   ],
+   [
+    "Falhas do script e erro de codificação",
+    "Registros perdidos; viés nos temas",
+    "Recodificação cega (kappa de 0,84 nos temas); conferência do script na página pendente"
+   ],
+   [
+    "Aluguel pelo preço pedido em anúncios e POF de 2017-2018",
+    "Aluguel acima do fechado em contrato; valores defasados",
+    "Faixa do 1º ao 3º quartil dos anúncios; correção pelo IPCA; cotação do ponto"
+   ],
+   [
+    "Ponto só na Pituba, com área para 8 mesas desde a abertura (decisão do autor)",
+    "Aluguel de cerca de 24 m² sem uso até a etapa de mesas; sem comparação com os outros finalistas",
+    "Premissa declarada; área e aluguel pela média dos 17 anúncios de 150 a 200 m² (B5); etapa de mesas sem obra"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor.",
+  "nota": ""
+ },
+ "Tabela 4.1": {
+  "titulo": "Indicadores de viabilidade no cenário provável",
+  "colunas": [
+   "Indicador",
+   "Provável"
+  ],
+  "linhas": [
+   [
+    "Investimento inicial (R$)",
+    "382.119"
+   ],
+   [
+    "Receita bruta mensal madura (R$)",
+    "67.454"
+   ],
+   [
+    "Ponto de equilíbrio mensal (R$)",
+    "49.645"
+   ],
+   [
+    "VPL a 15% real (R$)",
+    "245.175"
+   ],
+   [
+    "VPL sem valor residual (R$)",
+    "20.654"
+   ],
+   [
+    "TIR real (%)",
+    "30,7"
+   ],
+   [
+    "Payback descontado (anos)",
+    "4,3"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E, 12/11/2026).",
+  "nota": "faixa do Monte Carlo (P10, mediana e P90) na Tabela 9.4."
+ },
+ "Quadro 5.1": {
+  "titulo": "Cinco forças aplicadas à luderia em Salvador",
+  "colunas": [
+   "Força",
+   "Intensidade",
+   "Evidência"
+  ],
+  "linhas": [
+   [
+    "Rivalidade",
+    "Baixa no formato, alta no bar comum",
+    "1 luderia no recorte (B1); alimentação concentra receita (PAS)"
+   ],
+   [
+    "Ameaça de entrantes",
+    "Média",
+    "Acervo barato frente à cozinha; barreira na curadoria e na explicação de jogos (B2)"
+   ],
+   [
+    "Substitutos",
+    "Alta",
+    "Bares, aluguel de jogos, lazer em casa"
+   ],
+   [
+    "Poder dos fornecedores",
+    "Baixo a médio",
+    "Jogos vendidos por várias lojas (B5); A&B com muitos distribuidores"
+   ],
+   [
+    "Poder dos clientes",
+    "Médio",
+    "Renda abaixo da média das metrópoles (seção 5.2); custo de troca baixo"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor.",
+  "nota": ""
+ },
+ "Quadro 5.2": {
+  "titulo": "Oportunidades e ameaças do mercado",
+  "colunas": [
+   "Tipo",
+   "Fator",
+   "Seção"
+  ],
+  "linhas": [
+   [
+    "Oportunidade",
+    "Recreação cresce em receita e em número de empresas",
+    "5.1"
+   ],
+   [
+    "Oportunidade",
+    "Salvador tem uma só luderia no recorte do B1",
+    "5.3"
+   ],
+   [
+    "Oportunidade",
+    "Consumo fora de casa pesa mais na Bahia que no Brasil",
+    "5.2"
+   ],
+   [
+    "Ameaça",
+    "Selic em 14,00% e aluguel comercial com alta de 18,9% em 12 meses",
+    "5.2"
+   ],
+   [
+    "Ameaça",
+    "Alimentação fora do domicílio com inflação acima da geral",
+    "5.2"
+   ],
+   [
+    "Ameaça",
+    "Renda menor que a das demais metrópoles e gasto com lazer concentrado",
+    "5.2"
+   ],
+   [
+    "Ameaça",
+    "Substitutos fortes: bares, aluguel de jogos e lazer em casa",
+    "5.3"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base nas seções 5.1 a 5.3.",
+  "nota": ""
+ },
+ "Quadro 6.1": {
+  "titulo": "Grade ERRC da luderia",
+  "colunas": [
+   "Ação",
+   "Decisão",
+   "Evidência"
+  ],
+  "linhas": [
+   [
+    "Eliminar",
+    "Consumação mínima e cobrança por jogo: uma taxa por pessoa e por turno",
+    "Regras da casa com 53 críticas e 17 elogios (B2); consumação mínima no LudoCafé e cobrança por título na BoardZ (B1)"
+   ],
+   [
+    "Reduzir",
+    "Acervo inicial de 175 títulos, contra a mediana de 322 nos 30 acervos publicados",
+    "Variedade do acervo com 13 críticas em 1.628 avaliações (B2)"
+   ],
+   [
+    "Reduzir",
+    "Taxa de entrada de R$ 19,62, abaixo da São Jogue",
+    "Preço da entrada com 25 críticas e 21 elogios (B2); Tabela A.2 (B1)"
+   ],
+   [
+    "Elevar",
+    "Instrutor no salão, com carga de até 7 mesas para 3 pessoas no salão, e explicação de regras inclusa na taxa",
+    "Explicação de jogos em 14,3% das avaliações; nota média de 2,62 quando criticada (B2)"
+   ],
+   [
+    "Elevar",
+    "Cardápio de preparo rápido",
+    "Rapidez do serviço com 42 críticas e 27 elogios; nota média de 2,50 quando criticada (B2)"
+   ],
+   [
+    "Criar",
+    "Indicação de jogo pelo perfil do grupo, com apoio de um site de recomendação",
+    "Indicações de jogos em 3,6% das avaliações; nota média de 1,25 nas 4 críticas (B2)"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base nos Blocos B1 e B2.",
+  "nota": ""
+ },
+ "Tabela 6.1": {
+  "titulo": "Matriz de critérios ponderados para o bairro, Salvador",
+  "colunas": [
+   "Posição",
+   "Bairro",
+   "IISU",
+   "Renda familiar per capita (R$)",
+   "Densidade (hab/km²)",
+   "Nota (0 a 1)"
+  ],
+  "linhas": [
+   [
+    "1",
+    "Graça",
+    "0,87",
+    "5.425,88",
+    "17.488",
+    "0,821"
+   ],
+   [
+    "2",
+    "Pituba",
+    "0,88",
+    "5.742,30",
+    "12.708",
+    "0,786"
+   ],
+   [
+    "3",
+    "Itaigara",
+    "0,92",
+    "5.438,74",
+    "7.410",
+    "0,756"
+   ],
+   [
+    "4",
+    "Caminho das Árvores",
+    "0,86",
+    "4.661,13",
+    "6.788",
+    "0,483"
+   ],
+   [
+    "5",
+    "Vitória",
+    "0,81",
+    "4.385,77",
+    "12.627",
+    "0,431"
+   ],
+   [
+    "6",
+    "Rio Vermelho",
+    "0,85",
+    "3.713,90",
+    "10.131",
+    "0,417"
+   ],
+   [
+    "7",
+    "Canela",
+    "0,82",
+    "3.675,82",
+    "13.097",
+    "0,389"
+   ],
+   [
+    "8",
+    "Patamares",
+    "0,82",
+    "5.157,45",
+    "4.617",
+    "0,380"
+   ],
+   [
+    "9",
+    "Barra",
+    "0,80",
+    "4.163,10",
+    "10.715",
+    "0,337"
+   ],
+   [
+    "10",
+    "Stiep",
+    "0,82",
+    "3.442,60",
+    "10.747",
+    "0,313"
+   ],
+   [
+    "11",
+    "Costa Azul",
+    "0,80",
+    "3.345,20",
+    "13.001",
+    "0,292"
+   ],
+   [
+    "12",
+    "Ondina/Chame-Chame",
+    "0,81",
+    "3.883,95",
+    "6.987",
+    "0,256"
+   ],
+   [
+    "13",
+    "Jardim Armação",
+    "0,82",
+    "3.093,74",
+    "7.258",
+    "0,201"
+   ],
+   [
+    "14",
+    "Piatã",
+    "0,80",
+    "3.410,81",
+    "3.086",
+    "0,093"
+   ],
+   [
+    "15",
+    "Stella Maris",
+    "0,78",
+    "3.389,67",
+    "3.553",
+    "0,043"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no QUALISalvador (SANTOS et al., 2022, p. 92–95 e 185–188) e no IBGE (Censo 2022, agregados por bairro).",
+  "nota": "pesos de 40% para o IISU, 30% para a renda e 30% para a densidade; cada indicador normalizado de 0 a 1 entre os 15 candidatos. A densidade usa os moradores do Censo 2022."
+ },
+ "Quadro 6.2": {
+  "titulo": "Requisitos mínimos do ponto",
+  "colunas": [
+   "Requisito",
+   "Mínimo",
+   "Origem"
+  ],
+  "linhas": [
+   [
+    "Área",
+    "De 150 a 200 m², com cerca de 182 m² no provável: área para 8 mesas",
+    "Decisão do autor; anúncios do B5, capítulo 9"
+   ],
+   [
+    "Pavimento",
+    "Térreo, com entrada voltada para a rua e rota acessível até as mesas",
+    "Seção 7.1; ABNT NBR 9050"
+   ],
+   [
+    "Salão",
+    "Espaço para 8 mesas (6 na abertura), cerca de 40 assentos, com estantes do acervo à vista",
+    "Seção 7.1 (B3)"
+   ],
+   [
+    "Sanitários",
+    "Três de clientes (masculino, feminino e adaptado com fraldário) e um da equipe",
+    "Seção 7.1; Código de Obras de Salvador [AV]; NR-24"
+   ],
+   [
+    "Cozinha e depósito",
+    "Espaço para cozinha completa e depósito de A&B, com fluxo e materiais da RDC n. 216/2004",
+    "Seções 7.1 e 8.2"
+   ],
+   [
+    "Zoneamento",
+    "Zona que admita serviço de alimentação e lazer",
+    "LOUOS de Salvador [AV]"
+   ],
+   [
+    "Lotação",
+    "Licença do Corpo de Bombeiros compatível com 30 assentos e a equipe",
+    "Lei estadual n. 12.929/2013 [AV]"
+   ],
+   [
+    "Metrô",
+    "Estação a até 1.000 m",
+    "Seção 5.4.2"
+   ],
+   [
+    "Contrato",
+    "Prazo de 5 anos, com direito à ação renovatória",
+    "Seção 8.3"
+   ],
+   [
+    "Horário e ruído",
+    "Funcionamento até as 23h sem restrição da zona",
+    "Seção 7.2; LOUOS de Salvador [AV]"
+   ],
+   [
+    "Aluguel",
+    "Até R$ 75,00 por m², o 3º quartil dos anúncios de 150 a 200 m² na Pituba",
+    "Cenário pessimista, capítulo 9"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base nos capítulos 7, 8 e 9.",
+  "nota": ""
+ },
+ "Tabela 6.2": {
+  "titulo": "Demanda no mês maduro, por cenário",
+  "colunas": [
+   "Variável",
+   "Pessimista",
+   "Provável",
+   "Otimista"
+  ],
+  "linhas": [
+   [
+    "Circulação no pico de fim de semana (pessoas por hora)",
+    "3,87",
+    "6,40",
+    "11,43"
+   ],
+   [
+    "Horas de pico equivalentes por dia de fim de semana",
+    "7,55",
+    "7,73",
+    "7,73"
+   ],
+   [
+    "Horas de pico equivalentes por dia útil",
+    "4,51",
+    "4,98",
+    "4,98"
+   ],
+   [
+    "Pessoas por dia de fim de semana",
+    "29,2",
+    "49,5",
+    "88,4"
+   ],
+   [
+    "Pessoas por dia útil",
+    "17,5",
+    "31,9",
+    "56,9"
+   ],
+   [
+    "Pessoas por mês",
+    "480",
+    "843",
+    "1.506"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base nos Blocos B1 (11/2026) e B3 (10/10/2026 a 30/10/2026), no modelo financeiro (Apêndice E).",
+  "nota": "pessimista com as notas fiscais da São Jogue convertidas em circulação (seção 9.1) e a curva mediana do índice; otimista com a visita mais cheia e a curva média; fim de semana de sexta e sábado."
+ },
+ "Quadro 7.1": {
+  "titulo": "Capacidade instalada e demanda provável",
+  "colunas": [
+   "Item",
+   "Valor",
+   "Origem"
+  ],
+  "linhas": [
+   [
+    "Mesas no salão",
+    "6",
+    "Maior média de mesas ocupadas nas visitas do B3 (R01)"
+   ],
+   [
+    "Pessoas por grupo de mesa",
+    "3,6",
+    "B3, média das quatro visitas (R02)"
+   ],
+   [
+    "Permanência média",
+    "109 min",
+    "B3, média das quatro visitas (R03)"
+   ],
+   [
+    "Horas abertas por semana",
+    "45 h: 27 h de terça a quinta e 18 h na sexta e no sábado",
+    "Decisão do autor; pico de cada dia, B1 (R13, R14)"
+   ],
+   [
+    "Circulação no pico",
+    "3,87 a 11,43 pessoas por hora; 6,40 no provável",
+    "NFC-e e visitas do B3 (R04)"
+   ],
+   [
+    "Horas de pico equivalentes",
+    "7,73 por dia de fim de semana (sexta e sábado); 4,98 por dia útil",
+    "Índice \"Horários de pico\" dos concorrentes, B1 (R15, R05)"
+   ],
+   [
+    "Capacidade máxima",
+    "107 pessoas por dia aberto; 30 grupos",
+    "Todas as mesas ocupadas em todas as horas abertas"
+   ],
+   [
+    "Demanda provável no ano maduro",
+    "39 pessoas por dia aberto; 10,8 grupos",
+    "6,40 pessoas por hora × 7,73 horas na sexta e no sábado e × 4,98 horas no dia útil (R04, R05, R15)"
+   ],
+   [
+    "Giro provável",
+    "1,8 grupo por mesa por dia aberto; 5,0 no teto",
+    "Grupos por dia ÷ 6 mesas"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base nos Blocos B1 (10 e 11/2026) e B3 (10/10/2026 a 30/10/2026) e no modelo financeiro (Apêndice E).",
+  "nota": ""
+ },
+ "Quadro 7.2": {
+  "titulo": "Equipe proposta",
+  "colunas": [
+   "Função",
+   "Pessoas",
+   "Escala",
+   "Salário de admissão (R$)",
+   "Remuneração com adicionais (R$)"
+  ],
+  "linhas": [
+   [
+    "Atendente e instrutor de jogos",
+    "2",
+    "5 dias, de terça a sábado, da abertura ao fechamento: 8 h com 1 h de intervalo (40 h por semana). Folgas no domingo e na segunda",
+    "1.653,75",
+    "1.845,99"
+   ],
+   [
+    "Cozinheiro-chefe",
+    "1",
+    "5 dias, no mesmo turno dos atendentes (40 h por semana). Folgas no domingo e na segunda",
+    "1.700,00",
+    "1.897,62"
+   ],
+   [
+    "Sócio (gestão, caixa e salão)",
+    "1",
+    "Todo o horário aberto: terça a sábado, das 14h às 23h",
+    "Pró-labore (C08)",
+    "n.a."
+   ],
+   [
+    "Total (folha mensal)",
+    "3 empregados",
+    "n.a.",
+    "5.007,50",
+    "5.589,60"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base nos Blocos B2 (1.628 avaliações) e B3 (10/10/2026 a 30/10/2026) e no Novo CAGED (Salvador, admissões de 08/2025 a 07/2026, mediana; recreador em todas as atividades e cozinheiro geral na CNAE 56).",
+  "nota": "remuneração por pessoa: salário, adicional noturno de 20% e hora noturna reduzida das 22h às 23h (CLT, art. 73), repouso sobre esses adicionais e feriados trabalhados em dobro (Lei n. 605/1949, art. 9º). O domingo trabalhado com folga na semana não tem adicional (TST, Súmula 146). Com encargos, provisões e vale-transporte de 43,5% (premissa C07), o custo vai a R$ 8.023,34 por mês (Tabela 9.2). Os salários ficam acima do piso de R$ 1.625,09 da convenção coletiva dos bares e restaurantes de Salvador (SHRBS e Sindbares, 2024/2026), que pode fixar adicional noturno maior que o da CLT [AV]. n.a.: não se aplica."
+ },
+ "Tabela 7.1": {
+  "titulo": "Composição do custo mensal por empregado, cenário provável (R$)",
+  "colunas": [
+   "Conta",
+   "Instrutor de jogos",
+   "Cozinheiro-chefe"
+  ],
+  "linhas": [
+   [
+    "Salário de admissão",
+    "1.653,75",
+    "1.700,00"
+   ],
+   [
+    "(+) Adicional noturno (20%)",
+    "35,95",
+    "36,96"
+   ],
+   [
+    "(+) Hora noturna reduzida (hora extra de 50%)",
+    "46,23",
+    "47,52"
+   ],
+   [
+    "(+) Repouso semanal sobre os adicionais",
+    "18,19",
+    "18,69"
+   ],
+   [
+    "(+) Feriados trabalhados em dobro",
+    "91,88",
+    "94,44"
+   ],
+   [
+    "(=) Remuneração",
+    "1.845,99",
+    "1.897,62"
+   ],
+   [
+    "(+) FGTS (8%)",
+    "147,68",
+    "151,81"
+   ],
+   [
+    "(+) 13º salário (1/12)",
+    "153,83",
+    "158,13"
+   ],
+   [
+    "(+) Férias com 1/3 (1/12 × 4/3)",
+    "205,11",
+    "210,85"
+   ],
+   [
+    "(+) FGTS sobre 13º e férias",
+    "28,72",
+    "29,52"
+   ],
+   [
+    "(=) Custo com encargos sobre a remuneração",
+    "2.381,33",
+    "2.447,93"
+   ],
+   [
+    "(+) Aviso prévio indenizado (provisão: 42 dias em 60 meses)",
+    "38,59",
+    "39,67"
+   ],
+   [
+    "(+) FGTS sobre o aviso prévio",
+    "3,09",
+    "3,17"
+   ],
+   [
+    "(+) Multa de 40% do FGTS (provisão)",
+    "71,79",
+    "73,80"
+   ],
+   [
+    "(=) Custo com provisões de rescisão",
+    "2.494,80",
+    "2.564,57"
+   ],
+   [
+    "(+) Contribuição patronal ao INSS, RAT e terceiros (no DAS)",
+    "0,00",
+    "0,00"
+   ],
+   [
+    "(+) Vale-transporte (parte do empregador)",
+    "157,32",
+    "154,54"
+   ],
+   [
+    "(=) Custo mensal por empregado",
+    "2.652,12",
+    "2.719,11"
+   ],
+   [
+    "(×) Empregados no cargo",
+    "2",
+    "1"
+   ],
+   [
+    "(=) Custo mensal do cargo",
+    "5.304,23",
+    "2.719,11"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no Novo CAGED (Salvador, admissões de 08/2025 a 07/2026, mediana), na CLT, na Lei n. 605/1949, na Lei n. 7.418/1985 e na Lei n. 8.036/1990; modelo financeiro (Apêndice E).",
+  "nota": "os dois cargos somam R$ 8.023,34 por mês, o pessoal da Tabela 9.2. No Simples Nacional, a contribuição patronal fica no DAS (LC n. 123/2006, art. 13)."
+ },
+ "Tabela 8.1": {
+  "titulo": "Tributos no ano maduro, cenário provável: Simples Nacional × Lucro Presumido (R$)",
+  "colunas": [
+   "Tributo",
+   "Simples Nacional",
+   "Lucro Presumido"
+  ],
+  "linhas": [
+   [
+    "IRPJ e CSLL (presunção de 8% e 12% no A&B, 32% nos serviços)",
+    "n.a.",
+    "33.768,56"
+   ],
+   [
+    "PIS e Cofins cumulativos (3,65%)",
+    "n.a.",
+    "33.417,01"
+   ],
+   [
+    "ICMS sobre o A&B (4%) [AV]",
+    "n.a.",
+    "27.069,99"
+   ],
+   [
+    "ISS sobre a taxa de entrada (5%) [AV]",
+    "n.a.",
+    "11.399,24"
+   ],
+   [
+    "Contribuição patronal sobre a folha (27,8%) [AV]",
+    "n.a.",
+    "34.431,33"
+   ],
+   [
+    "Total",
+    "84.690,68",
+    "140.086,13"
+   ],
+   [
+    "Carga sobre a receita bruta de R$ 915.534,54 (%)",
+    "9,3",
+    "15,3"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base na LC n. 123/2006 (anexos I e III), Lei n. 9.249/1995 (arts. 15 e 20), Lei n. 9.718/1998 e Lei n. 8.212/1991 (art. 22); receita e folha do modelo financeiro (Apêndice E).",
+  "nota": "n.a.: tributo incluído no DAS do Simples Nacional. Receita e folha do ano maduro: A&B de R$ 676.749,80, taxa de entrada de R$ 227.984,74 e aluguel de jogos de R$ 10.800,00; folha de 13,33 remunerações mensais de R$ 9.289,03, com os adicionais da escala (12 meses, 13º salário e um terço de férias). Sem o adicional de 10% do IRPJ, porque a base presumida fica abaixo de R$ 240 mil por ano. O ISS incide só sobre a taxa de entrada, porque a locação de bem móvel não é serviço."
+ },
+ "Quadro 8.1": {
+  "titulo": "Obrigações legais para abrir e operar a luderia em Salvador",
+  "colunas": [
+   "Obrigação",
+   "Órgão",
+   "Norma",
+   "Efeito no plano"
+  ],
+  "linhas": [
+   [
+    "Registro da empresa e CNPJ",
+    "JUCEB e Receita Federal, pela Redesim",
+    "Lei n. 11.598/2007",
+    "Primeiro passo; custo a cotar com o contador"
+   ],
+   [
+    "Viabilidade de localização e alvará de funcionamento",
+    "Prefeitura de Salvador (Sedur)",
+    "LOUOS de Salvador [AV]",
+    "Condiciona o ponto (capítulo 7): zona que admita serviço de alimentação e lazer"
+   ],
+   [
+    "Licença do Corpo de Bombeiros e lotação",
+    "CBMBA",
+    "Lei estadual n. 12.929/2013 [AV]",
+    "Lotação do salão define o teto de mesas (R01)"
+   ],
+   [
+    "Obra e sanitários",
+    "Prefeitura de Salvador (Sedur), no alvará",
+    "Código de Obras de Salvador; lei municipal do fraldário [AV]",
+    "Três sanitários de clientes, o adaptado com fraldário (capítulo 7)"
+   ],
+   [
+    "Licença sanitária",
+    "Vigilância sanitária municipal",
+    "RDC Anvisa n. 216/2004",
+    "Cozinha com fluxo, materiais e manual de boas práticas (capítulo 7)"
+   ],
+   [
+    "Venda de bebida alcoólica",
+    "–",
+    "Lei n. 8.069/1990, art. 243 (Lei n. 13.106/2015)",
+    "Proibida a menores de 18 anos; conferência de idade no caixa"
+   ],
+   [
+    "Música ambiente",
+    "ECAD",
+    "Lei n. 9.610/1998, art. 68",
+    "Retribuição mensal, só se houver música"
+   ],
+   [
+    "Acessibilidade",
+    "Prefeitura, no alvará",
+    "Lei n. 13.146/2015; ABNT NBR 9050",
+    "Rota acessível, sanitário adaptado, mesa, balcão e caixa acessíveis e cardápio em Braille e em letras ampliadas"
+   ],
+   [
+    "Jornada e remuneração",
+    "Ministério do Trabalho e Emprego (MTE)",
+    "CLT, arts. 71, 73, 386 e 457, § 2º; Lei n. 605/1949; Lei n. 10.101/2000; Portaria MTP n. 671/2021; convenção coletiva SHRBS e Sindbares [AV]",
+    "Turnos de 8 h com 1 h de intervalo de terça a sábado (40 h por semana); na etapa de mesas, também de 6 h com 15 min no domingo, com folga dominical da mulher a cada 15 dias e do homem a cada 4 semanas; adicional noturno, feriado em dobro e piso da convenção; refeição no local sem natureza salarial e PLR por acordo com comissão de empregados (capítulo 7)"
+   ],
+   [
+    "Saúde e segurança do trabalho",
+    "MTE",
+    "NR-1 (gerenciamento de riscos, inclusive psicossociais), NR-7 (PCMSO) e NR-24",
+    "Programa de riscos, exames dos empregados e sanitário da equipe; custo a cotar"
+   ],
+   [
+    "Defesa do consumidor",
+    "Procon-BA",
+    "Lei n. 8.078/1990; Lei n. 12.291/2010; Lei n. 10.962/2004; Lei n. 13.419/2017",
+    "Exemplar do CDC no salão e preços e taxa de entrada à vista antes do acesso; sem consumação mínima, taxa de serviço nem gorjeta"
+   ],
+   [
+    "Dados de clientes",
+    "ANPD",
+    "Lei n. 13.709/2018",
+    "Reserva e cadastro com finalidade declarada e base legal de execução de contrato (art. 7º, V)"
+   ],
+   [
+    "Nota fiscal ao consumidor (NFC-e)",
+    "Sefaz-BA",
+    "RICMS-BA [AV]",
+    "Emissão em toda venda"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor.",
+  "nota": ""
+ },
+ "Quadro 9.1": {
+  "titulo": "Árvore de direcionadores do modelo financeiro",
+  "colunas": [
+   "Direcionador",
+   "Cálculo",
+   "Premissas"
+  ],
+  "linhas": [
+   [
+    "Pessoas por mês",
+    "circulação no pico × horas de pico equivalentes do dia × dias abertos × fator de rampa × semanas por mês, em separado para o fim de semana e o dia útil",
+    "R04, R05, R11, R12, R15 a R17, M02"
+   ],
+   [
+    "Receita de taxa de entrada",
+    "pessoas × taxa de entrada",
+    "R07"
+   ],
+   [
+    "Receita de A&B",
+    "pessoas × (gasto por pessoa − taxa de entrada)",
+    "R06, R07"
+   ],
+   [
+    "Receita de aluguel de jogos",
+    "aluguéis por mês × preço médio × fator de rampa",
+    "R09, R10"
+   ],
+   [
+    "Custos variáveis",
+    "Simples Nacional sobre a receita; CMV sobre o A&B; taxa de cartão",
+    "C01, C02, aba simples"
+   ],
+   [
+    "Custos fixos",
+    "aluguel e condomínio; pessoal com encargos; pró-labore; utilidades; marketing; contabilidade; sistemas; reposição do acervo; refeição da equipe",
+    "C03 a C15"
+   ],
+   [
+    "Participação nos lucros",
+    "parcela do EBITDA anual, só quando positivo",
+    "C16"
+   ],
+   [
+    "Investimento",
+    "reforma; mobiliário; cozinha e bar; caixa; acervo; pré-operacional; itens sem cotação; caução; capital de giro",
+    "I01 a I08, I10"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor.",
+  "nota": ""
+ },
+ "Quadro 9.2": {
+  "titulo": "Premissas de maior impacto no VPL",
+  "colunas": [
+   "ID",
+   "Premissa",
+   "Pessimista",
+   "Provável",
+   "Otimista",
+   "Amplitude no VPL (R$)",
+   "Nível"
+  ],
+  "linhas": [
+   [
+    "R04",
+    "Circulação no pico de fim de semana (pessoas por hora)",
+    "3,87",
+    "6,40",
+    "11,43",
+    "3.250.459",
+    "N5"
+   ],
+   [
+    "R06",
+    "Gasto por pessoa (R$)",
+    "40,00",
+    "78,94",
+    "111,09",
+    "2.035.950",
+    "N3"
+   ],
+   [
+    "C04",
+    "Aluguel comercial (R$ por m² ao mês)",
+    "75,00",
+    "63,79",
+    "50,00",
+    "410.105",
+    "N3"
+   ],
+   [
+    "C01",
+    "CMV de alimentos e bebidas (% do A&B)",
+    "35%",
+    "30%",
+    "26%",
+    "331.877",
+    "N2"
+   ],
+   [
+    "M01",
+    "Taxa mínima de atratividade real (% ao ano)",
+    "18%",
+    "15%",
+    "12%",
+    "249.297",
+    "N2 + N6"
+   ],
+   [
+    "C09",
+    "Utilidades (R$ por mês)",
+    "6.000,00",
+    "4.500,00",
+    "3.500,00",
+    "195.000",
+    "N6"
+   ],
+   [
+    "C08",
+    "Pró-labore (R$ por mês)",
+    "4.000,00",
+    "3.000,00",
+    "2.000,00",
+    "156.000",
+    "N6"
+   ],
+   [
+    "R05",
+    "Horas de pico equivalentes por dia útil (h)",
+    "4,51",
+    "4,98",
+    "4,98",
+    "142.531",
+    "N3"
+   ],
+   [
+    "I01",
+    "Reforma e instalações (R$ por m²)",
+    "1.052,75",
+    "816,18",
+    "643,14",
+    "123.832",
+    "N2 + N3 + N6"
+   ],
+   [
+    "R09",
+    "Aluguéis de jogos (por mês)",
+    "10",
+    "30",
+    "60",
+    "91.157",
+    "N6"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E) e nos Blocos B1 a B5 (10 e 11/2026).",
+  "nota": ""
+ },
+ "Tabela 9.1": {
+  "titulo": "Investimento inicial por cenário (R$)",
+  "colunas": [
+   "Item",
+   "Pessimista",
+   "Provável",
+   "Otimista"
+  ],
+  "linhas": [
+   [
+    "Reforma e instalações",
+    "191.389,95",
+    "148.381,52",
+    "116.922,85"
+   ],
+   [
+    "Mobiliário",
+    "18.768,82",
+    "14.806,11",
+    "12.006,37"
+   ],
+   [
+    "Cozinha e bar",
+    "89.253,32",
+    "38.917,61",
+    "32.331,02"
+   ],
+   [
+    "Caixa e informática",
+    "9.764,79",
+    "7.762,90",
+    "5.414,15"
+   ],
+   [
+    "Acervo inicial de jogos",
+    "40.285,51",
+    "35.030,88",
+    "29.776,25"
+   ],
+   [
+    "Gastos pré-operacionais",
+    "30.000,00",
+    "20.000,00",
+    "12.000,00"
+   ],
+   [
+    "Itens sem cotação (letreiro, balcão, gás e sleeves)",
+    "25.000,00",
+    "17.000,00",
+    "11.000,00"
+   ],
+   [
+    "Caução do aluguel",
+    "40.905,00",
+    "34.791,07",
+    "18.180,00"
+   ],
+   [
+    "Capital de giro",
+    "121.780,56",
+    "65.428,60",
+    "38.445,64"
+   ],
+   [
+    "Total",
+    "567.147,95",
+    "382.118,69",
+    "276.076,28"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E) e no Bloco B5 (SINAPI de set/2026; anúncios de 03/11/2026; anúncios de aluguel de 12/11/2026).",
+  "nota": ""
+ },
+ "Tabela 9.2": {
+  "titulo": "Receita e custos mensais no cenário provável, mês maduro (R$)",
+  "colunas": [
+   "Conta",
+   "Valor mensal",
+   "Participação na receita bruta (%)"
+  ],
+  "linhas": [
+   [
+    "Taxa de entrada",
+    "16.566,78",
+    "24,6"
+   ],
+   [
+    "Alimentos e bebidas",
+    "49.987,00",
+    "74,1"
+   ],
+   [
+    "Aluguel de jogos",
+    "900,00",
+    "1,3"
+   ],
+   [
+    "Receita bruta",
+    "67.453,79",
+    "100,0"
+   ],
+   [
+    "Simples Nacional",
+    "5.984,75",
+    "8,9"
+   ],
+   [
+    "CMV de A&B",
+    "14.996,10",
+    "22,2"
+   ],
+   [
+    "Taxa de cartão",
+    "2.023,61",
+    "3,0"
+   ],
+   [
+    "Pessoal com encargos (3 empregados)",
+    "8.023,34",
+    "11,9"
+   ],
+   [
+    "Refeição da equipe",
+    "782,40",
+    "1,2"
+   ],
+   [
+    "Aluguel, condomínio e IPTU",
+    "12.966,63",
+    "19,2"
+   ],
+   [
+    "Pró-labore e despesas gerais",
+    "10.941,92",
+    "16,2"
+   ],
+   [
+    "Subtotal: custos fixos (as quatro linhas anteriores)",
+    "32.714,30",
+    "48,5"
+   ],
+   [
+    "Participação nos lucros (5% do EBITDA, provisão mensal)",
+    "586,75",
+    "0,9"
+   ],
+   [
+    "Resultado operacional (EBITDA)",
+    "11.148,27",
+    "16,5"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E).",
+  "nota": ""
+ },
+ "Tabela 9.3": {
+  "titulo": "Demonstração do resultado e fluxo de caixa projetados, cenário provável (R$)",
+  "colunas": [
+   "Conta",
+   "Ano 0",
+   "Ano 1",
+   "Ano 2",
+   "Ano 3",
+   "Ano 4",
+   "Ano 5"
+  ],
+  "linhas": [
+   [
+    "Receita bruta",
+    "0",
+    "627.320",
+    "809.445",
+    "809.445",
+    "809.445",
+    "809.445"
+   ],
+   [
+    "(-) Simples Nacional",
+    "0",
+    "-51.254",
+    "-71.817",
+    "-71.817",
+    "-71.817",
+    "-71.817"
+   ],
+   [
+    "(-) CMV e taxa de cartão",
+    "0",
+    "-158.283",
+    "-204.237",
+    "-204.237",
+    "-204.237",
+    "-204.237"
+   ],
+   [
+    "Margem de contribuição",
+    "0",
+    "417.783",
+    "533.392",
+    "533.392",
+    "533.392",
+    "533.392"
+   ],
+   [
+    "(-) Custos fixos",
+    "0",
+    "-392.572",
+    "-392.572",
+    "-392.572",
+    "-392.572",
+    "-392.572"
+   ],
+   [
+    "(-) Participação nos lucros (PLR)",
+    "0",
+    "-1.261",
+    "-7.041",
+    "-7.041",
+    "-7.041",
+    "-7.041"
+   ],
+   [
+    "EBITDA",
+    "0",
+    "23.951",
+    "133.779",
+    "133.779",
+    "133.779",
+    "133.779"
+   ],
+   [
+    "(-) Depreciação e amortização",
+    "0",
+    "-51.007",
+    "-51.007",
+    "-51.007",
+    "-51.007",
+    "-51.007"
+   ],
+   [
+    "Lucro líquido",
+    "0",
+    "-27.057",
+    "82.772",
+    "82.772",
+    "82.772",
+    "82.772"
+   ],
+   [
+    "Investimento inicial",
+    "-382.119",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0"
+   ],
+   [
+    "Valor residual",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "551.812"
+   ],
+   [
+    "Fluxo de caixa",
+    "-382.119",
+    "23.951",
+    "133.779",
+    "133.779",
+    "133.779",
+    "685.592"
+   ],
+   [
+    "Fluxo descontado a 15%",
+    "-382.119",
+    "20.827",
+    "101.156",
+    "87.962",
+    "76.489",
+    "340.860"
+   ],
+   [
+    "Descontado acumulado",
+    "-382.119",
+    "-361.292",
+    "-260.136",
+    "-172.174",
+    "-95.685",
+    "245.175"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E).",
+  "nota": "o lucro líquido não desconta impostos sobre o lucro, que já estão no Simples Nacional. A caução e o capital de giro não voltam no ano 5, porque o negócio segue aberto e o valor residual já os inclui. Sem o valor residual, a luderia fecha no fim do ano 5, a caução e o capital de giro (R$ 100.220) voltam ao caixa, e o VPL é de R$ 20.654."
+ },
+ "Tabela 9.4": {
+  "titulo": "Indicadores de viabilidade: cenário provável e faixa do Monte Carlo",
+  "colunas": [
+   "Indicador",
+   "Provável",
+   "P10",
+   "Mediana",
+   "P90"
+  ],
+  "linhas": [
+   [
+    "Investimento inicial (R$)",
+    "382.119",
+    "366.765",
+    "392.258",
+    "418.892"
+   ],
+   [
+    "Receita bruta mensal madura (R$)",
+    "67.454",
+    "47.309",
+    "68.245",
+    "98.393"
+   ],
+   [
+    "Ponto de equilíbrio mensal (R$)",
+    "49.645",
+    "46.439",
+    "49.686",
+    "52.905"
+   ],
+   [
+    "EBITDA do ano 5 (R$)",
+    "133.779",
+    "11.333",
+    "135.393",
+    "330.679"
+   ],
+   [
+    "VPL a 15% real (R$)",
+    "245.175",
+    "-402.677",
+    "240.583",
+    "1.501.736"
+   ],
+   [
+    "VPL sem valor residual (R$)",
+    "20.654",
+    "-402.677",
+    "14.596",
+    "628.806"
+   ],
+   [
+    "TIR real (%)",
+    "30,7",
+    "-24,4",
+    "30,0",
+    "81,6"
+   ],
+   [
+    "TIR real sem valor residual (%)",
+    "16,8",
+    "-24,4",
+    "16,2",
+    "62,9"
+   ],
+   [
+    "Payback descontado (anos)",
+    "4,3",
+    "2,0",
+    "4,3",
+    "mais de 5"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E), com 10 mil sorteios.",
+  "nota": "cada percentil é calculado sobre a distribuição do próprio indicador; os valores de uma coluna não vêm do mesmo sorteio. O Monte Carlo aplica as decisões de gestão do Quadro 10.4: o G5 dispensa o cozinheiro no ano seguinte ao primeiro EBITDA negativo, e o G6 fecha o negócio se o prejuízo continuar, com a volta da caução e do capital de giro e a revenda dos ativos (I09); por isso, no P10, o VPL com e sem valor residual coincide. No cenário provável, os gatilhos não são acionados. Os cenários extremos, com todas as premissas no mesmo lado da faixa, dão VPL de −R$ 1,54 milhão no pessimista (−R$ 1,17 milhão com os gatilhos) e de R$ 7,5 milhões no otimista (Apêndice E)."
+ },
+ "Tabela 9.5": {
+  "titulo": "Ponto de ruptura das premissas críticas (VPL = 0)",
+  "colunas": [
+   "ID",
+   "Premissa",
+   "Provável",
+   "Ruptura",
+   "Faixa testada",
+   "Valor medido",
+   "Nível"
+  ],
+  "linhas": [
+   [
+    "R04",
+    "Circulação no pico de fim de semana (pessoas por hora)",
+    "6,40",
+    "5,89",
+    "3,87 a 11,43",
+    "4,03 a 11,43 por visita, mediana de 5,08 (B3)",
+    "N5"
+   ],
+   [
+    "R06",
+    "Gasto por pessoa (R$)",
+    "78,94",
+    "71,91",
+    "40,00 a 111,09",
+    "40,00 a 111,09, gasto médio de 18 concorrentes (B2)",
+    "N3"
+   ],
+   [
+    "C04",
+    "Aluguel comercial (R$ por m² ao mês)",
+    "63,79",
+    "78,71",
+    "75,00 a 50,00",
+    "50,00 a 75,00 do 1º ao 3º quartil, 17 anúncios na Pituba (B5)",
+    "N3"
+   ],
+   [
+    "C01",
+    "CMV de alimentos e bebidas (% do A&B)",
+    "30%",
+    "36,6%",
+    "35% a 26%",
+    "29,6% (IBGE, PAS 2023)",
+    "N2"
+   ],
+   [
+    "M01",
+    "Taxa mínima de atratividade real (% ao ano)",
+    "15%",
+    "24,9%",
+    "18% a 12%",
+    "juro real de 9,3% (BCB)",
+    "N2 + N6"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E) e nos Blocos B1 a B5 (10/10/2026 a 12/11/2026).",
+  "nota": "a faixa testada vai do pessimista ao otimista do registro de premissas."
+ },
+ "Tabela 9.6": {
+  "titulo": "Escada da demanda, do piso de clientes à capacidade do salão",
+  "colunas": [
+   "Degrau",
+   "Pessoas por dia aberto",
+   "Origem"
+  ],
+  "linhas": [
+   [
+    "NFC-e por dia da São Jogue Paralela",
+    "16,1",
+    "Bloco B3"
+   ],
+   [
+    "Equilíbrio operacional (EBITDA = 0)",
+    "28,6",
+    "Equação 5 (seção 9.3)"
+   ],
+   [
+    "NFC-e por dia da São Jogue Bela Vista",
+    "30,5",
+    "Bloco B3"
+   ],
+   [
+    "Equilíbrio econômico (VPL = 0)",
+    "35,8",
+    "Ruptura da circulação no pico (Tabela 9.5)"
+   ],
+   [
+    "Cenário provável",
+    "38,9",
+    "Equação 1 (início do capítulo)"
+   ],
+   [
+    "Capacidade do salão",
+    "107",
+    "Seção 7.2"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E) e no Bloco B3 (10/10/2026 a 30/10/2026).",
+  "nota": "o equilíbrio econômico usa a ruptura da circulação no pico, com as demais premissas no provável. A São Jogue abre todos os dias, e o dia de calendário é também o dia aberto."
+ }
+}

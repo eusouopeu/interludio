@@ -1,0 +1,157 @@
+{
+  "_leiaMe": "Identificação do trabalho, abas da barra lateral e textos da moldura do site. Em cada seção: 'titulo' e 'subtitulo' aparecem na barra lateral; 'subtituloLongo' aparece no cabeçalho da aba; 'tempo' é a estimativa de fala; 'grupo' separa o plano dos dados de apoio; 'capitulo' diz de onde o texto vem no TMin. O conteúdo das abas 1 a 8 está em plano.json.",
+  "meta": {
+    "titulo": "Dados em jogo",
+    "subtitulo": "Plano de negócios baseado em evidências para uma luderia em Salvador",
+    "autor": "Pedro Caio Feitosa Teles",
+    "curso": "Bacharelado em Administração — Escola de Administração, UFBA",
+    "ano": "2026",
+    "url": "https://eusouopeu.github.io/interludio/",
+    "orientador": "Orientador: Prof. Jair Sampaio Soares Junior"
+  },
+  "qrcode": {
+    "titulo": "Acompanhe pelo celular",
+    "texto": "Aponte a câmera para o código ou acesse o link para abrir esta apresentação no seu smartphone."
+  },
+  "barraLateral": {
+    "chapeu": "TCC · Administração · UFBA",
+    "dicaTeclado": "Use ← → para navegar entre as abas",
+    "rotuloNavegacao": "Navegação entre seções"
+  },
+  "rodape": {
+    "inicio": "Início",
+    "fim": "Fim"
+  },
+  "secoes": [
+    {
+      "id": "introducao",
+      "n": 1,
+      "grupo": "Plano",
+      "titulo": "Introdução",
+      "subtitulo": "Contexto, problema, objetivos e justificativa",
+      "tempo": "1min",
+      "subtituloLongo": "Contexto, problema de pesquisa, pressupostos, objetivos e justificativa",
+      "capitulo": "Capítulo 1 do TMin"
+    },
+    {
+      "id": "referencial",
+      "n": 2,
+      "grupo": "Plano",
+      "titulo": "Referencial teórico",
+      "subtitulo": "Conceitos e decisões que apoiam",
+      "tempo": "1min",
+      "subtituloLongo": "Os cinco blocos de teoria e a decisão que cada um sustenta",
+      "capitulo": "Capítulo 2 do TMin"
+    },
+    {
+      "id": "metodologia",
+      "n": 3,
+      "grupo": "Plano",
+      "titulo": "Metodologia",
+      "subtitulo": "Evidências N1 a N6 e blocos B1 a B5",
+      "tempo": "1min30",
+      "subtituloLongo": "Hierarquia de evidências, blocos de coleta, validação e limitações",
+      "capitulo": "Capítulo 3 do TMin"
+    },
+    {
+      "id": "mercado",
+      "n": 4,
+      "grupo": "Plano",
+      "titulo": "Análise de mercado",
+      "subtitulo": "Entretenimento social, PESTEL e forças",
+      "tempo": "1min30",
+      "subtituloLongo": "O mercado do entretenimento social, o ambiente externo e a concorrência",
+      "capitulo": "Capítulo 5 do TMin"
+    },
+    {
+      "id": "marketing",
+      "n": 5,
+      "grupo": "Plano",
+      "titulo": "Plano de marketing",
+      "subtitulo": "Proposta de valor, preço, bairro e demanda",
+      "tempo": "1min30",
+      "subtituloLongo": "Posicionamento, composto de marketing, escolha do bairro e demanda",
+      "capitulo": "Capítulo 6 do TMin"
+    },
+    {
+      "id": "operacional",
+      "n": 6,
+      "grupo": "Plano",
+      "titulo": "Plano operacional",
+      "subtitulo": "Salão, processos, acervo e equipe",
+      "tempo": "1min",
+      "subtituloLongo": "Espaço, capacidade, jornada do cliente, acervo e equipe",
+      "capitulo": "Capítulo 7 do TMin"
+    },
+    {
+      "id": "financeiro",
+      "n": 7,
+      "grupo": "Plano",
+      "titulo": "Plano financeiro",
+      "subtitulo": "Investimento, resultado e indicadores",
+      "tempo": "1min30",
+      "subtituloLongo": "Premissas, investimento, fluxo de caixa, indicadores e sensibilidade",
+      "capitulo": "Capítulo 9 do TMin"
+    },
+    {
+      "id": "riscos",
+      "n": 8,
+      "grupo": "Plano",
+      "titulo": "Análise de riscos",
+      "subtitulo": "SWOT, riscos, contingência e parecer",
+      "tempo": "1min",
+      "subtituloLongo": "Estratégia, premissas críticas, riscos e validações antes de investir",
+      "capitulo": "Capítulos 10 e 11 do TMin"
+    },
+    {
+      "id": "panorama",
+      "n": 9,
+      "titulo": "Panorama das luderias",
+      "subtitulo": "B1: estatística descritiva geral",
+      "tempo": "apoio",
+      "subtituloLongo": "B1: estatística descritiva das 54 luderias",
+      "grupo": "Dados de apoio",
+      "capitulo": "Dados dos blocos B1 e B2"
+    },
+    {
+      "id": "metropoles",
+      "n": 10,
+      "titulo": "Luderias por metrópole",
+      "subtitulo": "B1: comparação entre as 13 metrópoles",
+      "tempo": "apoio",
+      "subtituloLongo": "B1: estatística descritiva por metrópole",
+      "grupo": "Dados de apoio",
+      "capitulo": "Dados dos blocos B1 e B2"
+    },
+    {
+      "id": "regioes",
+      "n": 11,
+      "titulo": "Luderias por região",
+      "subtitulo": "B1: Norte, Nordeste, Centro-Oeste, Sudeste e Sul",
+      "tempo": "apoio",
+      "subtituloLongo": "B1: estatística descritiva por região do Brasil",
+      "grupo": "Dados de apoio",
+      "capitulo": "Dados dos blocos B1 e B2"
+    },
+    {
+      "id": "conteudo",
+      "n": 12,
+      "titulo": "Análise de conteúdo",
+      "subtitulo": "B2: o que os clientes comentam",
+      "tempo": "apoio",
+      "subtituloLongo": "B2: análise de conteúdo das avaliações recentes",
+      "grupo": "Dados de apoio",
+      "capitulo": "Dados dos blocos B1 e B2"
+    },
+    {
+      "id": "auditorias",
+      "n": 13,
+      "titulo": "Auditoria da coleta",
+      "subtitulo": "Amostras, critérios e cálculo",
+      "tempo": "apoio",
+      "subtituloLongo": "Auditoria dos dados coletados por script: amostras, critérios e cálculo",
+      "grupo": "Dados de apoio",
+      "capitulo": "Auditoria dos blocos B1 e B2"
+    }
+  ]
+}
