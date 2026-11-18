@@ -1,0 +1,4 @@
+﻿grupo;avaliacoes;nota_media;pct_nota_1_2;volta;nao_volta;pct_com_critica;gasto_declarado_n;gasto_declarado_medio;gasto_declarado_min;gasto_declarado_max;casas;casa_com_mais_avaliacoes;pct_da_maior_casa;contexto_amigos;contexto_família;contexto_casal;contexto_aniversário;contexto_aluguel;contexto_loja;contexto_apenas loja
+gasto_mais_barato;223;4.8;3.6;30;1;14.8;223;55.03;10.5;70.0;18;Bodogami Restaurante e Cafeteria;38.1;12;4;2;8;1;1;0
+gasto_intermediário;219;4.56;6.8;18;3;29.7;219;103.61;90.0;130.0;16;Bodogami Restaurante e Cafeteria;35.6;9;6;2;10;0;0;0
+gasto_mais_caro;54;4.31;14.8;11;1;25.9;54;174.07;150.0;200.0;9;Bodogami Restaurante e Cafeteria;42.6;1;1;0;3;0;0;0

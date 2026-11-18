@@ -47,8 +47,25 @@ const TRABALHO = opcao("--trabalho");
 const VERMELHO = opcao("--vermelho") ? new RegExp(opcao("--vermelho"), "i") : null;
 const numero = (f) => Number(path.basename(f).match(/^\d+/)?.[0] ?? 99);
 
+// Quatro partes independentes do trabalho, cada uma com as suas próprias referências no fim
+// (16/11/2026): para editar cada bloco num chat separado, sem que um interfira no outro.
+//   node "_src/outros/G4_textos/gerar_docx_capitulo.js" --partes [--pdf]
+const PARTES = {
+  1: { nome: "TCC_luderia_parte1_introducao_referencial_metodologia", caps: [1, 2, 3] },
+  2: { nome: "TCC_luderia_parte2_sumario_mercado_marketing", caps: [4, 5, 6] },
+  3: { nome: "TCC_luderia_parte3_operacional_juridico", caps: [7, 8] },
+  4: { nome: "TCC_luderia_parte4_financeiro_risco_consideracoes", caps: [9, 10, 11] },
+};
+// --parte 2,4 regenera só as partes indicadas, para não sobrescrever as que estão sendo editadas
+const PARTES_SEL = opcao("--parte") ? opcao("--parte").split(",").map((x) => Number(x.trim())) : null;
+const PARTES_MODO = ARGS.includes("--partes") || Boolean(PARTES_SEL);
+// Referências reunidas no fim do bloco montado: no trabalho inteiro e em cada parte.
+const REFERENCIAS_NO_FIM = Boolean(TRABALHO) || PARTES_MODO;
+
 let MDS, TEXTO, BASE;
-if (TRABALHO) {
+if (PARTES_MODO) {
+  // as partes são montadas uma a uma no fim do arquivo
+} else if (TRABALHO) {
   // TMin: todos os .md de textos/capitulos/; TMax: os mesmos, trocados pelos de TMax/_md/ quando houver.
   MDS = fs.readdirSync(MD_TMIN).filter((f) => /^\d+_.*\.md$/.test(f)).sort((a, b) => numero(a) - numero(b))
     .map((f) => (TRABALHO === "TMax" && fs.existsSync(path.join(MD_TMAX, f)) ? path.join(MD_TMAX, f) : path.join(MD_TMIN, f)));
@@ -78,7 +95,7 @@ function versionar(base, texto) {
   for (const [d, f] of achados) if (d === dir) fs.renameSync(path.join(d, f), path.join(arq, f));
   return `${base}${sufixo}_v${n}`;
 }
-const OUT = versionar(BASE, TEXTO) + ".docx";
+const OUT = PARTES_MODO ? null : versionar(BASE, TEXTO) + ".docx";
 
 const FONTE = "Arial";
 const TAM = 24;        // 12 pt
@@ -91,8 +108,10 @@ const SIMPLES = 240;
 // Linha em branco de espaçamento simples, com a altura dada pelo corpo da fonte (pt): é o que separa
 // os blocos, no lugar do espaçamento antes e depois do parágrafo (_docs/_instrucoes/1d_formatacao.md).
 function branco(pt = 12, keepNext = false) {
-  return new Paragraph({ keepNext, spacing: { line: SIMPLES, before: 0, after: 0 }, indent: { firstLine: 0 },
+  const p = new Paragraph({ keepNext, spacing: { line: SIMPLES, before: 0, after: 0 }, indent: { firstLine: 0 },
     run: { size: pt * 2 }, children: [new TextRun({ text: "", font: FONTE, size: pt * 2 })] });
+  p._branco = true; // marca para não empilhar duas linhas em branco seguidas
+  return p;
 }
 
 // Divide o texto em trechos com **negrito**, *itálico* e `código`.
@@ -128,7 +147,8 @@ function corpo(texto) {
     children: runsCorpo(texto),
     alignment: AlignmentType.JUSTIFIED,
     indent: { firstLine: Math.round(1.0 * CM) },
-    spacing: { line: ENTRELINHA, before: 0, after: 0 },
+    // 17/11/2026: sem linha em branco entre parágrafos; o intervalo vem de 6 pt depois do parágrafo.
+    spacing: { line: ENTRELINHA, before: 0, after: 120 },
   });
 }
 
@@ -138,14 +158,14 @@ function legenda(texto, fonte = false) {
     children: runs(texto, { size: TAM_QUADRO }),
     alignment: AlignmentType.CENTER,
     keepNext: !fonte,
-    spacing: { line: SIMPLES, before: 0, after: 0 },
+    spacing: { line: SIMPLES, before: fonte ? 60 : 120, after: fonte ? 240 : 0 },
   });
 }
 
 // Nota abaixo da fonte: Arial 10, justificada, espaço simples.
 function nota(texto) {
   return new Paragraph({ children: runs(texto, { size: TAM_QUADRO }), alignment: AlignmentType.JUSTIFIED,
-    indent: { firstLine: 0 }, spacing: { line: SIMPLES, before: 0, after: 0 } });
+    indent: { firstLine: 0 }, spacing: { line: SIMPLES, before: 0, after: 240 } });
 }
 
 const NUM = /^[-−]?(R\$ ?)?[\d.]+(,\d+)?%?$/;
@@ -230,14 +250,14 @@ function quadro(linhas, tipo) {
 function titulo1(texto, quebra, centro = false) {
   return new Paragraph({ heading: HeadingLevel.TITLE, alignment: centro ? AlignmentType.CENTER : AlignmentType.LEFT, indent: { firstLine: 0 },
     pageBreakBefore: quebra, keepNext: true, children: runs(texto.toUpperCase(), { bold: true }),
-    spacing: { line: ENTRELINHA, before: 0, after: 0 } });
+    spacing: { line: ENTRELINHA, before: 240, after: 120 } });
 }
 
 // Referências: só à margem esquerda, espaço simples, sem recuo, e uma linha em branco de 12 pt
 // entre uma e outra (NBR 6023 e manual da UFBA; _docs/_instrucoes/1d_formatacao.md).
 function referencia(texto) {
   return [new Paragraph({ children: runs(texto), alignment: AlignmentType.LEFT,
-    indent: { firstLine: 0 }, spacing: { line: SIMPLES, before: 0, after: 0 } }), branco(12)];
+    indent: { firstLine: 0 }, spacing: { line: SIMPLES, before: 0, after: 120 } })];
 }
 
 // No trabalho inteiro, as listas de cada capítulo viram uma só, no fim, em ordem alfabética e sem repetição.
@@ -273,30 +293,41 @@ function converte(md, MD, blocos = []) {
     anteriorNumerada = numerada;
 
     if (l.startsWith("# ")) {
+      // sem linha em branco sobrando antes do título: com o pageBreakBefore do título, a linha
+      // vazia sobrava no fim da página anterior e gerava uma página em branco (17/11/2026).
+      while (blocos.length && blocos[blocos.length - 1]._branco) blocos.pop();
       blocos.push(titulo1(l.slice(2), blocos.length > 0));
       brancoAposTitulo(linhas, i, blocos);
     } else if (l.startsWith("## ")) {
       blocos.push(new Paragraph({ heading: HeadingLevel.HEADING_1, keepNext: true,
-        children: runs(l.slice(3).toUpperCase(), { bold: false }), spacing: { line: ENTRELINHA, before: 0, after: 0 } }));
+        children: runs(l.slice(3).toUpperCase(), { bold: false }), spacing: { line: ENTRELINHA, before: 240, after: 120 } }));
       brancoAposTitulo(linhas, i, blocos);
     } else if (l.startsWith("### ")) {
       blocos.push(new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true,
-        children: runs(l.slice(4), { bold: true }), spacing: { line: ENTRELINHA, before: 0, after: 0 } }));
+        children: runs(l.slice(4), { bold: true }), spacing: { line: ENTRELINHA, before: 240, after: 120 } }));
       brancoAposTitulo(linhas, i, blocos);
     } else if (/^\*\*Refer[êe]ncias[^*]*\*\*/.test(l.trim())) {
       // "Referências citadas neste capítulo": como o título 1, sem número (só no capítulo avulso).
       referencias = true;
-      if (!TRABALHO) blocos.push(titulo1(l.trim().replace(/\*\*/g, "").toUpperCase(), true, true), branco(12));
+      if (!REFERENCIAS_NO_FIM) blocos.push(titulo1(l.trim().replace(/\*\*/g, "").toUpperCase(), true, true), branco(12));
     } else if (/^\*\*(Quadro|Tabela|Figura) [\d.]+/.test(l)) {
       tipoLegenda = l.match(/^\*\*(Quadro|Tabela|Figura)/)[1];
+      // uma só linha em branco entre o texto e a legenda: troca a que fecha o parágrafo anterior
+      if (blocos.length && blocos[blocos.length - 1]._branco) blocos.pop();
       blocos.push(branco(12, true), legenda(l));
     } else if (/^!\[[^\]]*\]\([^)]+\)/.test(l.trim())) {
       const arq = path.resolve(path.dirname(MD), l.trim().match(/\(([^)]+)\)/)[1]);
       const buf = fs.readFileSync(arq);
       const larg = buf.readUInt32BE(16), alt = buf.readUInt32BE(20); // cabeçalho PNG
       const w = Math.round((LARGURA / 1440) * 96);
+      // teto de altura (16/11/2026): a área de texto tem 24,7 cm; figura mais alta que 20 cm
+      // (a planta do cap. 7 saía com 26,8 cm) não cabe na página e o LibreOffice a descarta.
+      const HMAX = Math.round((20 / 2.54) * 96);
+      const h0 = Math.round(w * alt / larg);
+      const escala = h0 > HMAX ? HMAX / h0 : 1;
+      const wFinal = Math.round(w * escala), hFinal = Math.round(h0 * escala);
       blocos.push(new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true, spacing: { after: 0 },
-        children: [new ImageRun({ type: "png", data: buf, transformation: { width: w, height: Math.round(w * alt / larg) } })] }));
+        children: [new ImageRun({ type: "png", data: buf, transformation: { width: wFinal, height: hFinal } })] }));
     } else if (l.startsWith("Fonte:")) {
       blocos.push(legenda(l, true));
       // nota logo abaixo da fonte; depois, a linha em branco que fecha a tabela, o quadro ou a figura
@@ -317,13 +348,13 @@ function converte(md, MD, blocos = []) {
     } else if (/^\s*- /.test(l)) {
       blocos.push(new Paragraph({ children: runsCorpo(l.replace(/^\s*- /, "")),
         alignment: AlignmentType.JUSTIFIED,
-        numbering: { reference: "topicos", level: 0 }, spacing: { line: ENTRELINHA, after: 0 } }));
+        numbering: { reference: "topicos", level: 0 }, spacing: { line: ENTRELINHA, after: 120 } }));
     } else if (numerada) {
       blocos.push(new Paragraph({ children: runsCorpo(l.replace(/^\d+\. /, "")),
         alignment: AlignmentType.JUSTIFIED,
-        numbering: { reference: "numerada", level: 0, instance: instancia }, spacing: { line: ENTRELINHA, after: 0 } }));
+        numbering: { reference: "numerada", level: 0, instance: instancia }, spacing: { line: ENTRELINHA, after: 120 } }));
     } else if (referencias) {
-      if (TRABALHO) REFS.add(l.trim()); else blocos.push(...referencia(l));
+      if (REFERENCIAS_NO_FIM) REFS.add(l.trim()); else blocos.push(...referencia(l));
     } else {
       blocos.push(corpo(l), branco(12));
     }
@@ -331,16 +362,17 @@ function converte(md, MD, blocos = []) {
   return blocos;
 }
 
-function trabalho() {
-  const blocos = MDS.reduce((b, md) => converte(fs.readFileSync(md, "utf-8"), md, b), []);
-  if (!TRABALHO || !REFS.size) return blocos;
+function trabalho(arquivos = MDS) {
+  const blocos = arquivos.reduce((b, md) => converte(fs.readFileSync(md, "utf-8"), md, b), []);
+  if (!REFERENCIAS_NO_FIM || !REFS.size) return blocos;
   const chave = (r) => r.replace(/[*`]/g, "").normalize("NFD").replace(/[̀-ͯ]/g, "");
   // Comparação por caractere: o "." do autor sozinho vem antes do ";" da coautoria.
   const ordem = [...REFS].sort((a, b) => (chave(a).toUpperCase() < chave(b).toUpperCase() ? -1 : 1));
   return [...blocos, titulo1("REFERÊNCIAS", true, true), branco(12), ...ordem.flatMap(referencia)];
 }
 
-const doc = new Document({
+function documento(blocos) {
+  return new Document({
   styles: {
     default: { document: { run: { font: FONTE, size: TAM } } },
     paragraphStyles: [
@@ -371,17 +403,46 @@ const doc = new Document({
     // número da página no canto superior direito (NBR 14724 e manual da UFBA)
     headers: { default: new Header({ children: [new Paragraph({ alignment: AlignmentType.RIGHT,
       children: [new TextRun({ children: [PageNumber.CURRENT], font: FONTE, size: TAM_QUADRO })] })] }) },
-    children: trabalho(),
+    // as linhas em branco de espaçamento saem do documento: o intervalo é o "depois" dos parágrafos
+    children: blocos.filter((b) => !b._branco),
   }],
-});
+  });
+}
 
-Packer.toBuffer(doc).then((buf) => {
-  fs.writeFileSync(OUT, buf);
-  console.log(`OK: ${path.relative(ROOT, OUT)}`);
-  if (PDF) {
-    const soffice = "/Applications/LibreOffice.app/Contents/MacOS/soffice";
-    require("child_process").execFileSync(soffice, ["--headless", "--convert-to", "pdf", "--outdir", path.dirname(OUT), OUT],
-      { stdio: "ignore" });
-    console.log(`OK: ${path.relative(ROOT, OUT.replace(/\.docx$/, ".pdf"))}`);
+function convertePdf(arq) {
+  if (!PDF) return;
+  const soffice = "/Applications/LibreOffice.app/Contents/MacOS/soffice";
+  require("child_process").execFileSync(soffice, ["--headless", "--convert-to", "pdf", "--outdir", path.dirname(arq), arq],
+    { stdio: "ignore" });
+  console.log(`OK: ${path.relative(ROOT, arq.replace(/\.docx$/, ".pdf"))}`);
+}
+
+// uma parte por vez, com REFS e a numeração das listas reiniciadas: cada .docx é autônomo
+async function partes() {
+  const todos = fs.readdirSync(MD_TMIN).filter((f) => /^\d+_.*\.md$/.test(f));
+  for (const [n, parte] of Object.entries(PARTES)) {
+    if (PARTES_SEL && !PARTES_SEL.includes(Number(n))) continue;
+    const arquivos = parte.caps.map((c) => {
+      const f = todos.find((x) => numero(x) === c);
+      if (!f) throw new Error(`Capítulo ${c} não encontrado em ${MD_TMIN}`);
+      return path.join(MD_TMIN, f);
+    });
+    REFS.clear();
+    instancia = 0;
+    const blocos = trabalho(arquivos);
+    const arq = versionar(path.join(path.dirname(CAP), parte.nome), "") + ".docx";
+    fs.writeFileSync(arq, await Packer.toBuffer(documento(blocos)));
+    console.log(`OK: ${path.relative(ROOT, arq)} (capítulos ${parte.caps.join(", ")})`);
+    convertePdf(arq);
   }
-});
+}
+
+if (PARTES_MODO) {
+  partes().catch((e) => { console.error(e); process.exit(1); });
+} else {
+  Packer.toBuffer(documento(trabalho())).then((buf) => {
+    fs.writeFileSync(OUT, buf);
+    console.log(`OK: ${path.relative(ROOT, OUT)}`);
+    convertePdf(OUT);
+  });
+}

@@ -34,7 +34,8 @@ SIGLAS = {
     "ANPD": "Autoridade Nacional de Proteção de Dados",
     "ANR": "Associação Nacional de Restaurantes",
     "API": "Interface de programação de aplicações (Application Programming Interface)",
-    "B1 a B5": "Blocos de coleta de dados do trabalho (Quadro 3.2)",
+    "AVCB": "Auto de Vistoria do Corpo de Bombeiros",
+    "B1 a B5": "Blocos de coleta de dados do trabalho (Quadro 3)",
     "BCB": "Banco Central do Brasil",
     "CBMBA": "Corpo de Bombeiros Militar da Bahia",
     "CBO": "Classificação Brasileira de Ocupações",
@@ -43,6 +44,7 @@ SIGLAS = {
     "CDC": "Código de Defesa do Consumidor",
     "INSS": "Instituto Nacional do Seguro Social",
     "PCMSO": "Programa de Controle Médico de Saúde Ocupacional",
+    "QR": "Resposta rápida (Quick Response), no código QR",
     "RAT": "Riscos Ambientais do Trabalho",
     "SHRBS": "Sindicato de Hotéis, Restaurantes, Bares e Similares de Salvador e Litoral Norte",
     "TST": "Tribunal Superior do Trabalho",
@@ -54,6 +56,7 @@ SIGLAS = {
     "CONCLA": "Comissão Nacional de Classificação",
     "CSLL": "Contribuição Social sobre o Lucro Líquido",
     "DAS": "Documento de Arrecadação do Simples Nacional",
+    "DA": "Cruzamento da matriz SWOT entre fraquezas e ameaças",
     "DFC": "Demonstração dos fluxos de caixa",
     "DRE": "Demonstração do resultado do exercício",
     "EBITDA": "Lucro antes de juros, impostos, depreciação e amortização (Earnings Before Interest, Taxes, Depreciation and Amortization)",
@@ -76,10 +79,11 @@ SIGLAS = {
     "ISS": "Imposto sobre Serviços",
     "LC": "Lei Complementar",
     "LGPD": "Lei Geral de Proteção de Dados Pessoais",
+    "LBI": "Lei Brasileira de Inclusão da Pessoa com Deficiência",
     "LOUOS": "Lei de Ordenamento do Uso e da Ocupação do Solo de Salvador",
     "MEI": "Microempreendedor individual",
     "MTE": "Ministério do Trabalho e Emprego",
-    "N1 a N6": "Níveis de evidência das premissas, do mais ao menos confiável",
+    "N1 a N6": "Códigos dos tipos de evidência das premissas",
     "NBR": "Norma Brasileira",
     "NFC-e": "Nota fiscal de consumidor eletrônica",
     "Novo CAGED": "Novo Cadastro Geral de Empregados e Desempregados",
@@ -94,6 +98,7 @@ SIGLAS = {
     "PRC": "Análise do contraste da penalidade e da recompensa",
     "RDC": "Resolução da Diretoria Colegiada",
     "REGIC": "Regiões de Influência das Cidades",
+    "SBC": "São Bernardo do Campo (SP)",
     "Selic": "Sistema Especial de Liquidação e de Custódia",
     "SGS": "Sistema Gerenciador de Séries Temporais",
     "SIDRA": "Sistema IBGE de Recuperação Automática",
@@ -123,11 +128,28 @@ def branco(n=1, pt=12, jc="center", esq=0):
             f'<w:r><w:rPr><w:sz w:val="{pt * 2}"/><w:szCs w:val="{pt * 2}"/></w:rPr><w:t xml:space="preserve"></w:t></w:r></w:p>') * n
 
 
+def espaco(twips):
+    """Espaço vertical em twips (1 pt = 20 twips). Serve para colar o local e o ano no pé da página,
+    com o ano na última linha (pedido do autor, 17/11/2026)."""
+    if twips <= 0:
+        return ""
+    return ('<w:p><w:pPr>'
+            f'<w:spacing w:before="{int(twips)}" w:after="0" w:line="240" w:lineRule="auto"/>'
+            '<w:ind w:firstLine="0"/><w:jc w:val="center"/><w:rPr><w:sz w:val="2"/><w:szCs w:val="2"/></w:rPr></w:pPr>'
+            '<w:r><w:rPr><w:sz w:val="2"/><w:szCs w:val="2"/></w:rPr><w:t xml:space="preserve"></w:t></w:r></w:p>')
+
+
 def titulo(t, quebra=True):
     """Título sem número (RESUMO, listas, SUMÁRIO): centralizado, maiúsculas e negrito, seguido de uma linha em branco."""
     return ('<w:p><w:pPr>' + ('<w:pageBreakBefore/>' if quebra else '') +
             '<w:spacing w:before="0" w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:firstLine="0"/><w:jc w:val="center"/></w:pPr>'
             f'<w:r>{rpr(b=True)}<w:t xml:space="preserve">{esc(t)}</w:t></w:r></w:p>') + branco()
+
+
+# Espaço a inserir antes de LOCAL/ANO na capa e na folha de rosto, calibrado pelas coordenadas do PDF
+# para que o ano fique na última linha da página (17/11/2026).
+SP_CAPA = [0]
+SP_ROSTO = [0]
 
 # Dados da capa e da folha de rosto (NBR 14724). A capa não entra na contagem das páginas:
 # a folha de rosto é a página 1, e o número só é impresso a partir da introdução.
@@ -149,8 +171,8 @@ def linha(t, b=False, sz=12, jc="center", esq=0, simples=True, quebra=False, rec
 
 
 def titulo_trabalho(sz_tit, sz_sub, b_sub):
-    """Título em versal e negrito, seguido de dois pontos; subtítulo em versal logo depois (manual da UFBA)."""
-    return ('<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:firstLine="0"/><w:jc w:val="center"/></w:pPr>'
+    """Título em versal e negrito, seguido de dois pontos; subtítulo em versal logo depois (manual da UFBA), em espaço simples."""
+    return ('<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/><w:ind w:firstLine="0"/><w:jc w:val="center"/></w:pPr>'
             f'<w:r>{rpr(True, sz=sz_tit)}<w:t xml:space="preserve">{esc(TITULO.upper())}:</w:t></w:r>'
             f'<w:r>{rpr(b_sub, sz=sz_sub)}<w:br/><w:t xml:space="preserve">{esc(SUBTITULO.upper())}</w:t></w:r></w:p>')
 
@@ -177,11 +199,11 @@ def capa_e_rosto():
     capa = [brasao(), linha("UNIVERSIDADE FEDERAL DA BAHIA", b=True, sz=16), linha("ESCOLA DE ADMINISTRAÇÃO", b=True, sz=14),
             linha("BACHARELADO EM ADMINISTRAÇÃO", b=True), branco(9),
             linha(AUTOR.upper(), b=True, sz=14), branco(10), titulo_trabalho(16, 14, True), branco(8, jc="center"),
-            linha(LOCAL.upper(), sz=14), linha(ANO, sz=14)]
+            espaco(SP_CAPA[0]), linha(LOCAL.upper(), sz=14), linha(ANO, sz=14)]
     rosto = [linha(AUTOR.upper(), b=True, sz=14, quebra=True), branco(10), titulo_trabalho(16, 14, False),
              branco(7, esq=seis), linha(NATUREZA, jc="both", esq=seis), branco(1, esq=seis),
-             linha(f"Orientador: {ORIENTADOR}", jc="left", esq=seis), branco(17),
-             linha(LOCAL.upper(), sz=14), linha(ANO, sz=14)]
+             linha(f"Orientador: {ORIENTADOR}", jc="left", esq=seis),
+             espaco(SP_ROSTO[0]), linha(LOCAL.upper(), sz=14), linha(ANO, sz=14)]
     # folha de aprovação (NBR 14724, 4.2.1.3): os nomes da banca e a data entram quando a banca for definida
     membro = lambda nome, inst: [branco(3), linha("_" * 50), linha(nome), linha(inst)]
     aprov = ([linha(AUTOR.upper(), b=True, quebra=True), branco(3), titulo_trabalho(12, 12, False),
@@ -220,7 +242,7 @@ def resumo_e_abstract():
 
 def entrada(t, pag, b=False, caps=False):
     return ('<w:p><w:pPr><w:tabs><w:tab w:val="right" w:leader="dot" w:pos="9071"/></w:tabs>'
-            '<w:spacing w:before="0" w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:jc w:val="both"/></w:pPr>'
+            '<w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:jc w:val="both"/></w:pPr>'
             f'<w:r>{rpr(b, caps)}<w:t xml:space="preserve">{esc(t)}</w:t></w:r><w:r>{rpr(b, caps)}<w:tab/><w:t>{pag}</w:t></w:r></w:p>')
 
 
@@ -270,6 +292,29 @@ def paginas(docx):
 norm = lambda s: re.sub(r"\s+", "", s)
 
 
+def calibra_ano(docx, pasta, alvo=780.0):
+    """Mede no PDF em que altura ficou o ano da capa (página 1) e da folha de rosto (página 2) e
+    corrige o espaço antes de LOCAL/ANO. Devolve True quando o ano está na última linha da página."""
+    subprocess.run([SOFFICE, "--headless", "--convert-to", "pdf", "--outdir", str(pasta), str(docx)],
+                   capture_output=True, check=True)
+    pdf = Path(pasta) / (Path(docx).stem + ".pdf")
+    # alvo: pé da área de texto (A4 de 842 pt menos a margem inferior de 2 cm), com 5 pt de folga
+    ok = True
+    for pag, var in ((1, SP_CAPA), (2, SP_ROSTO)):
+        xml = subprocess.run(["pdftotext", "-bbox", "-f", str(pag), "-l", str(pag), str(pdf), "-"],
+                             capture_output=True, text=True).stdout
+        ys = [float(v) for v in re.findall(r'yMax="([\d.]+)"[^>]*>2026<', xml)]
+        if not ys:  # o ano passou para a página seguinte: recua o espaço
+            var[0] = int(var[0] * 0.6)
+            ok = False
+            continue
+        delta = int(round((alvo - max(ys)) * 20))
+        if abs(delta) > 40:  # 2 pt de tolerância
+            var[0] = max(0, var[0] + delta)
+            ok = False
+    return ok
+
+
 def localiza(entradas, pags, inicio):
     """Página de cada entrada, procurando em ordem a partir da página `inicio` (índice 0)."""
     out, p = [], inicio
@@ -294,7 +339,8 @@ def main():
     corpo_xml = x[ini:][x[ini:].find(els[i1]):]
     corpo = els[i1:]
 
-    figs, quads, tabs, sumario = [], [], [], []
+    # Duas listas (17/11/2026): ilustrações (figuras e quadros, na ordem do documento) e tabelas.
+    ilus, tabs, sumario = [], [], []
     for e in corpo:
         if e.startswith("<w:tbl"):
             continue
@@ -306,10 +352,8 @@ def main():
             sumario.append((2, s))
         elif st == "Heading2":
             sumario.append((3, s))
-        elif re.match(r"Figura [\dA-G.]+ –", s):
-            figs.append(s)
-        elif re.match(r"Quadro [\dA-G.]+ –", s):
-            quads.append(s)
+        elif re.match(r"(Figura|Quadro) [\dA-G.]+ –", s):
+            ilus.append(s)
         elif re.match(r"Tabela [\dA-G.]+ –", s):
             tabs.append(s)
     i_ref = next(i for i, e in enumerate(corpo) if txt(e).upper() == "REFERÊNCIAS")
@@ -320,9 +364,8 @@ def main():
 
     imp = lambda p: p - 1 if isinstance(p, int) else p  # página impressa: a capa não conta
 
-    def monta(pf, pq, pt, ps, ini_num=1):
-        f = [capa_e_rosto(), resumo_e_abstract(), titulo("LISTA DE FIGURAS")] + [entrada(s, imp(p)) for s, p in zip(figs, pf)]
-        f += [titulo("LISTA DE QUADROS")] + [entrada(s, imp(p)) for s, p in zip(quads, pq)]
+    def monta(pi, pt, ps, ini_num=1):
+        f = [capa_e_rosto(), resumo_e_abstract(), titulo("LISTA DE ILUSTRAÇÕES")] + [entrada(s, imp(p)) for s, p in zip(ilus, pi)]
         f += [titulo("LISTA DE TABELAS")] + [entrada(s, imp(p)) for s, p in zip(tabs, pt)]
         f += [titulo("LISTA DE ABREVIAÇÕES E SIGLAS"), tabela_siglas([(s, SIGLAS[s]) for s in usadas])]
         f += [titulo("SUMÁRIO")]
@@ -357,18 +400,24 @@ def main():
     zeros = lambda l: ["00"] * len(l)
     with tempfile.TemporaryDirectory() as d:
         prov = Path(d) / arq.name
-        grava(monta(zeros(figs), zeros(quads), zeros(tabs), zeros(sumario)), prov)
+        grava(monta(zeros(ilus), zeros(tabs), zeros(sumario)), prov)
+        # local e ano no pé da capa e da folha de rosto: repete até o ano cair na última linha
+        for _ in range(5):
+            if calibra_ano(prov, Path(d)):
+                break
+            grava(monta(zeros(ilus), zeros(tabs), zeros(sumario)), prov)
+        grava(monta(zeros(ilus), zeros(tabs), zeros(sumario)), prov)
         pags = paginas(prov)
         n_pre = next(i for i, p in enumerate(pags) if norm("1 INTRODUÇÃO") in norm(p) and "SUMÁRIO" not in p)
-        res = [localiza(l, pags, n_pre) for l in (figs, quads, tabs, [s for _, s in sumario])]
+        res = [localiza(l, pags, n_pre) for l in (ilus, tabs, [s for _, s in sumario])]
         doc = monta(*res, ini_num=n_pre)
         grava(doc, prov)
         pags2 = paginas(prov)
-        res2 = [localiza(l, pags2, n_pre) for l in (figs, quads, tabs, [s for _, s in sumario])]
+        res2 = [localiza(l, pags2, n_pre) for l in (ilus, tabs, [s for _, s in sumario])]
         if res2 != res:
             raise SystemExit("as páginas mudaram entre as duas conversões; rodar de novo")
     grava(doc, arq)
-    print(f"OK: {arq.name}; {len(figs)} figuras, {len(quads)} quadros, {len(tabs)} tabelas, {len(usadas)} siglas, "
+    print(f"OK: {arq.name}; {len(ilus)} ilustrações, {len(tabs)} tabelas, {len(usadas)} siglas, "
           f"{len(sumario)} entradas no sumário; capa e pré-textuais em {n_pre} páginas (a capa não conta); texto da p. {n_pre} à {len(pags2) - 2}")
 
 

@@ -24,7 +24,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 PROC = ROOT / "dados-agregados" / "B1_acervo_jogos"
 RAW = ROOT / "dados-brutos" / "B1_acervo_jogos" / "acervos_luderias"
-B5 = ROOT / "arquivados" / "B5-jogos" / "_data" / "raw" / "[B5] Jogos (ludopedia)"
+# Cache do antigo B5 (Ludopedia), fora do repositório desde a limpeza para ~/Documents/arquivados/.
+B5 = Path.home() / "Documents" / "arquivados" / "B5-jogos" / "_data" / "raw" / "[B5] Jogos (ludopedia)"
 ACERVOS = PROC / "B1_jogos_dos_acervos.csv"
 API_BUSCA = RAW / "ludopedia_api_busca.json"
 API_JOGOS = RAW / "ludopedia_api_jogos.json"
@@ -120,5 +121,5 @@ def grupos(min_casas=1):
         g["chaves"].add(k)
         casa = g["casas"].setdefault(x["estabelecimento"], {"fonte": x["fonte"], "aluguel": None})
         if x["aluguel_rs"] and casa["aluguel"] is None:
-            casa["aluguel"] = (float(x["aluguel_rs"]), int(x["aluguel_dias"]))
+            casa["aluguel"] = (float(x["aluguel_rs"]), int(x["aluguel_dias"]) if x["aluguel_dias"] else None)  # sem período publicado (Dungeon, LudoCafé)
     return {k: g for k, g in gs.items() if len(g["casas"]) >= min_casas}

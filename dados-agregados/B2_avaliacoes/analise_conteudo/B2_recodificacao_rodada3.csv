@@ -1,0 +1,101 @@
+﻿n_amostra;id_avaliacao;estrato;nota_avaliacao;autor_positivos;autor_negativos;autor_contexto;autor_costuma_ir;autor_voltara;claude_positivos;claude_negativos;claude_contexto;claude_costuma_ir;claude_voltara
+1;adc1201150;nota 4 e 5;5;ambiente e decoração | atendimento presencial | comida | indicações de jogos | rapidez do serviço;;;não foi dito;não foi dito;ambiente e decoração | atendimento presencial | comida | indicações de jogos | rapidez do serviço;;;não foi dito;não foi dito
+2;10790b8433;nota 1 a 3;2;;limpeza | variedade do cardápio;;não foi dito;não foi dito;;atendimento presencial | limpeza | variedade do cardápio;;não foi dito;não foi dito
+3;a255fbff98;nota 4 e 5;5;atendimento presencial | comida;;;não foi dito;sim;atendimento presencial | comida;;;não foi dito;sim
+4;9a949000f4;nota 4 e 5;5;atendimento presencial;;;não foi dito;não foi dito;atendimento presencial;;;não foi dito;não foi dito
+5;2264e03d75;nota 1 a 3;1;;atendimento presencial | regras da casa;;não foi dito;não foi dito;;atendimento presencial | espaço e lotação | explicação de jogos;;não foi dito;não foi dito
+6;00a406db15;nota 4 e 5;5;espaço e lotação;preço do cardápio;;não foi dito;não foi dito;bebidas | espaço e lotação;bebidas;;não foi dito;não foi dito
+7;e786d4f421;nota 4 e 5;5;comida | curadoria e conservação do acervo | espaço e lotação;;;não foi dito;não foi dito;comida | curadoria e conservação do acervo | espaço e lotação;;;não foi dito;não foi dito
+8;3866ba5898;nota 4 e 5;5;atendimento presencial;;;não foi dito;não foi dito;atendimento presencial;;;não foi dito;não foi dito
+9;3e4e2481e3;nota 4 e 5;5;atendimento presencial;;;não foi dito;não foi dito;atendimento presencial;;;não foi dito;não foi dito
+10;eddc70be74;nota 4 e 5;5;atendimento presencial;;;não foi dito;não foi dito;atendimento presencial;;;não foi dito;não foi dito
+11;b8828c2262;nota 1 a 3;2;ambiente e decoração | conforto e barulho;;amigos | aniversário;não foi dito;não foi dito;ambiente e decoração | conforto e barulho;comemorações e grupos | espaço e lotação | regras da casa;amigos | aniversário;não foi dito;não foi dito
+12;fd6b52687e;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+13;3ea4774978;nota 4 e 5;5;atendimento presencial;;;não foi dito;não foi dito;atendimento presencial;;;não foi dito;não foi dito
+14;17b6c04f6a;nota 4 e 5;5;comida | espaço e lotação;variedade do cardápio;;não foi dito;não foi dito;comida | curadoria e conservação do acervo;atendimento presencial | variedade do cardápio;;não foi dito;não foi dito
+15;cc03f2436c;nota 4 e 5;5;preço de outros itens;;aniversário;não foi dito;não foi dito;comemorações e grupos | preço de outros itens | variedade do acervo;;aniversário;sim;não foi dito
+16;74de21b9d3;nota 4 e 5;5;curadoria e conservação do acervo;;;não foi dito;não foi dito;curadoria e conservação do acervo;;;não foi dito;não foi dito
+17;ef729dbf16;nota 1 a 3;3;;preço da entrada | regras da casa;;não foi dito;não foi dito;ambiente e decoração | porções;preço da entrada | regras da casa;;não foi dito;não foi dito
+18;47ceeae755;nota 1 a 3;1;;atendimento presencial;;não foi dito;não foi dito;;atendimento presencial | regras da casa;;não foi dito;não
+19;8d82c56638;nota 1 a 3;1;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+20;e31a550082;nota 1 a 3;2;;comida | preço do cardápio | regras da casa;;não foi dito;não foi dito;;comida | curadoria e conservação do acervo | preço do cardápio;;não foi dito;não foi dito
+21;933fd793af;nota 4 e 5;5;atendimento presencial | comida | conforto e barulho;conforto e barulho;amigos;não foi dito;não foi dito;atendimento presencial | comida | conforto e barulho;conforto e barulho;amigos;não foi dito;não foi dito
+22;71ab0d4855;casa nova;1;;preço de outros itens | regras da casa;loja;sim;não foi dito;;atendimento online | atendimento presencial | preço de outros itens | regras da casa;apenas loja;sim;não
+23;6f33253945;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+24;93e6776426;nota 1 a 3;1;;atendimento presencial | regras da casa;amigos;não foi dito;não foi dito;;atendimento presencial | curadoria e conservação do acervo | preço da entrada;amigos;não foi dito;não
+25;cdf4c767ec;nota 4 e 5;5;atendimento presencial | espaço e lotação;;;não foi dito;não foi dito;atendimento presencial | conforto e barulho | curadoria e conservação do acervo | espaço e lotação;;;não foi dito;não foi dito
+26;b85210c2a4;nota 4 e 5;5;atendimento presencial | explicação de jogos;;;não foi dito;não foi dito;atendimento presencial | eventos e comunidade | explicação de jogos;;;não foi dito;não foi dito
+27;68d5c84fd0;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+28;de50406b27;nota 4 e 5;5;ambiente e decoração;;;não foi dito;não foi dito;ambiente e decoração;;;não foi dito;não foi dito
+29;3ef7e81904;nota 1 a 3;1;;explicação de jogos;;não foi dito;não foi dito;localização e acesso;atendimento presencial;;não foi dito;não foi dito
+30;6757020728;nota 1 a 3;3;ambiente e decoração | atendimento presencial | conforto e barulho;conforto e barulho;;não foi dito;não foi dito;ambiente e decoração | atendimento presencial | conforto e barulho;conforto e barulho;;não foi dito;não foi dito
+31;6466f61215;nota 4 e 5;5;espaço e lotação;comida;;sim;não foi dito;espaço e lotação;comida;;não foi dito;não foi dito
+32;52daaed70a;nota 4 e 5;5;atendimento presencial | comida | explicação de jogos | variedade do acervo;;;não foi dito;não foi dito;atendimento presencial | comida | explicação de jogos | variedade do acervo;;;não foi dito;não foi dito
+33;c43b18ea44;nota 1 a 3;2;;comida | porções | regras da casa;;não foi dito;não foi dito;;comida | curadoria e conservação do acervo | porções | preço da entrada;;não foi dito;não
+34;be0980be64;nota 4 e 5;5;;;;não foi dito;não foi dito;;conforto e barulho;;não foi dito;não foi dito
+35;9b220f6d9f;nota 1 a 3;1;;atendimento presencial | comida | conforto e barulho | limpeza | regras da casa;aniversário;não foi dito;não foi dito;espaço e lotação;atendimento presencial | comemorações e grupos | comida | conforto e barulho | limpeza;aniversário;não foi dito;não foi dito
+36;b0de1c06f4;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+37;135c66bd0f;casa nova;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+38;6e5bc1801e;nota 1 a 3;1;ambiente e decoração | atendimento presencial;regras da casa | variedade do cardápio;;não foi dito;não foi dito;ambiente e decoração;atendimento presencial | porções | preço da entrada | regras da casa | variedade do cardápio;;não foi dito;não foi dito
+39;62c78814aa;nota 4 e 5;5;ambiente e decoração | atendimento presencial | comida;;;não foi dito;não foi dito;ambiente e decoração | atendimento presencial | comida;;;não foi dito;não foi dito
+40;193a128290;nota 4 e 5;5;ambiente e decoração | comemorações e grupos | comida | regras da casa;;;não foi dito;sim;ambiente e decoração | comemorações e grupos | comida | espaço e lotação | variedade do acervo;;;não foi dito;sim
+41;96e83df5c4;nota 1 a 3;1;atendimento presencial;comida | preço do cardápio | regras da casa;amigos;não foi dito;não;atendimento presencial;comida | preço da entrada | preço do cardápio | regras da casa;amigos;não foi dito;não
+42;72be643f86;nota 1 a 3;1;;atendimento presencial;;não foi dito;não foi dito;;atendimento presencial;;não foi dito;não foi dito
+43;ce586d50c9;nota 4 e 5;5;;;;não foi dito;sim;;;;não foi dito;sim
+44;7dc14c5522;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+45;271902db46;nota 1 a 3;3;ambiente e decoração | atendimento presencial;comida | rapidez do serviço;amigos;não foi dito;não foi dito;ambiente e decoração | comida;atendimento presencial | comida | rapidez do serviço;amigos;não foi dito;não foi dito
+46;7ccb059e34;nota 1 a 3;2;;comida | curadoria e conservação do acervo | preço do cardápio;;não foi dito;não foi dito;;comida | curadoria e conservação do acervo | preço do cardápio;;não foi dito;não foi dito
+47;e0c70cb041;nota 4 e 5;5;atendimento presencial | preço de outros itens | variedade do acervo;;;sim;não foi dito;atendimento presencial | conforto e barulho | preço de outros itens | variedade do acervo;;;sim;não foi dito
+48;aa60ea1217;nota 4 e 5;5;atendimento presencial;;;não foi dito;não foi dito;atendimento presencial;;;não foi dito;não foi dito
+49;90439852f6;nota 1 a 3;2;;regras da casa;;sim;não foi dito;;atendimento online | atendimento presencial | regras da casa;apenas loja;sim;não foi dito
+50;8ce9fef8d6;nota 4 e 5;5;comemorações e grupos;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+51;09afaa9435;nota 4 e 5;5;ambiente e decoração | atendimento presencial | comida;;;não foi dito;não foi dito;ambiente e decoração | atendimento presencial | comida;;;não foi dito;não foi dito
+52;e750e94329;nota 4 e 5;5;atendimento presencial | comida;;;não foi dito;não foi dito;atendimento presencial | comida;;;não foi dito;não foi dito
+53;c03c0169e0;nota 1 a 3;1;;atendimento presencial | regras da casa | variedade do cardápio;;não foi dito;não foi dito;;atendimento presencial | preço da entrada | variedade do cardápio;;não foi dito;não foi dito
+54;ea072e999d;nota 1 a 3;1;;preço de outros itens;;não foi dito;não foi dito;;preço de outros itens;;não foi dito;não foi dito
+55;b64980d7a9;nota 4 e 5;5;ambiente e decoração | atendimento presencial | comemorações e grupos | comida | espaço e lotação | localização e acesso;;aniversário;sim;não foi dito;ambiente e decoração | atendimento presencial | comemorações e grupos | comida | espaço e lotação | localização e acesso;;aniversário;sim;não foi dito
+56;5569b74d9c;nota 4 e 5;5;atendimento presencial | comida | variedade do acervo;rapidez do serviço;;não foi dito;não foi dito;atendimento presencial | comida | variedade do acervo;atendimento presencial;;não foi dito;não foi dito
+57;d8b59d938e;casa nova;5;ambiente e decoração;;;não;não foi dito;ambiente e decoração;;;não foi dito;não foi dito
+58;4c02902615;casa nova;1;;atendimento online;apenas loja;não foi dito;não foi dito;;atendimento online;;não foi dito;não foi dito
+59;ad52b3e95c;casa nova;5;comemorações e grupos | variedade do acervo | variedade do cardápio;;;não;sim;variedade do acervo;;;não foi dito;sim
+60;375bdedecc;nota 4 e 5;5;atendimento presencial;;;sim;sim;atendimento presencial;;;não foi dito;sim
+61;dbd6125945;nota 1 a 3;1;;atendimento presencial | rapidez do serviço;;não foi dito;não foi dito;;atendimento presencial | rapidez do serviço;;não foi dito;não foi dito
+62;bfce6564fa;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+63;d86c365b9b;nota 4 e 5;5;ambiente e decoração | atendimento presencial;;;não;não foi dito;ambiente e decoração | atendimento presencial | eventos e comunidade;;;não foi dito;não foi dito
+64;c6cbc89ba6;nota 4 e 5;5;ambiente e decoração | comemorações e grupos;;amigos | casal;sim;não foi dito;ambiente e decoração | atendimento presencial | bebidas | comida | indicações de jogos;;amigos | casal;sim;não foi dito
+65;053c6d22ac;nota 4 e 5;5;;;;não foi dito;sim;;;;não foi dito;sim
+66;1d290d17b1;nota 1 a 3;2;ambiente e decoração;atendimento online | atendimento presencial | limpeza;;não foi dito;não foi dito;ambiente e decoração | espaço e lotação;atendimento online | atendimento presencial | limpeza;;não foi dito;não foi dito
+67;8a1bf4b00f;nota 4 e 5;5;conforto e barulho | eventos e comunidade;;;não foi dito;não foi dito;ambiente e decoração | conforto e barulho | eventos e comunidade;;;não foi dito;não foi dito
+68;37aa2284c4;nota 4 e 5;5;atendimento presencial | comida | explicação de jogos | variedade do acervo | variedade do cardápio;;;não foi dito;não foi dito;atendimento presencial | curadoria e conservação do acervo | explicação de jogos | porções | variedade do acervo | variedade do cardápio;;;não foi dito;não foi dito
+69;8e356b9fa2;nota 1 a 3;1;;comida | porções;;não foi dito;não foi dito;;porções;;não foi dito;não foi dito
+70;99dd224784;nota 1 a 3;2;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+71;e17462c7fa;nota 4 e 5;5;atendimento presencial | curadoria e conservação do acervo;;;não foi dito;não foi dito;atendimento presencial | curadoria e conservação do acervo;;;não foi dito;não foi dito
+72;004640d335;nota 4 e 5;5;atendimento presencial;;;não foi dito;sim;atendimento presencial;;;não foi dito;sim
+73;7b58f4dd0a;nota 4 e 5;5;comida | conforto e barulho | espaço e lotação | preço do cardápio;;aniversário;não foi dito;não foi dito;comemorações e grupos | comida | conforto e barulho | espaço e lotação | preço do cardápio;;aniversário;não foi dito;não foi dito
+74;7b3f753e47;nota 4 e 5;5;atendimento online | comida | porções;;;não foi dito;não foi dito;atendimento presencial | comida | porções;;;não foi dito;não foi dito
+75;c9bc9fd45b;casa nova;5;ambiente e decoração | atendimento presencial;;;não foi dito;não foi dito;ambiente e decoração | atendimento presencial;;;não foi dito;não foi dito
+76;680ed8c89b;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+77;16f8a3ac1d;casa nova;5;comida | porções;;;não foi dito;não foi dito;comida | porções;;;não foi dito;não foi dito
+78;b5ebd8cc5b;nota 4 e 5;5;ambiente e decoração | comida | espaço e lotação | variedade do acervo;;;não foi dito;não foi dito;ambiente e decoração | comida | espaço e lotação | variedade do acervo;;;não foi dito;não foi dito
+79;593296fe79;nota 4 e 5;5;atendimento presencial | bebidas | curadoria e conservação do acervo;;;não;sim;atendimento presencial | bebidas | curadoria e conservação do acervo;;;não;sim
+80;e4dbb6d1f9;nota 4 e 5;5;ambiente e decoração | atendimento presencial;;;não foi dito;não foi dito;ambiente e decoração | atendimento presencial | espaço e lotação;;;não foi dito;não foi dito
+81;69a3e54d5f;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+82;3bde7702e1;nota 4 e 5;5;ambiente e decoração;;;sim;não foi dito;ambiente e decoração;;;sim;não foi dito
+83;cbc709bd91;nota 4 e 5;5;;;;não foi dito;não foi dito;;;;não foi dito;não foi dito
+84;841390ae2d;nota 4 e 5;5;atendimento presencial | conforto e barulho | limpeza | preço de outros itens;;;não foi dito;não foi dito;atendimento presencial | espaço e lotação | limpeza | preço de outros itens;;;não foi dito;não foi dito
+85;71335a2747;nota 1 a 3;3;;;;não foi dito;não foi dito;;eventos e comunidade;;não foi dito;não foi dito
+86;cf40b97eec;nota 1 a 3;1;;porções | rapidez do serviço;;não foi dito;não foi dito;;porções | preço do cardápio | rapidez do serviço;;não foi dito;não foi dito
+87;92769111b8;nota 1 a 3;1;;eventos e comunidade | preço de outros itens;loja;não foi dito;não foi dito;;eventos e comunidade | preço de outros itens;;não foi dito;não foi dito
+88;ffade29ee8;nota 1 a 3;1;;atendimento presencial | bebidas;;não foi dito;não foi dito;;atendimento presencial | bebidas;;não foi dito;não foi dito
+89;837650a96e;nota 4 e 5;5;ambiente e decoração | comida;;;não foi dito;não foi dito;ambiente e decoração | comida;;;não foi dito;não foi dito
+90;50a79bf9fe;nota 4 e 5;5;atendimento presencial;;;não foi dito;não foi dito;ambiente e decoração | atendimento presencial;;;não foi dito;não foi dito
+91;ac97947892;nota 4 e 5;4;atendimento presencial | comida | preço de outros itens;rapidez do serviço;;não foi dito;não foi dito;atendimento presencial | comida | preço de outros itens;rapidez do serviço;;não foi dito;não foi dito
+92;74f35d68ab;nota 4 e 5;5;comida | curadoria e conservação do acervo;;;não foi dito;não foi dito;comida | curadoria e conservação do acervo;;;não foi dito;não foi dito
+93;f57db739f0;nota 4 e 5;5;ambiente e decoração;;;não foi dito;não foi dito;ambiente e decoração;;;não foi dito;não foi dito
+94;7eff632f21;nota 1 a 3;3;atendimento presencial | indicações de jogos | variedade do acervo;atendimento presencial;;sim;não foi dito;atendimento presencial | indicações de jogos | variedade do acervo;atendimento presencial;;sim;não foi dito
+95;26848835c3;nota 4 e 5;5;variedade do acervo;;;não foi dito;não foi dito;variedade do acervo;;;não foi dito;não foi dito
+96;a2da96e975;casa nova;4;explicação de jogos | variedade do acervo;comida | regras da casa;;não foi dito;não foi dito;explicação de jogos | variedade do acervo;comida | regras da casa;;não foi dito;não foi dito
+97;9e170f3761;nota 1 a 3;3;;preço da entrada | regras da casa;;não foi dito;não foi dito;;comida | regras da casa;;não foi dito;não foi dito
+98;ff3df6d8e1;nota 4 e 5;5;ambiente e decoração | preço do cardápio;;;não foi dito;sim;bebidas | comida | preço de outros itens;;loja;não foi dito;sim
+99;bebabdf12e;nota 4 e 5;5;atendimento presencial | comida | explicação de jogos | rapidez do serviço;;;não foi dito;não foi dito;atendimento presencial | comida | curadoria e conservação do acervo | explicação de jogos | rapidez do serviço;;;não foi dito;não foi dito
+100;fc6a2b8ccc;casa nova;5;atendimento presencial | comemorações e grupos | comida | explicação de jogos | variedade do acervo;limpeza;;não foi dito;sim;atendimento presencial | comida | explicação de jogos | variedade do acervo;limpeza;família;não foi dito;sim

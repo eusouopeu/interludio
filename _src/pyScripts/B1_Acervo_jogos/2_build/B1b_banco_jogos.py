@@ -104,7 +104,7 @@ def main():
             "acervo_no_local": "; ".join(sorted(g["casas"])),
             "aluguel_pago": "; ".join(sorted(aluguel)),
             "aluguel_media_rs": a[0], "aluguel_mediana_rs": a[1], "aluguel_dp_rs": a[2],
-            "aluguel_detalhe": "; ".join(f"{c}: R$ {p:g}/{d} d" for c, (p, d) in sorted(aluguel.items())),
+            "aluguel_detalhe": "; ".join((f"{c}: R$ {p:g}/{d} d" if d else f"{c}: R$ {p:g}") for c, (p, d) in sorted(aluguel.items())),
             "venda": "; ".join(sorted(lojas)),
             "venda_media_rs": v[0], "venda_mediana_rs": v[1], "venda_dp_rs": v[2],
             "venda_detalhe": "; ".join(f"{c}: R$ {p:.2f}" for c, p in sorted(lojas.items())),

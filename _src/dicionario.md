@@ -49,7 +49,7 @@ Legenda: `Bn` = código do bloco de dados (B1 a B4); `<x>` = parte variável; `[
 | Webscript (Tampermonkey) | `<objeto>.user.js`, ou `<site>_<objeto>.user.js` quando há mais de um script do objeto; teste ao lado, `<mesmo nome>.test.cjs`; itens do menu em `lista_<mesmo nome>.js` | `aluguel.user.js`, `aluguel.test.cjs`, `lista_aluguel.js`; `maps_avaliacoes.user.js` |
 | Versão do webscript (`@version`) | `AAAA.MM.DD-n` (n-ésima versão do dia) | `2026.10.13-7` |
 | Painel do webscript | kit comum `_src/webScripts/_kit_painel/kit_painel.js`, copiado para dentro do script entre `// >>> kit_painel` e `// <<< kit_painel` por `node _src/webScripts/_kit_painel/embutir.js` (não editar a cópia); o teste `kit_painel.test.cjs` falha se alguma cópia ficar velha. Usam o kit: coletor e snowball do Instagram, cardápios e acervos | `const kit = kitPainel({ id: 'acv' })` |
-| Utilitário geral | verbo no infinitivo + objeto, em `_src/outros/` | `gerar_carregadores.py`, `sincronizar_vault.sh`, `log_execucao.py` |
+| Utilitário geral | verbo no infinitivo + objeto, em `_src/outros/` | `gerar_carregadores.py`, `publicar_interludio.sh`, `log_execucao.py` |
 
 Nomes com hífen não podem ser importados como módulo Python. Por isso, código usado por mais de um script vai para um módulo auxiliar em `outros/`, nunca para um script de etapa.
 

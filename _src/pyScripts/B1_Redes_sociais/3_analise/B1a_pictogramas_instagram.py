@@ -9,9 +9,8 @@ Quatro figuras (mediana das casas de cada grupo, só casas com o dado):
 - interações por post a cada 1.000 seguidores (pessoa; 1 ícone = 1 interação).
 
 Entrada: base por casa do B1 (B1_Estabelecimentos/5_outros/dados_graficos.py),
-com as colunas do Instagram de B1_instagram_resumo_notion.csv; posts de
-01/09 a 01/10/2026. Instagram de LudoCafé e Dominaria fica vazio (perfil
-errado coletado).
+com as colunas do Instagram de B1_instagram_resumo.csv (coleta de 12/11/2026);
+posts de 01/07 a 01/11/2026.
 
 Estilo editorial (`graficos_comum`): fileiras em cinza, Salvador em vermelho,
 título com a comparação de Salvador contra a mediana de todas as casas.
@@ -47,8 +46,8 @@ from graficos_comum import BASE, ORDEM_REGIAO, TINTA, VERMELHO, br, pictograma_l
 
 ROOT = _AQUI.parents[4]
 PASTA = ROOT / "dados-agregados" / "B1_estabelecimentos" / "5_graficos" / "pictogramas"
-FONTE = ("Fonte: elaboração própria com perfis e posts do Instagram coletados de 11 a 15/10/2026; "
-         "posts de 01/09 a 01/10/2026 (B1).")
+FONTE = ("Fonte: elaboração própria com perfis e posts do Instagram coletados em 12/11/2026; "
+         "posts de 01/07 a 01/11/2026 (B1).")
 
 # chave -> (coluna, ícone, valor por ícone, ícones na fileira, o que a casa "faz" no título,
 #           subtítulo, legenda do ícone, casas decimais)

@@ -78,6 +78,7 @@ B1 = ROOT / "dados-agregados" / "B1_estabelecimentos" / "B1_resumo_estabelecimen
 B2 = ROOT / "dados-agregados" / "B2_avaliacoes"
 BASE = ROOT / "dados-brutos" / "B2_avaliacoes" / "analise_conteudo" / "2026-11-03_2_comentarios_grade2.csv"
 PASTA = B2 / "retorno_e_clusters"
+N_ESPERADO = 1628  # base de 03/11; com --base, o total é o do arquivo dado
 SEMENTE = 20261103
 K_CANDIDATOS = range(2, 6)
 # clientes: o gasto declarado vem em faixas (poucos valores distintos), e em uma
@@ -262,7 +263,7 @@ def gasto(v):
 
 def carrega():
     d = pd.read_csv(BASE)
-    assert len(d) == 1628, len(d)
+    assert N_ESPERADO is None or len(d) == N_ESPERADO, len(d)
     d["pos"] = d["Itens positivos"].map(itens)
     d["neg"] = d["Itens negativos"].map(itens)
     d["ctx"] = d["Contexto"].map(itens)
@@ -465,6 +466,16 @@ ROT_PRECO = {2: ["mais barato", "mais caro"], 3: ["mais barato", "intermediário
 
 
 def main():
+    global BASE, PASTA, N_ESPERADO
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[1])
+    ap.add_argument("--base", type=Path, help="outra base no formato da grade 2 (ex.: a de 16/11, de "
+                    "B2b_comentarios_reaproveitados.py)")
+    ap.add_argument("--pasta", type=Path, help="pasta das saídas com --base")
+    a = ap.parse_args()
+    if a.base:
+        BASE, N_ESPERADO = a.base.resolve(), None
+        PASTA = (a.pasta or PASTA / f"base_{a.base.stem}").resolve()
     PASTA.mkdir(parents=True, exist_ok=True)
     d = carrega()
     silh = []

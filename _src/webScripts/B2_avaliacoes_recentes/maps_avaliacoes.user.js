@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Coletor de avaliações do Google Maps (TCC Luderia)
 // @namespace    tcc-luderia
-// @version      2026.11.13-3
+// @version      2026.11.16-2
 // @description  Abre as avaliações de um lugar, ordena por mais recentes, rola até o fim do período, expande os textos (no idioma original), filtra por tema, opinião, componentes e busca, salva o progresso, coleta em fila, confere amostras e exporta CSV com autor pseudonimizado.
 // @match        https://www.google.com/maps/*
 // @match        https://www.google.com.br/maps/*
@@ -855,7 +855,7 @@
       if (!jaColetada(r)) meta.push(criar('span', { className: 'selo nova', textContent: 'nova' }));
       if (+r.n_fotos) meta.push(criar('span', { className: 'suave', textContent: `${r.n_fotos} foto${+r.n_fotos > 1 ? 's' : ''}` }));
       const texto = r.texto_avaliacao.replace(/\s+/g, ' ');
-      return criar('button', { className: `item${c === contornado ? ' atual' : ''}`, title: 'Mostrar na página', onclick: () => irPara(c) }, [
+      return criar('button', { className: `item${c === contornado ? ' atual' : ''}`, dica: 'Mostrar na página', onclick: () => irPara(c) }, [
         criar('span', { className: 'meta' }, meta),
         criar('span', { className: 'trecho', textContent: texto ? texto.slice(0, 220) : '(sem texto)' }),
         ...(r.temas ? [criar('span', { className: 'temas', textContent: r.temas })] : []),
@@ -1173,11 +1173,11 @@
     return false;
   }
 
-  function iniciarFila() {
+  async function iniciarFila() {
     const itens = lerItensFila(el.fila.value);
     if (!itens.length) { status('Fila vazia: uma URL do Maps ou um place_id por linha.'); return; }
     const antiga = GM_getValue(CHAVE_FILA, null);
-    if (antiga && antiga.i < antiga.itens.length && !confirm(`Há uma fila em curso (${antiga.i}/${antiga.itens.length}). Substituir?`)) return;
+    if (antiga && antiga.i < antiga.itens.length && !(await kit.confirmar(`Há uma fila em curso (${antiga.i}/${antiga.itens.length}). Substituir?`))) return;
     GM_setValue(CHAVE_FILA, { itens, i: 0, ativa: true, resumos: [], inicio: agora() });
     location.href = itens[0].url;
   }
@@ -1334,11 +1334,11 @@
 
   const lerConf = () => GM_getValue(CHAVE_CONF, null) || { ids: [], i: 0, marcas: {} };
 
-  function iniciarConferencia() {
+  async function iniciarConferencia() {
     const ids = [...new Set(el.confIds.value.split(/[\s;,]+/).map((s) => s.trim()).filter(Boolean))];
     if (!ids.length) { status('Cole os review_id sorteados, um por linha.'); return; }
     const antiga = lerConf();
-    if (Object.keys(antiga.marcas).length && !confirm('Começar outra conferência apaga as marcas da atual. Exporte antes. Continuar?')) return;
+    if (Object.keys(antiga.marcas).length && !(await kit.confirmar('Começar outra conferência apaga as marcas da atual. Exporte antes. Continuar?'))) return;
     GM_setValue(CHAVE_CONF, { ids, i: 0, marcas: {} });
     conferida = null;
     mostrarConferencia();
@@ -1418,7 +1418,7 @@
     ]);
     const nos = [
       criar('div', { className: 'cab' }, [criar('b', { textContent: dono ? dono.nome : 'Lugar desconhecido' }),
-        ...(marcada ? [criar('span', { className: `chip ${marcada.resultado === 'confere' ? 'sim' : 'nao'}`, title: marcada.observacao || '',
+        ...(marcada ? [criar('span', { className: `chip ${marcada.resultado === 'confere' ? 'sim' : 'nao'}`, dica: marcada.observacao || '',
           textContent: marcada.resultado === 'confere' ? '✓ marcada' : '✗ marcada' })] : [])]),
       criar('div', { className: 'mono', textContent: id }),
     ];
@@ -1461,11 +1461,15 @@
     mostrarConferencia();
   }
 
-  function marcarConferencia(resultadoConf) {
+  async function marcarConferencia(resultadoConf) {
+    const id0 = lerConf().ids[lerConf().i];
+    if (!id0) return;
+    // Cancelar a pergunta (Esc) não marca a avaliação.
+    const observacao = resultadoConf === 'diverge' ? await kit.perguntar('O que diverge?', { placeholder: 'nota, data, texto…' }) : '';
+    if (observacao == null) return;
     const conf = lerConf();
     const id = conf.ids[conf.i];
-    if (!id) return;
-    const observacao = resultadoConf === 'diverge' ? (prompt('O que diverge? (nota, data, texto…)') || '') : '';
+    if (id !== id0) return;
     const dono = lugarDoId(id);
     const p = conferida?.id === id ? conferida.pagina : null;
     const [nota, data, texto, quando] = dono?.registro || ['', '', '', ''];
@@ -1553,7 +1557,10 @@
   function baixar(linhas, sufixo, { forcar = false } = {}) {
     if (!resultado.length) { status('Nada para exportar: colete ou recupere uma coleta primeiro.'); return; }
     if (!linhas.length) { status('Nenhuma avaliação coletada passa neste recorte.'); return; }
-    if (alertaSeletores && !forcar && !confirm(`${alertaSeletores}\n\nExportar mesmo assim?`)) return;
+    if (alertaSeletores && !forcar) {
+      kit.confirmar(`${alertaSeletores}\n\nExportar mesmo assim?`).then((sim) => { if (sim) baixar(linhas, sufixo, { forcar: true }); });
+      return;
+    }
     // O place_id colado depois da coleta também entra.
     const placeId = el.placeId.value.trim();
     const recibo = reciboExportacao(sufixo);
@@ -1593,7 +1600,8 @@
   // Padrão (o do maps_avaliacoes): canto superior direito, shadow DOM preso ao <html> e
   // reposto se sumir, arrastável e redimensionável com posição salva, Montserrat,
   // Heroicons outline, roxo como cor primária, verde/âmbar/vermelho para o desfecho,
-  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto.
+  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto; perguntas
+  // (confirmar, perguntar) dentro do painel, nunca confirm() ou prompt() do navegador.
   // Só define funções: nada toca o DOM antes de montar() (os testes rodam no Node).
   function kitPainel(op = {}) {
     const P = op.prefixo || op.id || 'tcc';
@@ -1972,12 +1980,51 @@
     }
 
     // O botão vira um ✓ verde por um instante.
+    // (O conteúdo original fica guardado: um segundo clique antes de 1,2 s não grava o ✓ no lugar dele.)
+    const confirmando = new WeakMap();
     function confirmarBotao(b) {
       if (!b) return;
-      const antes = [...b.childNodes];
+      const pendente = confirmando.get(b);
+      if (pendente) clearTimeout(pendente.timer);
+      const antes = pendente ? pendente.antes : [...b.childNodes];
       b.classList.add('feito');
       b.replaceChildren(icone('check'), ...antes.filter((n) => n.nodeType === 3));
-      setTimeout(() => { b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      const timer = setTimeout(() => { confirmando.delete(b); b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      confirmando.set(b, { antes, timer });
+    }
+
+    // ---------- perguntas no painel ----------
+    // No lugar do confirm() e do prompt() do navegador, que travam a página e fogem do padrão:
+    // uma faixa âmbar no topo do painel, com ✓ (Enter) e ✗ (Esc). Devolvem uma Promise:
+    // confirmar() → true/false; perguntar() → o texto digitado ou null. Sem painel montado
+    // (testes no Node, página sem painel), caem no diálogo do navegador.
+    let fecharPergunta = null;
+    function abrirPergunta(texto, { campo = null, sim = 'Confirmar', nao = 'Cancelar' } = {}) {
+      if (fecharPergunta) fecharPergunta(campo ? null : false);
+      return new Promise((resolve) => {
+        if (painel.classList.contains('min')) minimizar(false);
+        const caixa = k.el.pergunta;
+        const fim = (v) => { fecharPergunta = null; caixa.hidden = true; caixa.replaceChildren(); fecharDica(); resolve(v); };
+        fecharPergunta = fim;
+        const bSim = botao('check', '', () => fim(campo ? campo.value : true), { classe: 'verde', dica: `${sim} (Enter)` });
+        const bNao = botao('x-mark', '', () => fim(campo ? null : false), { classe: 'leve', dica: `${nao} (Esc)` });
+        caixa.onkeydown = (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); bSim.click(); } else if (e.key === 'Escape') { e.preventDefault(); bNao.click(); }
+        };
+        caixa.replaceChildren(...[criar('span', { className: 'txt', textContent: texto }), campo, linha([esp(), bNao, bSim], 'compacta')].filter(Boolean));
+        caixa.hidden = false;
+        painel.scrollTop = 0;
+        estado('alerta');
+        try { (campo || bSim).focus(); } catch (_) { /* sem foco */ }
+      });
+    }
+    function confirmar(texto, opcoes) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof confirm === 'function' ? confirm(texto) : true);
+      return abrirPergunta(texto, opcoes);
+    }
+    function perguntar(texto, { valor = '', placeholder = '', ...opcoes } = {}) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof prompt === 'function' ? prompt(texto, valor) : null);
+      return abrirPergunta(texto, { ...opcoes, campo: criar('input', { type: 'text', value: valor, placeholder, 'aria-label': texto }) });
     }
 
     async function copiar(texto, b) {
@@ -2022,13 +2069,13 @@
         return esperarMs(600).then(() => ({ nome, via: 'navegador' }));
       }
       return new Promise((resolve) => {
-        let feito = false;
-        const fim = (via) => { if (feito) return; feito = true; soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
+        let feito = false, espera = 0;
+        const fim = (via) => { if (feito) return; feito = true; clearTimeout(espera); soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
         const comum = () => { baixarComum(nome, url); setTimeout(() => fim('navegador'), 600); };
         try {
           GM_download({ url, name: pastaDoArquivo(pasta, nome), saveAs: false, onload: () => fim('pasta'), onerror: () => { if (!feito) comum(); }, ontimeout: () => { if (!feito) comum(); } });
           // Sem resposta do Tampermonkey em 15 s: segue (o download pode ainda sair).
-          setTimeout(() => fim('pasta'), 15000);
+          espera = setTimeout(() => fim('pasta'), 15000);
         } catch (_) { comum(); }
       });
     }
@@ -2038,12 +2085,20 @@
     // Seletor por grupo com ✓ ok, ◐ parcial, ! refazer, ○ falta; contador com barra fina;
     // botões Próximo (o que falta, primeiro no mesmo grupo), Marcar/Desfazer e Só os que faltam.
     const SIMBOLO = { ok: '✓', parcial: '◐', falha: '!', falta: '○' };
+    // aoAdicionar (opcional): botão "+" que acrescenta um alvo à lista (o script pergunta os dados
+    // e guarda); depois de mudar a lista, recarregar() refaz as opções do seletor.
     function menuAlvos({ itens, id = (x) => x.id, grupo = (x) => x.capital, nome = (x) => x.nome, detalhe = () => '',
-      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, unidade = 'coletados' }) {
-      const lista = itens();
-      const grupos = [...new Set(lista.map(grupo))];
-      const select = criar('select', { 'aria-label': 'Alvo da coleta' }, grupos.map((g) => criar('optgroup', { label: g },
-        lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, aoAdicionar, dicaAdicionar = 'Adicionar à lista de alvos da coleta',
+      unidade = 'coletados' }) {
+      let lista = [];
+      const select = criar('select', { 'aria-label': 'Alvo da coleta' });
+      function opcoes() {
+        lista = itens();
+        const grupos = [...new Set(lista.map(grupo))];
+        select.replaceChildren(...grupos.map((g) => criar('optgroup', { label: g },
+          lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      }
+      opcoes();
       dica(select, `✓ ok · ◐ parcial · ! refazer · ○ falta. Escolher abre o alvo e coleta.`);
       select.onchange = () => aoEscolher(lista.find((x) => id(x) === select.value));
       let soFaltam = ler(chave('soFaltam'), false);
@@ -2052,11 +2107,13 @@
       const bMarcar = aoMarcar ? botao('check', '', () => aoMarcar(lista.find((x) => id(x) === select.value)), { classe: 'leve' }) : null;
       const bFiltro = alternaIcone({ ico: 'funnel', rotulo: 'Só os que faltam', ligado: soFaltam,
         aoMudar: (v) => { soFaltam = v; gravar(chave('soFaltam'), v); rotular(); } });
+      const bAdicionar = aoAdicionar ? botao('plus', '', async () => { if (await aoAdicionar()) { opcoes(); rotular(); } },
+        { classe: 'leve', dica: dicaAdicionar }) : null;
       const cont = criar('span', { className: 'pos' });
       const trilho = criar('div', { className: 'trilho fino' }, [criar('div', { className: 'preenchido' })]);
       const caixa = criar('div', { className: 'menu' }, [
         linha([select]),
-        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro], 'compacta'),
+        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro, bAdicionar], 'compacta'),
       ]);
       function rotular() {
         const a = atual();
@@ -2080,7 +2137,7 @@
         bMarcar.replaceChildren(icone(col ? 'arrow-uturn-left' : 'check'));
         dica(bMarcar, col ? 'Desfazer: volta a faltar' : 'Marcar como coletado, sem nova coleta');
       }
-      return { caixa, select, rotular, bProx };
+      return { caixa, select, rotular, bProx, bAdicionar, recarregar: () => { opcoes(); rotular(); } };
     }
 
     // ---------- painel ----------
@@ -2100,6 +2157,7 @@
         resize:both;min-width:224px;min-height:44px;max-width:calc(100vw - 24px);transition:box-shadow .2s}
       #painel.min{height:auto!important;min-height:0;resize:none;width:auto!important;min-width:0}
       #painel.min>*:not(header){display:none}
+      #painel.min header>button:not(.b-min){display:none}
       #painel.arrastando{user-select:none;opacity:.92;box-shadow:0 14px 40px rgba(0,0,0,.3)}
       header{display:flex;align-items:center;gap:2px;cursor:grab;touch-action:none;min-height:32px}
       #painel.arrastando header{cursor:grabbing}
@@ -2211,6 +2269,10 @@
       .aviso{color:var(--alerta);font-size:12.5px;margin:5px 0 0;font-weight:500}
       .aviso::before{content:"⚠ "}
       .st-alerta .aviso,.st-erro .aviso{color:inherit}
+      .pergunta{font-size:13px;background:var(--alerta-100);border-radius:10px;padding:7px 10px;margin:7px 0;animation:entra .2s ease-out}
+      .pergunta .txt{display:block;white-space:pre-line;font-weight:500}
+      .pergunta input{width:100%;margin-top:6px;background:var(--fundo)}
+      .pergunta .linha{margin:6px 0 0}
       .info{font-size:12.5px;background:var(--sup);border-radius:10px;padding:7px 10px;margin:7px 0;white-space:pre-line}
       .info:empty{display:none}
       .mono{font:11.5px/1.4 ui-monospace,Menlo,monospace;color:var(--suave);word-break:break-all}
@@ -2313,14 +2375,15 @@
       carregarFonte();
       k.el.ponto = criar('span', { className: 'ponto-estado' });
       k.el.nome = criar('span', { className: 'nome', textContent: nome });
-      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve', dica: 'Minimizar' });
+      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve b-min', dica: 'Minimizar' });
       const bSom = alternaIcone({ ico: 'bell', icoDesligado: 'bell-slash', rotulo: 'Som ao concluir', ligado: k.som,
         aoMudar: (v) => { k.som = v; gravar(chave('som'), v); if (v) tocar(true); } });
       const bAuto = autobaixar ? alternaIcone({ ico: 'arrow-down-tray', rotulo: 'Download automático', ligado: k.autobaixar,
         aoMudar: (v) => { k.autobaixar = v; gravar(chave('autobaixar'), v); } }) : null;
       const cab = criar('header', {}, [k.el.ponto, k.el.nome, ...extras, bSom, bAuto, ...aposAuto, k.el.bMin]);
       dica(k.el.nome, 'Clique para minimizar · arraste para mover · duplo clique volta ao canto');
-      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, ...filhos]);
+      k.el.pergunta = criar('div', { className: 'pergunta', hidden: true, role: 'alertdialog' });
+      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, k.el.pergunta, ...filhos]);
       k.el.painel = painel;
       k.el.nome.onclick = () => { if (!arrastou) minimizar(); };
       prepararArraste(cab);
@@ -2387,7 +2450,7 @@
     Object.assign(k, {
       criar, icone, dica, ajuda, botao, botaoPerigo, botaoParar, etiqueta, alternaIcone, botaoBaixarCada, pills, secao, naoAlterna,
       linha, esp, rotulo, selo, status, resumo, barra, progresso, estado, atualizarAcoes, executar, tocar, piscar,
-      confirmarBotao, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
+      confirmarBotao, confirmar, perguntar, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
       nome: (t) => { if (k.el.nome && k.el.nome.textContent !== t) k.el.nome.textContent = t; },
       hospedeiro: () => hospedeiro,
     });
@@ -2501,21 +2564,21 @@
     const pintarAtivos = () => { const n = filtrosAtivos(); el.nAtivos.textContent = n ? `${n} ativo${n > 1 ? 's' : ''}` : ''; };
     const alternar = (conjunto, k) => (ligada) => { if (ligada) conjunto.add(k); else conjunto.delete(k); reaplicar(); };
 
-    el.status = kit.el.status = criar('div', { className: 'status', textContent: 'Abra um lugar e clique em "Coletar avaliações".' });
-    el.jaOrdenado = etiqueta('Já ordenei por "Mais recentes"', () => {}, { dica: 'Marque se já ordenou a lista à mão. O script pula a etapa de ordenar.' });
-    el.pararConhecidas = etiqueta('Parar em 10 já coletadas seguidas', () => {}, { dica: 'A rolagem para ao achar 10 avaliações já coletadas em sequência: retoma de onde a última coleta parou.' });
-    el.placeId = criar('input', { type: 'text', placeholder: 'place_id do B1 (se faltar na URL)' });
+    el.status = kit.el.status = criar('div', { className: 'status', textContent: 'Abra um lugar ou escolha uma casa.' });
+    el.jaOrdenado = etiqueta('já ordenada', () => {}, { dica: 'Já ordenei por "Mais recentes": marque se ordenou a lista à mão; o script pula a etapa de ordenar' });
+    el.pararConhecidas = etiqueta('parar nas conhecidas', () => {}, { dica: 'Parar em 10 já coletadas seguidas: a rolagem para ao achar 10 avaliações já coletadas em sequência e retoma de onde a última coleta parou' });
+    el.placeId = criar('input', { type: 'text', placeholder: 'place_id', 'aria-label': 'place_id do B1' });
 
     // ----- menu das casas do B1 (menuAlvos do kit) -----
     const estadoMenu = (p) => ({ ok: 'ok', incerta: 'parcial', falha: 'falha' }[estadoCasa(p).e] || 'falta');
     el.menu = kit.menuAlvos({
       itens: () => POP, unidade: 'casas', estadoDe: estadoMenu, atual: pidAtual,
       detalhe: (p) => { const { e, n } = estadoCasa(p); return e === 'ok' ? String(n) : e === 'incerta' ? `${n}, incerta` : e === 'falha' ? 'incompleta' : ''; },
-      aoEscolher: (p) => {
+      aoEscolher: async (p) => {
         if (!p) return;
         if (casaDoLugar(infoLugar())?.id === p.id) { GM_setValue(CHAVE_ALVO, p.id); rotularCasas(); return; }
         if (ocupado) { rotularCasas(); status('Espere a coleta em curso terminar (ou "Parar").', 'alerta'); return; }
-        if (estadoMenu(p) === 'ok' && !confirm(`${p.nome} já está coletada. Refazer?`)) { rotularCasas(); return; }
+        if (estadoMenu(p) === 'ok' && !(await kit.confirmar(`${p.nome} já está coletada. Refazer?`))) { rotularCasas(); return; }
         abrirCasa(p);
       },
       aoProximo: () => {
@@ -2544,14 +2607,14 @@
     seletorAte.value = periodo.ate === Infinity ? 'tudo' : String(periodo.ate);
     if (seletorAte.value === '') { seletorAte.value = '30'; periodo.ate = 30; }
 
-    const bColetar = botaoTexto('arrow-down-tray', 'Coletar avaliações', () => executar(async () => {
+    const bColetar = botaoTexto('arrow-down-tray', 'Coletar', () => executar(async () => {
       ultimoResumo = null;
       const motivo = await coletar();
       if (prefs.autobaixar && resultado.length) baixar(resultado, 'tudo');
       // O resumo sai sempre (mesmo com zero lidas): é a prova da coleta.
       if (ultimoResumo) baixarResumoLugar(ultimoResumo);
       if (motivo === 'ordem errada' || motivo === 'lista não encontrada') throw new Error(MSG_MOTIVO[motivo]);
-    }, { avisar: true }), 'primario');
+    }, { avisar: true }), 'primario', 'Coletar avaliações: ordena por "Mais recentes", rola a lista do lugar aberto até o fim do período, lê cada avaliação e baixa o CSV e o resumo');
     el.parar = kit.botaoParar(() => { parar = true; status('Parando…'); });
     const bLocalizar = botaoIcone('calendar-days', 'Localizar o período na lista (rola até a primeira avaliação dele)', () => executar(localizarPeriodo));
 
@@ -2576,22 +2639,30 @@
       navegarFiltrados(e.shiftKey ? -1 : 1);
     };
 
-    const tagsTema = Object.keys(TEMAS).map((k) => etiqueta(ROTULO_TEMA[k], alternar(filtros.temas, k), { ligada: filtros.temas.has(k) }));
+    const tagsTema = Object.keys(TEMAS).map((k) => etiqueta(ROTULO_TEMA[k], alternar(filtros.temas, k), { ligada: filtros.temas.has(k), dica: `Tema ${ROTULO_TEMA[k]}: passa a avaliação que cita uma das palavras-chave do tema` }));
     const dicasComp = {
       cardapio: 'Tem foto e o texto cita cardápio, menu, preço ou valor.',
       aspectos: 'Notas de comida, serviço ou ambiente que o Google mostra no cartão.',
       nova: 'O review_id ainda não está no registro de coletas deste lugar.',
+      texto: 'A avaliação tem texto, não só a nota.',
+      fotos: 'A avaliação tem ao menos uma foto.',
+      preco: 'O Google mostra a faixa de preço por pessoa informada pelo autor.',
+      grupo: 'O autor informou o tamanho do grupo.',
+      reais: 'O texto cita um valor em reais (R$).',
+      resposta: 'O estabelecimento respondeu à avaliação.',
     };
-    const rotulosComp = { aspectos: 'notas por aspecto' };
+    // Rótulos de uma ou duas palavras; a explicação fica na dica.
+    const rotulosComp = { aspectos: 'aspectos', texto: 'texto', cardapio: 'cardápio', preco: 'preço/pessoa', grupo: 'grupo', reais: 'R$ no texto', resposta: 'resposta', nova: 'nova' };
     const tagsComp = Object.entries(COMPONENTES).map(([k, [rotulo]]) =>
-      etiqueta(rotulosComp[k] || rotulo, alternar(filtros.componentes, k), { ligada: filtros.componentes.has(k), dica: dicasComp[k] || '' }));
+      etiqueta(rotulosComp[k] || rotulo, alternar(filtros.componentes, k), { ligada: filtros.componentes.has(k), dica: `${rotulo[0].toUpperCase()}${rotulo.slice(1)}: ${dicasComp[k] || ''}` }));
 
     const DICAS_OPINIAO = {
       positiva: 'Nota 5 e ao menos uma palavra positiva no texto (ou negação de uma negativa, como "não foi caro"). A negação vale para até 3 palavras antes, na mesma oração.',
       negativa: 'Nota 4 ou menos e ao menos uma palavra negativa no texto (ou negação de uma positiva, como "não foi bom"). A negação vale para até 3 palavras antes, na mesma oração.',
     };
     const pills = [['', 'Todas'], ['positiva', 'Positivas'], ['negativa', 'Negativas']].map(([v, t]) => {
-      const b = criar('button', { type: 'button', className: 'pill', onclick: () => { filtros.opiniao = v; pintarPills(); reaplicar(); } }, [t]);
+      const b = criar('button', { type: 'button', className: 'pill', onclick: () => { filtros.opiniao = v; pintarPills(); reaplicar(); },
+        dica: v ? '' : 'Todas: não filtra pela opinião (positivas, negativas e neutras passam)' }, [t]);
       b.setAttribute('role', 'tab');
       b.dataset.valor = v;
       if (DICAS_OPINIAO[v]) b.appendChild(ajuda(DICAS_OPINIAO[v], `O que conta como ${t.toLowerCase()}`));
@@ -2602,8 +2673,13 @@
     const grupoPills = criar('div', { className: 'pills' }, pills);
     grupoPills.setAttribute('role', 'tablist');
 
+    const DICAS_FORA = {
+      '': 'Manter: as avaliações fora do período e dos filtros ficam como estão na página',
+      esmaecer: 'Esmaecer: deixa translúcidas as avaliações fora do período e dos filtros',
+      ocultar: 'Ocultar: esconde as avaliações fora do período e dos filtros (durante a coleta, age como esmaecer)',
+    };
     const pillsFora = [['', 'Manter'], ['esmaecer', 'Esmaecer'], ['ocultar', 'Ocultar']].map(([v, t]) => {
-      const b = criar('button', { type: 'button', className: 'pill', onclick: () => { filtros.fora = v; pintarFora(); reaplicar(); } }, [t]);
+      const b = criar('button', { type: 'button', className: 'pill', onclick: () => { filtros.fora = v; pintarFora(); reaplicar(); }, dica: DICAS_FORA[v] }, [t]);
       b.dataset.valor = v;
       b.setAttribute('role', 'tab');
       return b;
@@ -2645,7 +2721,7 @@
       grupoFora,
       criar('div', { className: 'subtitulo' }, ['Na página']),
       criar('div', { className: 'tags' }, [
-        etiqueta('Destacar palavras', (v) => { filtros.destacar = v; reaplicar(); }, { ligada: filtros.destacar, dica: legendaDestaques }),
+        etiqueta('destacar', (v) => { filtros.destacar = v; reaplicar(); }, { ligada: filtros.destacar, ico: 'eye', dica: legendaDestaques }),
       ]),
     ]);
 
@@ -2666,9 +2742,9 @@
       GM_setValue(CHAVE_RESUMOS, []); rotularCasas(); status('Histórico de resumos apagado (CSV-resumo baixado antes).', 'ok');
     }, { dica: 'Limpar o histórico de resumos (baixa antes o CSV-resumo); as casas voltam a faltar no menu, salvo as marcadas à mão' });
     el.filaSelo = criar('span', { className: 'selo' });
-    const retomadaUI = secao('retomada', ['Retomada, fila e resumo', el.filaSelo], [
+    const retomadaUI = secao('retomada', ['Fila e retomada', el.filaSelo], [
       criar('div', { className: 'tags' }, [el.pararConhecidas]),
-      criar('div', { className: 'linha' }, [criar('span', { className: 'rotulo', textContent: 'Coleta salva' }), criar('span', { className: 'esp' }), bRecuperar, bEsquecer]),
+      criar('div', { className: 'linha' }, [criar('span', { className: 'rotulo', textContent: 'Salva' }), criar('span', { className: 'esp' }), bRecuperar, bEsquecer]),
       criar('div', { className: 'subtitulo' }, ['Fila', ajuda('O script abre cada lugar, coleta, baixa o CSV de tudo e espera 20–40 s antes do próximo. No fim, baixa o CSV-resumo da fila. "Parar" pausa; continuar retoma do lugar em que parou.')]),
       el.fila,
       criar('div', { className: 'linha' }, [bFila, bContinuarFila, criar('span', { className: 'esp' }),
@@ -2687,10 +2763,10 @@
     el.confSelo = criar('span', { className: 'selo', dica: 'Marcadas / sorteadas' });
     el.confAbrir = botaoIcone('arrow-top-right-on-square', 'Abrir o lugar desta avaliação', abrirLugarConferido);
     const bAchar = botaoIcone('magnifying-glass', 'Achar na página', () => executar(acharConferida));
-    const conferenciaUI = secao('conferencia', ['Conferência de fidelidade', el.confSelo], [
+    const conferenciaUI = secao('conferencia', ['Conferência', ajuda('Conferência de fidelidade: compara, uma a uma, as avaliações sorteadas do CSV com o que a página mostra.'), el.confSelo], [
       el.confIds,
       criar('div', { className: 'linha' }, [
-        botaoTexto('play', 'Começar', iniciarConferencia, 'mini'),
+        botaoTexto('play', 'Começar', iniciarConferencia, 'mini', 'Começar a conferência com os review_id colados (apaga as marcas da anterior, depois de perguntar)'),
         criar('span', { className: 'esp' }),
         botaoIcone('chevron-left', 'Anterior', () => moverConferencia(-1), 'leve'), el.confPos,
         botaoIcone('chevron-right', 'Próxima', () => moverConferencia(1), 'leve'),
@@ -2708,17 +2784,17 @@
     // ----- sal -----
     el.salResumo = criar('span', { className: 'mono', dica: 'Início e fim do sal atual, para conferir se é o mesmo nos dois domínios' });
     const pintarSal = () => { const s = sal(); el.salResumo.textContent = `${s.slice(0, 4)}…${s.slice(-4)}`; };
-    const salUI = secao('sal', ['Sal da pseudonimização', ajuda('Guarde uma cópia: sem o mesmo sal, o mesmo autor recebe outro código no CSV.')], [
-      criar('div', { className: 'linha' }, [criar('span', { className: 'rotulo', textContent: 'Sal atual' }), el.salResumo, criar('span', { className: 'esp' }),
+    const salUI = secao('sal', ['Sal', ajuda('Sal da pseudonimização dos autores. ' + 'Guarde uma cópia: sem o mesmo sal, o mesmo autor recebe outro código no CSV.')], [
+      criar('div', { className: 'linha' }, [criar('span', { className: 'rotulo', textContent: 'Atual' }), el.salResumo, criar('span', { className: 'esp' }),
         botaoIcone('document-duplicate', 'Copiar o sal', async () => {
           try { await navigator.clipboard.writeText(sal()); status('Sal copiado. Guarde-o fora do navegador.', 'ok'); }
-          catch (_) { prompt('Sal atual (copie e guarde):', sal()); }
+          catch (_) { kit.perguntar('Sal atual (copie e guarde)', { valor: sal() }); }
         }),
-        botaoIcone('arrow-down-on-square', 'Importar um sal', () => {
-          const novo = (prompt('Cole o sal (32 caracteres hexadecimais):') || '').trim().toLowerCase();
+        botaoIcone('arrow-down-on-square', 'Importar um sal', async () => {
+          const novo = ((await kit.perguntar('Cole o sal', { placeholder: '32 caracteres hexadecimais' })) || '').trim().toLowerCase();
           if (!novo) return;
           if (!/^[0-9a-f]{32}$/.test(novo)) { status('Sal inválido: são 32 caracteres de 0-9 e a-f.', 'erro'); return; }
-          if (novo !== sal() && !confirm('Trocar o sal muda os códigos das próximas coletas. Continuar?')) return;
+          if (novo !== sal() && !(await kit.confirmar('Trocar o sal muda os códigos das próximas coletas. Continuar?'))) return;
           GM_setValue(CHAVE_SAL, novo);
           pseudonimos.clear();
           pintarSal();
@@ -2731,7 +2807,7 @@
     // ----- lista dos comentários filtrados -----
     el.lista = criar('div', { className: 'lista' });
     el.listaContagem = criar('span', { className: 'selo' });
-    el.listaUI = secao('lista', ['Comentários filtrados', el.listaContagem], [el.lista],
+    el.listaUI = secao('lista', ['Filtrados', ajuda('Avaliações carregadas que passam no período e nos filtros; clicar numa a mostra na página.'), el.listaContagem], [el.lista],
       () => { chaveListaFiltrados = ''; reaplicar(); });
 
     // Reiniciar (lixeira): volta o coletor ao zero. Apaga o histórico de coleta (resumos, marcas
@@ -2774,7 +2850,7 @@
         bCsv('tudo', 'Todas as avaliações lidas', () => baixar(resultado, 'tudo')),
         criar('span', { className: 'esp' }), bReiniciar,
       ]),
-      criar('div', { className: 'linha' }, [el.placeId, ajuda('Use o place_id do B1 quando a URL não traz o identificador. Ele entra no CSV.')]),
+      criar('div', { className: 'linha' }, [kit.dica(criar('span', { className: 'rotulo' }, [icone('map-pin')]), 'place_id do B1'), el.placeId, ajuda('Use o place_id do B1 quando a URL não traz o identificador. Ele entra no CSV.')]),
       filtrosUI,
       retomadaUI,
       conferenciaUI,

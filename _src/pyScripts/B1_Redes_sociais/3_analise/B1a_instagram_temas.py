@@ -202,7 +202,7 @@ def main():
     SAIDA.mkdir(parents=True, exist_ok=True)
     posts = ic.carrega_posts()
     base = ic.janela(posts, JANELA_DE, JANELA_ATE)
-    # Uma casa pode ter dois @ (ALIAS); a casa, não o @, é a unidade das médias.
+    # A casa, não o @, é a unidade das médias.
     base["perfil_casa"] = base["estabelecimento"]
     n_por_casa = base.groupby("perfil_casa").size()
     poucas = n_por_casa[n_por_casa < MIN_POSTS]

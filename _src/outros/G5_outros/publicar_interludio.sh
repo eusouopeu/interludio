@@ -6,6 +6,8 @@
 #   _src/            -> _src/
 #   textos/{figuras,graficos,planilhas,quadros}/ -> texto/...
 #   textos/TCC_luderia_v<N>.pdf de maior N -> texto/
+#   slides-video-apresentacao/: só deck-apresentacao.pdf, deck-canva.pptx e
+#   notas-do-apresentador.pdf (exportações, fora do git) -> apresentacao/
 # O que sumiu daqui some de lá. README.md e .gitignore do interludio ficam.
 #
 # Uso: publicar_interludio.sh [--sem-push]
@@ -34,8 +36,12 @@ copiar dados-agregados dados-agregados
 copiar _src _src
 for p in figuras graficos planilhas quadros; do copiar "textos/$p" "texto/$p"; done
 cp "$ORIGEM/textos/$PDF" "$TMP/texto/"
+mkdir -p "$TMP/apresentacao"
+for f in deck-apresentacao.pdf deck-canva.pptx notas-do-apresentador.pdf; do
+  [[ -f "$ORIGEM/slides-video-apresentacao/$f" ]] && cp "$ORIGEM/slides-video-apresentacao/$f" "$TMP/apresentacao/"
+done
 
-for p in dados-agregados _src texto; do
+for p in dados-agregados _src texto apresentacao; do
   rsync -a --delete "$TMP/$p/" "$DESTINO/$p/"
 done
 

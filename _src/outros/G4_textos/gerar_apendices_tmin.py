@@ -7,12 +7,12 @@ Acrescenta ao fim do próprio .docx principal, depois das referências (9 de nov
 documento, pedido da orientação; antes, um .docx separado), os apêndices citados no texto, na ordem de citação:
 A (concorrentes do B1), B (contagem direta do B3), C (bases públicas do B4),
 D (matriz de evidências), E (registro de premissas), F (análise de conteúdo
-das avaliações do B2) e G (Monte Carlo). Os números vêm dos dados e do modelo
+das avaliações do B2), G (Monte Carlo) e H (memória de cálculo trabalhista). Os números vêm dos dados e do modelo
 financeiro (`gerar_modelo_financeiro.py`), não do texto; os do F, das saídas de
 `_src/pyScripts/B2_Avaliacoes/3_analise/B2a_temas_grade2.py`. Estilos, rodapé e margens são os do .docx principal.
 
 Toda vez que o principal mudar, rodar de novo: o script confere se o principal
-cita exatamente os apêndices A a G e se os números-chave citados no texto
+cita exatamente os apêndices A a H e se os números-chave citados no texto
 (concorrentes, premissas, P(VPL > 0)) batem com os dos apêndices; se não,
 para com a lista das divergências (regra em `_docs/_instrucoes/1c_versoes.md`).
 """
@@ -33,8 +33,8 @@ ROOT = Path(__file__).resolve().parents[3]
 B3 = ROOT / "dados-agregados" / "B3_contagem"
 B2 = ROOT / "dados-agregados" / "B2_avaliacoes" / "analise_conteudo"
 FIG_MC = ROOT / "textos" / "graficos" / "G-1_monte_carlo.png"
-LETRAS = "ABCDEFG"
-DATA_MODELO = "9 de novembro de 2026"  # versão do modelo financeiro de que saem os apêndices E e G
+LETRAS = "ABCDEFGH"
+DATA_MODELO = "18 de novembro de 2026"  # versão do modelo financeiro de que saem os apêndices E e G
 
 
 # --------------------------------------------------------------- formato
@@ -146,10 +146,10 @@ def dados():
     quadro = g.quadro_pessoal(f)
     det = g.pessoal_detalhe(quadro)  # remuneração com os adicionais da escala, como no modelo
     folha = sum(q * det[cargo]["remuneracao"] for cargo, _, q, _, _ in quadro)
-    # etapa de mesas no Monte Carlo, como no main() do modelo
+    # etapa de equipe no Monte Carlo: mantém as 8 mesas completas da abertura, como no main() do modelo
     q_exp = g.quadro_pessoal(f, "expansao")
     d_exp = g.pessoal_detalhe(q_exp, "expansao")
-    f["exp"] = dict(R01=6 + g.MC_EXPANSAO, R15=f["r15_exp"], R16=3, C15=g.refeicoes_mes("expansao"),
+    f["exp"] = dict(O01=g.MESAS + g.MC_EXPANSAO, R02=f["r15_exp"], O06=3, C15=g.refeicoes_mes("expansao"),
                     folha=sum(q * d_exp[c]["remuneracao"] for c, _, q, _, _ in q_exp))
     f["exp_quadro"] = {c: q for c, _, q, _, _ in q_exp}
     mc = g.monte_carlo(f, prem, folha, quadro)
@@ -159,8 +159,11 @@ def dados():
     notas = pd.read_csv(B3 / "contagem_notas_intervalo.csv", sep=";", encoding="utf-8-sig")
     temas = pd.read_csv(B2 / "B2_temas_frequencia.csv", sep=";", encoding="utf-8-sig")
     kappa = pd.read_csv(B2 / "B2_recodificacao_kappa.csv", sep=";", encoding="utf-8-sig")
+    # rodada 3 (16/11/2026): B2a_kappa_rodada3.py, a partir da exportação do Notion feita pelo autor
+    kappa3 = pd.read_csv(B2 / "B2_recodificacao_kappa_rodada3.csv", sep=";", encoding="utf-8-sig")
     ctx = pd.read_csv(B2 / "B2_temas_contexto.csv", sep=";", encoding="utf-8-sig")
-    return dict(f=f, prem=prem, quadro=quadro, mc=mc, est=est, vis=vis, notas=notas, temas=temas, kappa=kappa, ctx=ctx)
+    return dict(f=f, prem=prem, quadro=quadro, det=det, folha=folha, mc=mc, est=est, vis=vis, notas=notas,
+                temas=temas, kappa=kappa, kappa3=kappa3, ctx=ctx)
 
 
 UNIDADE = {"BV": "Bela Vista", "PA": "Paralela"}
@@ -210,8 +213,8 @@ def apendice_a(d):
             par(f"A busca inicial pela Google Places API levantou 164 candidatos com mais de 100 avaliações nas 14 capitais metropolitanas "
                 f"da REGIC 2018 e em suas regiões metropolitanas; uma segunda rodada de buscas, em novembro de 2026, somou candidatos e a região "
                 f"metropolitana de Campinas, a 15ª metrópole, e a curadoria manual aprovou {len(est)}. Cada concorrente pertence a uma única "
-                f"metrópole: a da região metropolitana do seu endereço. {len(por)} das 15 metrópoles têm ao menos um concorrente, "
-                "com a contagem por metrópole na Figura 5.1. A busca cruzou "
+                f"metrópole: a da região metropolitana do seu endereço. {len(por)} das 15 metrópoles têm ao menos um concorrente. "
+                "A busca cruzou "
                 f"{n_termos} termos com {n_cap} capitais (Quadro A.1). A Tabela A.1 lista os concorrentes, com a nota e o número de avaliações no Google Maps."),
             legenda("Quadro A.1 – Termos da busca na Google Places API"),
             tabela("Quadro", [4871, 2300, 1900], q1, ["left", "right", "right"], sz=18),
@@ -248,7 +251,7 @@ def apendice_b(d):
             tabela("Tabela", [800, 1071, 900, 1200, 900, 900, 1100, 1100, 1100], t1, ["left", "left"] + ["right"] * 7),
             fonte("Fonte: elaborado pelo próprio autor, com base no Bloco B3 (10 a 30 de outubro de 2026).", fim=False),
             nota("Nota: visita pela data de início. Circulação: pessoas que entraram pela porta ÷ horas observadas, sem quem já estava "
-                 "dentro na chegada (Tabela 3.1). Mesas ocupadas em média = ocupação média × mesas da unidade; pessoas por grupo e "
+                 "dentro na chegada. Mesas ocupadas em média = ocupação média × mesas da unidade; pessoas por grupo e "
                  "permanência só dos grupos sentados durante a visita."),
             par("As vendas fora das horas observadas vêm da numeração das notas fiscais. A NFC-e de uma compra do autor no início e no "
                 "fim de cada visita dá o número da nota, e a diferença entre duas visitas da mesma unidade dá as notas emitidas no "
@@ -264,11 +267,10 @@ def apendice_c(d):
          ["IBGE, Censo 2022", "SIDRA 9514", "Salvador; 2022", "Público de 20 a 39 anos (seção 5.2)"],
          ["UFBA, QUALISalvador", "Renda média familiar per capita", "160 bairros; 2018-2020", "Bairro do ponto e bairros da coleta de aluguel (seção 6.4)"],
          ["IBGE, Estimativas da população", "Estimativas de 2026", "Salvador; 2026", "Penetração da demanda"],
-         ["IBGE, PNAD Contínua", "SIDRA 5436 e 7395", "Capitais; 2º trimestre de 2026", "Renda (seção 5.2)"],
          ["IBGE, POF 2017-2018", "SIDRA 6715 e 6972; perfil das despesas", "Brasil e Bahia; 2017-2018", "Gasto com lazer e alimentação fora (seções 5.1 e 5.5)"],
          ["IBGE, PAS", "SIDRA 2611, 2619 e 10758", "Brasil; 2023", "CMV de A&B (C01)"],
-         ["IBGE, IPCA", "SIDRA 7060", "Brasil e Salvador; 12 meses até agosto de 2026", "Preços (Figura 5.3)"],
-         ["MTE, Novo CAGED", "Admissões", "Salvador; agosto de 2025 a julho de 2026", "Salários (Quadro 7.2; C06)"],
+         ["IBGE, IPCA", "SIDRA 7060", "Brasil e Salvador; 12 meses até agosto de 2026", "Preços (Figura 3)"],
+         ["MTE, Novo CAGED", "Admissões", "Salvador; agosto de 2025 a julho de 2026", "Salários (Quadro 9; C06)"],
          ["Fipe, FipeZap", "Locação comercial", "Salvador; julho de 2026", "Aluguel (C04)"],
          ["LC n. 123/2006", "Anexos I e III", "Vigentes em 2026", "Simples Nacional (seção 8.1)"],
          ["IBGE, CONCLA", "CNAE 2.3", "Subclasses; 2026", "Enquadramento (seção 8.1)"],
@@ -281,14 +283,14 @@ def apendice_c(d):
         [fn, cbo, str(n), brl(sal)] for fn, cbo, n, sal, _ in d["quadro"]]
     return [titulo("APÊNDICE C – TABELAS DE APOIO DAS BASES PÚBLICAS (BLOCO B4)"),
             par("O Bloco B4 reúne as bases públicas extraídas por inteiro, cada série com recorte e data de referência (Quadro C.1). "
-                "As faixas do Simples Nacional (Tabela C.2) e os salários de admissão (Tabela C.3) entram direto no modelo financeiro."),
+                "As faixas do Simples Nacional (Tabela C.1) e os salários de admissão (Tabela C.2) entram direto no modelo financeiro."),
             legenda("Quadro C.1 – Séries das bases públicas usadas no plano"),
             tabela("Quadro", [2200, 2300, 2271, 2300], q, ["left"] * 4),
             fonte("Fonte: elaborado pelo próprio autor, com base no Bloco B4 (outubro de 2026)."),
-            legenda("Tabela C.2 – Faixas do Simples Nacional, anexos I e III"),
+            legenda("Tabela C.1 – Faixas do Simples Nacional, anexos I e III"),
             tabela("Tabela", [900, 800, 3371, 1900, 2100], t2, ["center", "center", "right", "right", "right"]),
             fonte("Fonte: elaborado pelo próprio autor, com base na LC n. 123/2006 (anexos I e III)."),
-            legenda("Tabela C.3 – Salários de admissão da equipe"),
+            legenda("Tabela C.2 – Salários de admissão da equipe"),
             tabela("Tabela", [4371, 1200, 1200, 2300], t3, ["left", "center", "right", "right"]),
             fonte("Fonte: elaborado pelo próprio autor, com base no Novo CAGED (Salvador, admissões de agosto de 2025 a julho de 2026, mediana).", fim=False),
             nota("Nota: recreador em todas as atividades, porque a CNAE 56 tem amostra pequena para a ocupação, e cozinheiro geral na "
@@ -297,25 +299,25 @@ def apendice_c(d):
 
 
 def apendice_d(d):
-    q = [["Decisão", "Pergunta", "Dado usado (premissas)", "Fonte", "Nível"],
+    q = [["Decisão", "Pergunta", "Dado usado (premissas)", "Fonte", "Código(s)"],
          ["Bairro", "Onde instalar o ponto?", "Maior renda familiar per capita entre os 160 bairros; estação de metrô a até 1.000 m", "QUALISalvador (B4); B1", "N2 + N3"],
          ["Modelo de cobrança", "Como o mercado cobra a entrada?", "Taxa por dia e turno nos concorrentes; NFC-e da São Jogue", "B1; B3", "N3 + N5"],
-         ["Taxa de entrada", "Quanto cobrar por pessoa?", "Média da taxa das 31 casas que cobram, fora a São Jogue (R07)", "B1", "N3"],
-         ["Consumo", "Quanto cada pessoa gasta?", "Gasto por pessoa declarado no Google Maps em 18 casas (804 declarações) e cesta de consumo de 14 casas (R06)", "B1; B2", "N3"],
-         ["Demanda", "Quantas pessoas entram por dia?", "Circulação no pico nas visitas e pelas NFC-e (R04); índice \"Horários de pico\" dos concorrentes no fim de semana (R15)", "B1; B3", "N5 + N3"],
-         ["Dia útil", "Quanto o dia útil recebe do fim de semana?", "Índice \"Horários de pico\" dos concorrentes de terça a quinta (R05)", "B1", "N3"],
-         ["Mesas e grupo", "Quantas mesas o salão precisa?", "Mesas, pessoas por mesa e permanência nas visitas (R01 a R03)", "B3", "N5 + N6"],
-         ["Horário", "Em que dias e horas abrir?", "Horário de 63 concorrentes (R13, R14, R16, R17)", "B1", "N3"],
+         ["Taxa de entrada", "Quanto cobrar por pessoa?", "Média da taxa nas 21 casas que cobram conforme o dia, incluída a São Jogue (R05 e R06)", "B1", "N3"],
+         ["Consumo", "Quanto cada pessoa gasta?", "Gasto por pessoa declarado no Google Maps em 21 casas (954 declarações) e cesta de consumo de 16 casas (R04)", "B1; B2", "N3"],
+         ["Demanda", "Quantas pessoas entram por dia?", "Circulação no pico nas visitas e pelas NFC-e (R01); índice \"Horários de pico\" dos concorrentes no fim de semana (R02)", "B1; B3", "N5 + N3"],
+         ["Dia útil", "Quanto o dia útil recebe do fim de semana?", "Índice \"Horários de pico\" dos concorrentes de terça a quinta (R03)", "B1", "N3"],
+         ["Mesas e grupo", "Quantas mesas o salão precisa?", "Mesas, pessoas por mesa e permanência nas visitas (O01 a O03)", "B3", "N5 + N6"],
+         ["Horário", "Em que dias e horas abrir?", "Horário de 63 concorrentes (O04 a O07)", "B1", "N3"],
          ["Equipe", "Quantas pessoas e a que custo?", "Fluxo nas visitas; salário de admissão (C06); encargos (C07)", "B3; Novo CAGED (B4); CLT", "N5 + N2 + N1"],
-         ["Acervo inicial", "Quais jogos e a que custo?", "Jogos presentes em 12 ou mais dos 34 acervos e preço nas lojas de 8 concorrentes (I05)", "B1", "N3"],
+         ["Acervo inicial", "Quais jogos e a que custo?", "Jogos presentes em 13 ou mais dos 39 acervos e preço nas lojas de 8 concorrentes (I05)", "B1", "N3"],
          ["Ponto", "Quanto custa o ponto?", "Aluguel por m² (C04); área (C03)", "FipeZap (B4); autor", "N2 + N6"],
          ["Custo das mercadorias", "Qual o CMV do A&B?", "Mercadorias dos serviços de alimentação, 2023 e 2024 (C01)", "PAS (B4)", "N2"],
          ["Regime tributário", "Qual a carga sobre a receita?", "Anexos I e III; CNAE", "LC n. 123/2006; CONCLA", "N1"],
          ["Taxa de desconto", "Qual o custo de oportunidade?", "Selic e IPCA projetados; prêmio de risco (M01)", "BCB (B4); autor", "N2 + N6"],
          ["Investimento", "Quanto custa abrir?", "Reforma, mobiliário, cozinha e informática, item a item (I01 a I04); pré-operacionais (I06); itens sem cotação (I10)", "SINAPI e anúncios de sites (B5); autor", "N2 + N3 + N6"]]
     return [titulo("APÊNDICE D – MATRIZ DE EVIDÊNCIAS"),
-            par("A matriz liga cada decisão do plano à pergunta que ela responde, ao dado usado, à fonte e ao nível de evidência, de N1, "
-                "o mais confiável, a N6, a estimativa do autor (Quadro 3.1). Os códigos entre parênteses são as premissas do modelo "
+            par("A matriz liga cada decisão do plano à pergunta que ela responde, ao dado usado, à fonte e ao código do tipo de evidência "
+                "(N1–N6; Quadro 2). Os códigos não constituem uma escala universal de confiabilidade. Os códigos entre parênteses são as premissas do modelo "
                 "financeiro, com faixa e justificativa no Apêndice E (Quadro D.1)."),
             legenda("Quadro D.1 – Matriz de evidências"),
             tabela("Quadro", [1500, 2000, 2771, 1800, 1000], q, ["left", "left", "left", "left", "center"]),
@@ -323,18 +325,18 @@ def apendice_d(d):
 
 
 def apendice_e(d):
-    linhas = [["ID", "Premissa (unidade)", "Pessimista", "Provável", "Otimista", "Fonte", "Nível"]]
+    linhas = [["ID", "Premissa (unidade)", "Pessimista", "Provável", "Otimista", "Fonte", "Código(s)"]]
     for p in d["prem"]:
         linhas.append([p["id"], f"{p['nome']} ({unidade_rotulo(p['unidade'])})", valor(p["pess"], p["unidade"]),
                        valor(p["prov"], p["unidade"]), valor(p["otim"], p["unidade"]), p["fonte"], p["nivel"]])
     return [titulo("APÊNDICE E – REGISTRO DE PREMISSAS"),
-            par(f"O modelo do capítulo 9 tem {len(d['prem'])} premissas, cada uma com faixa pessimista, provável e otimista, fonte e nível "
-                "de evidência (Quadro E.1). O código diz o grupo: R, receita e demanda; C, custos; I, investimento; M, parâmetros do "
+            par(f"O modelo do capítulo 9 tem {len(d['prem'])} premissas, cada uma com faixa pessimista, provável e otimista, fonte e código(s) "
+                "do tipo de evidência (Quadro E.1). O código da premissa indica o grupo: O, operação; R, receita; C, custos; I, investimento; M, parâmetros do "
                 "modelo. Nas unidades em %, os valores estão em pontos percentuais."),
             legenda("Quadro E.1 – Registro de premissas do modelo financeiro"),
             tabela("Quadro", [550, 2450, 1050, 1050, 1050, 2221, 700], linhas,
                    ["center", "left", "center", "center", "center", "left", "center"], sz=18),
-            fonte("Fonte: elaborado pelo próprio autor, com base no modelo financeiro e nos Blocos B1, B3 e B4 (outubro de 2026).")], \
+            fonte("Fonte: elaborado pelo próprio autor, com base no modelo financeiro e nos Blocos B1, B3 e B4 (outubro e novembro de 2026).")], \
         dict(premissas=len(d["prem"]))
 
 
@@ -398,13 +400,50 @@ def apendice_f(d):
             par(f"A recodificação cega cobriu 199 avaliações sorteadas com estratificação por concorrente: 139 na rodada 1, antes da "
                 f"revisão do dicionário, e 60 na rodada 2, fora das primeiras. O kappa de Cohen agrupa os temas: cada avaliação, "
                 f"tema e polaridade é uma unidade. Na rodada 2, as duas codificações tiveram {int(k2.marcas_em_comum)} marcas em comum, "
-                f"de {int(k2.marcas_autor)} do autor e {int(k2.marcas_claude)} da primeira codificação (Tabela F.2). O contexto da visita, "
+                f"de {int(k2.marcas_autor)} do autor e {int(k2.marcas_claude)} da primeira codificação (Tabela F.1). O contexto da visita, "
                 f"sem polaridade, é exploratório; nas 1.628 avaliações, aparece assim: {ctx}."),
-            legenda("Tabela F.2 – Concordância da recodificação cega"),
+            legenda("Tabela F.1 – Concordância da recodificação cega"),
             tabela("Tabela", [1000, 3871, 1400, 1200, 1600], t2, ["center", "left", "right", "right", "left"]),
             fonte("Fonte: elaborado pelo próprio autor, com base no Bloco B2 (recodificação de 2 e 3 de novembro de 2026).", fim=False),
             nota("Nota: critério de aceitação de 0,70. Na rodada 1, a frequência de visita e a intenção de voltar não foram "
-                 "comparadas, porque só o autor as codificou.")], dict(kappa_temas=num(k2.kappa))
+                 "comparadas, porque só o autor as codificou."),
+            *rodada3(d["kappa3"])], dict(kappa_temas=num(k2.kappa))
+
+
+VARIAVEL3 = [("temas (positivos e negativos, agrupados)", "Temas (elogio e crítica)"),
+             ("temas positivos", "Temas, só elogio"), ("temas negativos", "Temas, só crítica"),
+             ("contexto", "Contexto"), ("costuma ir", "Frequência de visita declarada"),
+             ("voltará", "Intenção de voltar")]
+
+
+def rodada3(k):
+    """Tabela F.2: concordância da rodada 3 da recodificação cega (16/11/2026), por variável."""
+    k = k.set_index("variavel")
+    assert all(v in k.index for v, _ in VARIAVEL3), "variável da rodada 3 ausente no CSV do kappa"
+    ic = lambda v: v.replace(".", ",") if isinstance(v, str) and v else "–"
+    t = [["Variável", "Comentários", "Kappa", "IC 95%", "Concordância observada (%)", "Situação"]] + [
+        [rot, str(int(k.loc[v, "linhas"])), brl(k.loc[v, "kappa"]), ic(k.loc[v, "ic95"]),
+         f"{k.loc[v, 'concordancia_pct']:.1f}".replace(".", ","), "aceita" if k.loc[v, "kappa"] >= 0.70 else "exploratória"]
+        for v, rot in VARIAVEL3]
+    tg = k.loc["temas (positivos e negativos, agrupados)"]
+    est = lambda e: brl(k.loc[f"temas, estrato {e}", "kappa"])
+    return [par("Uma terceira rodada, em 16 de novembro de 2026, conferiu a codificação dos 678 comentários da coleta de 16 de "
+                "novembro sem código herdado da grade – os publicados depois da coleta de outubro e os das nove casas que entraram "
+                "na população em 12 de novembro. Foram sorteados 100 comentários com semente fixa, em três estratos: um de cada "
+                "casa nova (9), 30 com nota de 1 a 3 e 61 com nota 4 ou 5. O autor recodificou a amostra às cegas no Notion, e o "
+                "kappa foi calculado por script em Python a partir da exportação do banco, sem transcrição. As duas codificações "
+                f"tiveram {int(tg.marcas_em_comum)} marcas de tema em comum, de {int(tg.marcas_autor)} do autor e "
+                f"{int(tg.marcas_claude)} da primeira codificação. Todas as variáveis atingiram o critério de 0,70, inclusive o "
+                "contexto da visita e a frequência de visita declarada, que tinham ficado abaixo dele nas rodadas anteriores "
+                "(Tabela F.2)."),
+            legenda("Tabela F.2 – Concordância da terceira rodada da recodificação cega"),
+            tabela("Tabela", [2871, 1200, 900, 1300, 1600, 1200], t, ["left", "right", "right", "center", "right", "left"]),
+            fonte("Fonte: elaborado pelo próprio autor, com base no Bloco B2 (recodificação de 16 de novembro de 2026).",
+                  fim=False),
+            nota("Nota: critério de aceitação de 0,70. Kappa de Cohen agrupado nos temas e no contexto (cada comentário, tema "
+                 "e polaridade é uma unidade); intervalo de confiança por bootstrap de comentários (2.000 reamostras). Por "
+                 f"estrato, o kappa dos temas foi de {est('casa nova')} nas casas novas, {est('nota 4 e 5')} nas notas 4 e 5 "
+                 f"e {est('nota 1 a 3')} nas notas 1 a 3.")]
 
 
 def apendice_g(d):
@@ -421,22 +460,26 @@ def apendice_g(d):
          ["VPL, percentil 75 (R$)", brl(mc["p75"], 0)],
          ["VPL, percentil 90 (R$)", brl(mc["p90"], 0)],
          ["VPL, percentil 95 (R$)", brl(mc["p95"], 0)],
-         ["Cenários com a etapa de mesas (%)", pct(mc["expansao"])],
+         ["Cenários com a etapa de equipe (%)", pct(mc["expansao"])],
          ["Cenários com o gatilho G5 (%)", pct(mc["g5"])],
          ["Cenários encerrados pelo gatilho G6 (%)", pct(mc["fechamento"])],
          ["Cenários com payback em até 5 anos (%)", pct(mc["payback_5anos"])],
-         ["Payback descontado mediano (anos)", num(round(mc["payback_mediana"], 1))]]
+         ["Payback descontado mediano dos cenários que se pagam (anos)", num(round(mc["payback_mediana"], 1))]]
     return [titulo("APÊNDICE G – SIMULAÇÃO DE MONTE CARLO"),
             par(f"A simulação sorteia {brl(g.N_SIMULACOES, 0)} cenários do mesmo modelo do capítulo 9, na versão de {DATA_MODELO}. Em cada cenário, toda premissa com faixa "
                 "recebe um valor contínuo de uma distribuição PERT entre o pessimista e o otimista, com moda no provável. A PERT usa os "
                 "três valores que o registro de premissas já tem (Apêndice E) e concentra a probabilidade perto do provável, enquanto a "
-                "triangular, com os mesmos três valores, dá mais peso às pontas; a uniforme ignoraria o provável. Há duas exceções. As pessoas por mesa (R02), que só limitam o salão, vão de 2 a 6. A taxa "
-                "mínima de atratividade fica no provável, 15%: o risco já está no fluxo de caixa, e sorteá-la contaria o risco duas vezes."),
-            par("A simulação inclui as decisões de gestão do capítulo 10. Se a circulação sorteada passa do que o salão comporta, a luderia abre mais 2 mesas a "
-                "partir do ano 2, com o mobiliário proporcional pago no fim do ano 1. Se o EBITDA de um ano, a partir do ano 2, fica "
+                "triangular, com os mesmos três valores, dá mais peso às pontas; a uniforme ignoraria o provável. Há três exceções. As pessoas por mesa (O02), que só limitam o salão, vão de 2 a 6. A taxa "
+                "mínima de atratividade fica no provável, 15%: o risco já está no fluxo de caixa, e sorteá-la contaria o risco duas vezes. O valor residual (M03), fixo em 1 nos cenários do cap. 9, vira a fração da "
+                "perpetuidade que se realiza, sorteada entre 0 e 1 com moda em 1: a perpetuidade supõe que o resultado do ano 5 se repete para "
+                "sempre, e o sorteio desconta a chance de isso não acontecer."),
+            par("A simulação inclui as decisões de gestão do capítulo 10. As 8 mesas e o imóvel para a operação completa já estão instalados na abertura; "
+                "quando a demanda sorteada no pico alcança 87,5% da capacidade do salão, a partir do ano 2 entram um instrutor, um segundo cozinheiro e o domingo, "
+                "sem mesas adicionais nem mudança de imóvel. O gatilho operacional prevê a permanência do limite por três meses após a maturação; o Monte Carlo "
+                "aplica o limiar ao cenário sorteado, sem simular essa persistência mês a mês. Se o EBITDA de um ano, a partir do ano 2, fica "
                 "negativo, o gatilho G5 troca o cardápio por comidas recebidas prontas e corta um cozinheiro no ano seguinte. Se o EBITDA segue negativo, o gatilho G6 "
                 "encerra o negócio no fim desse ano, com a devolução da caução e do capital de giro e a revenda dos ativos (I09), sem valor "
-                "residual. No cenário que chega ao ano 5, entra o valor residual, e a caução e o capital de giro ficam no negócio, como no "
+                "residual. No cenário que chega ao ano 5, entra a fração sorteada do valor residual, e a caução e o capital de giro ficam no negócio, como no "
                 "capítulo 9. A semente é fixa, e o resultado se repete a cada execução."),
             par("As premissas são sorteadas de forma independente. A independência é uma hipótese, e não um dado: as fontes de cada "
                 "premissa são diferentes (contagem direta, avaliações, bases públicas, estimativas do autor), e o trabalho não tem "
@@ -456,6 +499,29 @@ def apendice_g(d):
                  "cenários com VPL negativo. Linha cheia: VPL mediano dos 10 mil cenários.")], dict(prob=pct(mc["prob_positivo"]))
 
 
+def apendice_h(d):
+    quadro, det = d["quadro"], d["det"]
+    cargos = [cargo for cargo in (g.INSTR, g.COZ) if cargo in det]
+    quantidades = {cargo: q for cargo, _, q, _, _ in quadro}
+    pessoas = {cargo: det[cargo]["pessoas"] for cargo in cargos}
+    componentes = list(pessoas[cargos[0]][0])
+    linhas = [["Componente por empregado (R$)", g.INSTR, g.COZ]]
+    for componente in componentes:
+        medias = [sum(p.get(componente, 0) for p in pessoas[cargo]) / len(pessoas[cargo]) for cargo in cargos]
+        linhas.append([componente, brl(medias[0]), brl(medias[1])])
+    totais = [sum(p["Custo mensal"] for p in pessoas[cargo]) for cargo in cargos]
+    linhas.extend([["Empregados no cargo", str(quantidades[cargos[0]]), str(quantidades[cargos[1]])],
+                   ["Custo mensal total do cargo (R$)", brl(totais[0]), brl(totais[1])]])
+    elementos = [titulo("APÊNDICE H – MEMÓRIA DE CÁLCULO TRABALHISTA"),
+                 par("A tabela discrimina os componentes médios do custo mensal por empregado e o total por cargo, conforme a escala da seção 7.5. Os valores são produzidos pelo mesmo modelo financeiro que alimenta o capítulo 9; arredondamentos podem gerar diferenças de centavos."),
+                 legenda("Tabela H.1 – Memória mensal do custo trabalhista por cargo (R$)"),
+                 tabela("Tabela", [4671, 2200, 2200], linhas, ["left", "right", "right"], sz=18),
+                 par(f"Folha mensal total dos empregados: R$ {brl(sum(totais))}."),
+                 fonte(f"Fonte: elaborado pelo próprio autor, com base no Novo CAGED e no modelo financeiro ({DATA_MODELO})."),
+                 nota("Nota: os componentes são médias por empregado dentro do cargo; os totais multiplicam os custos individuais pela quantidade de empregados. A contribuição patronal previdenciária está incluída no DAS do Simples Nacional. Refeições da equipe não integram a folha e aparecem separadas no capítulo 7.")]
+    return elementos, {}
+
+
 # --------------------------------------------------------------- conferência com o principal
 def confere(texto, chaves):
     erros = []
@@ -469,7 +535,9 @@ def confere(texto, chaves):
                                    ("P(VPL > 0)", r"positivo em ([\d,]+)% d", chaves["prob"]),
                                    ("kappa dos temas", r"temas tiveram kappa de (\d,\d+)", chaves["kappa_temas"])):
         achados = set(re.findall(padrao, texto))
-        if achados and achados != {valor_}:
+        # compara o valor, não a grafia: "78,0" no texto e "78" no apêndice são o mesmo número
+        valor_num = lambda s: float(s.replace(".", "").replace(",", "."))
+        if achados and {valor_num(a) for a in achados} != {valor_num(valor_)}:
             erros.append(f"{rotulo}: texto {sorted(achados)} × apêndice {valor_}")
     return erros
 
@@ -489,7 +557,7 @@ def main():
 
     d = dados()
     corpo, chaves = [], {}
-    for fn in (apendice_a, apendice_b, apendice_c, apendice_d, apendice_e, apendice_f, apendice_g):
+    for fn in (apendice_a, apendice_b, apendice_c, apendice_d, apendice_e, apendice_f, apendice_g, apendice_h):
         els, ch = fn(d)
         corpo += els; chaves.update(ch)
     erros = confere(texto, chaves)
@@ -519,7 +587,7 @@ def main():
                     "[Content_Types].xml": tipos}.get(item.filename, dado)
             zo.writestr(item, dado)
         zo.write(FIG_MC, f"word/media/{FIG_MC.name}")
-    print(f"OK: apêndices A a G no fim de {principal.name}; conferência sem divergência ({chaves})")
+    print(f"OK: apêndices A a H no fim de {principal.name}; conferência sem divergência ({chaves})")
 
 
 if __name__ == "__main__":

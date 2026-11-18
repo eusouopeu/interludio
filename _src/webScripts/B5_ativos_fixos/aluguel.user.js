@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Coletor de anúncios de aluguel (TCC Luderia)
 // @namespace    tcc-luderia
-// @version      2026.11.14-1
+// @version      2026.11.16-1
 // @description  Lê os anúncios das páginas de busca do OLX, ZAP Imóveis, Viva Real, NetImóveis e QuintoAndar (preço, condomínio, IPTU, área, bairro), percorre as páginas e uma fila de buscas entre portais e exporta CSV.
 // @match        https://www.olx.com.br/*
 // @match        https://www.zapimoveis.com.br/*
@@ -1299,13 +1299,13 @@
     progresso('fila', fila.i / n, `Fila: ${fila.i} de ${n} buscas${atual && fila.ativa ? ` · agora ${rotuloBusca(atual)}` : ''}`);
   }
 
-  function iniciarFila() {
+  async function iniciarFila() {
     const texto = el.filaTexto.value;
     gmGravar(CHAVE_FILA_TEXTO, texto);
     const itens = lerItensFila(texto);
     if (!itens.length) { status('A fila está vazia: uma URL de busca do OLX, ZAP, Viva Real, NetImóveis ou QuintoAndar por linha.'); return; }
     const antiga = lerFila();
-    if (antiga && antiga.i > 0 && antiga.i < antiga.itens.length && !confirm(`Há uma fila em curso (${antiga.i} de ${antiga.itens.length} buscas). Começar outra do zero?`)) return;
+    if (antiga && antiga.i > 0 && antiga.i < antiga.itens.length && !(await kit.confirmar(`Há uma fila em curso (${antiga.i} de ${antiga.itens.length} buscas). Começar outra do zero?`))) return;
     gravarFila({ itens, i: 0, ativa: true, tentativa: 0, resultados: [], inicio: Date.now() });
     abrirItem();
   }
@@ -1423,7 +1423,8 @@
   // Padrão (o do maps_avaliacoes): canto superior direito, shadow DOM preso ao <html> e
   // reposto se sumir, arrastável e redimensionável com posição salva, Montserrat,
   // Heroicons outline, roxo como cor primária, verde/âmbar/vermelho para o desfecho,
-  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto.
+  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto; perguntas
+  // (confirmar, perguntar) dentro do painel, nunca confirm() ou prompt() do navegador.
   // Só define funções: nada toca o DOM antes de montar() (os testes rodam no Node).
   function kitPainel(op = {}) {
     const P = op.prefixo || op.id || 'tcc';
@@ -1802,12 +1803,51 @@
     }
 
     // O botão vira um ✓ verde por um instante.
+    // (O conteúdo original fica guardado: um segundo clique antes de 1,2 s não grava o ✓ no lugar dele.)
+    const confirmando = new WeakMap();
     function confirmarBotao(b) {
       if (!b) return;
-      const antes = [...b.childNodes];
+      const pendente = confirmando.get(b);
+      if (pendente) clearTimeout(pendente.timer);
+      const antes = pendente ? pendente.antes : [...b.childNodes];
       b.classList.add('feito');
       b.replaceChildren(icone('check'), ...antes.filter((n) => n.nodeType === 3));
-      setTimeout(() => { b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      const timer = setTimeout(() => { confirmando.delete(b); b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      confirmando.set(b, { antes, timer });
+    }
+
+    // ---------- perguntas no painel ----------
+    // No lugar do confirm() e do prompt() do navegador, que travam a página e fogem do padrão:
+    // uma faixa âmbar no topo do painel, com ✓ (Enter) e ✗ (Esc). Devolvem uma Promise:
+    // confirmar() → true/false; perguntar() → o texto digitado ou null. Sem painel montado
+    // (testes no Node, página sem painel), caem no diálogo do navegador.
+    let fecharPergunta = null;
+    function abrirPergunta(texto, { campo = null, sim = 'Confirmar', nao = 'Cancelar' } = {}) {
+      if (fecharPergunta) fecharPergunta(campo ? null : false);
+      return new Promise((resolve) => {
+        if (painel.classList.contains('min')) minimizar(false);
+        const caixa = k.el.pergunta;
+        const fim = (v) => { fecharPergunta = null; caixa.hidden = true; caixa.replaceChildren(); fecharDica(); resolve(v); };
+        fecharPergunta = fim;
+        const bSim = botao('check', '', () => fim(campo ? campo.value : true), { classe: 'verde', dica: `${sim} (Enter)` });
+        const bNao = botao('x-mark', '', () => fim(campo ? null : false), { classe: 'leve', dica: `${nao} (Esc)` });
+        caixa.onkeydown = (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); bSim.click(); } else if (e.key === 'Escape') { e.preventDefault(); bNao.click(); }
+        };
+        caixa.replaceChildren(...[criar('span', { className: 'txt', textContent: texto }), campo, linha([esp(), bNao, bSim], 'compacta')].filter(Boolean));
+        caixa.hidden = false;
+        painel.scrollTop = 0;
+        estado('alerta');
+        try { (campo || bSim).focus(); } catch (_) { /* sem foco */ }
+      });
+    }
+    function confirmar(texto, opcoes) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof confirm === 'function' ? confirm(texto) : true);
+      return abrirPergunta(texto, opcoes);
+    }
+    function perguntar(texto, { valor = '', placeholder = '', ...opcoes } = {}) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof prompt === 'function' ? prompt(texto, valor) : null);
+      return abrirPergunta(texto, { ...opcoes, campo: criar('input', { type: 'text', value: valor, placeholder, 'aria-label': texto }) });
     }
 
     async function copiar(texto, b) {
@@ -1852,13 +1892,13 @@
         return esperarMs(600).then(() => ({ nome, via: 'navegador' }));
       }
       return new Promise((resolve) => {
-        let feito = false;
-        const fim = (via) => { if (feito) return; feito = true; soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
+        let feito = false, espera = 0;
+        const fim = (via) => { if (feito) return; feito = true; clearTimeout(espera); soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
         const comum = () => { baixarComum(nome, url); setTimeout(() => fim('navegador'), 600); };
         try {
           GM_download({ url, name: pastaDoArquivo(pasta, nome), saveAs: false, onload: () => fim('pasta'), onerror: () => { if (!feito) comum(); }, ontimeout: () => { if (!feito) comum(); } });
           // Sem resposta do Tampermonkey em 15 s: segue (o download pode ainda sair).
-          setTimeout(() => fim('pasta'), 15000);
+          espera = setTimeout(() => fim('pasta'), 15000);
         } catch (_) { comum(); }
       });
     }
@@ -1868,12 +1908,20 @@
     // Seletor por grupo com ✓ ok, ◐ parcial, ! refazer, ○ falta; contador com barra fina;
     // botões Próximo (o que falta, primeiro no mesmo grupo), Marcar/Desfazer e Só os que faltam.
     const SIMBOLO = { ok: '✓', parcial: '◐', falha: '!', falta: '○' };
+    // aoAdicionar (opcional): botão "+" que acrescenta um alvo à lista (o script pergunta os dados
+    // e guarda); depois de mudar a lista, recarregar() refaz as opções do seletor.
     function menuAlvos({ itens, id = (x) => x.id, grupo = (x) => x.capital, nome = (x) => x.nome, detalhe = () => '',
-      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, unidade = 'coletados' }) {
-      const lista = itens();
-      const grupos = [...new Set(lista.map(grupo))];
-      const select = criar('select', { 'aria-label': 'Alvo da coleta' }, grupos.map((g) => criar('optgroup', { label: g },
-        lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, aoAdicionar, dicaAdicionar = 'Adicionar à lista de alvos da coleta',
+      unidade = 'coletados' }) {
+      let lista = [];
+      const select = criar('select', { 'aria-label': 'Alvo da coleta' });
+      function opcoes() {
+        lista = itens();
+        const grupos = [...new Set(lista.map(grupo))];
+        select.replaceChildren(...grupos.map((g) => criar('optgroup', { label: g },
+          lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      }
+      opcoes();
       dica(select, `✓ ok · ◐ parcial · ! refazer · ○ falta. Escolher abre o alvo e coleta.`);
       select.onchange = () => aoEscolher(lista.find((x) => id(x) === select.value));
       let soFaltam = ler(chave('soFaltam'), false);
@@ -1882,11 +1930,13 @@
       const bMarcar = aoMarcar ? botao('check', '', () => aoMarcar(lista.find((x) => id(x) === select.value)), { classe: 'leve' }) : null;
       const bFiltro = alternaIcone({ ico: 'funnel', rotulo: 'Só os que faltam', ligado: soFaltam,
         aoMudar: (v) => { soFaltam = v; gravar(chave('soFaltam'), v); rotular(); } });
+      const bAdicionar = aoAdicionar ? botao('plus', '', async () => { if (await aoAdicionar()) { opcoes(); rotular(); } },
+        { classe: 'leve', dica: dicaAdicionar }) : null;
       const cont = criar('span', { className: 'pos' });
       const trilho = criar('div', { className: 'trilho fino' }, [criar('div', { className: 'preenchido' })]);
       const caixa = criar('div', { className: 'menu' }, [
         linha([select]),
-        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro], 'compacta'),
+        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro, bAdicionar], 'compacta'),
       ]);
       function rotular() {
         const a = atual();
@@ -1910,7 +1960,7 @@
         bMarcar.replaceChildren(icone(col ? 'arrow-uturn-left' : 'check'));
         dica(bMarcar, col ? 'Desfazer: volta a faltar' : 'Marcar como coletado, sem nova coleta');
       }
-      return { caixa, select, rotular, bProx };
+      return { caixa, select, rotular, bProx, bAdicionar, recarregar: () => { opcoes(); rotular(); } };
     }
 
     // ---------- painel ----------
@@ -1930,6 +1980,7 @@
         resize:both;min-width:224px;min-height:44px;max-width:calc(100vw - 24px);transition:box-shadow .2s}
       #painel.min{height:auto!important;min-height:0;resize:none;width:auto!important;min-width:0}
       #painel.min>*:not(header){display:none}
+      #painel.min header>button:not(.b-min){display:none}
       #painel.arrastando{user-select:none;opacity:.92;box-shadow:0 14px 40px rgba(0,0,0,.3)}
       header{display:flex;align-items:center;gap:2px;cursor:grab;touch-action:none;min-height:32px}
       #painel.arrastando header{cursor:grabbing}
@@ -2041,6 +2092,10 @@
       .aviso{color:var(--alerta);font-size:12.5px;margin:5px 0 0;font-weight:500}
       .aviso::before{content:"⚠ "}
       .st-alerta .aviso,.st-erro .aviso{color:inherit}
+      .pergunta{font-size:13px;background:var(--alerta-100);border-radius:10px;padding:7px 10px;margin:7px 0;animation:entra .2s ease-out}
+      .pergunta .txt{display:block;white-space:pre-line;font-weight:500}
+      .pergunta input{width:100%;margin-top:6px;background:var(--fundo)}
+      .pergunta .linha{margin:6px 0 0}
       .info{font-size:12.5px;background:var(--sup);border-radius:10px;padding:7px 10px;margin:7px 0;white-space:pre-line}
       .info:empty{display:none}
       .mono{font:11.5px/1.4 ui-monospace,Menlo,monospace;color:var(--suave);word-break:break-all}
@@ -2143,14 +2198,15 @@
       carregarFonte();
       k.el.ponto = criar('span', { className: 'ponto-estado' });
       k.el.nome = criar('span', { className: 'nome', textContent: nome });
-      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve', dica: 'Minimizar' });
+      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve b-min', dica: 'Minimizar' });
       const bSom = alternaIcone({ ico: 'bell', icoDesligado: 'bell-slash', rotulo: 'Som ao concluir', ligado: k.som,
         aoMudar: (v) => { k.som = v; gravar(chave('som'), v); if (v) tocar(true); } });
       const bAuto = autobaixar ? alternaIcone({ ico: 'arrow-down-tray', rotulo: 'Download automático', ligado: k.autobaixar,
         aoMudar: (v) => { k.autobaixar = v; gravar(chave('autobaixar'), v); } }) : null;
       const cab = criar('header', {}, [k.el.ponto, k.el.nome, ...extras, bSom, bAuto, ...aposAuto, k.el.bMin]);
       dica(k.el.nome, 'Clique para minimizar · arraste para mover · duplo clique volta ao canto');
-      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, ...filhos]);
+      k.el.pergunta = criar('div', { className: 'pergunta', hidden: true, role: 'alertdialog' });
+      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, k.el.pergunta, ...filhos]);
       k.el.painel = painel;
       k.el.nome.onclick = () => { if (!arrastou) minimizar(); };
       prepararArraste(cab);
@@ -2217,7 +2273,7 @@
     Object.assign(k, {
       criar, icone, dica, ajuda, botao, botaoPerigo, botaoParar, etiqueta, alternaIcone, botaoBaixarCada, pills, secao, naoAlterna,
       linha, esp, rotulo, selo, status, resumo, barra, progresso, estado, atualizarAcoes, executar, tocar, piscar,
-      confirmarBotao, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
+      confirmarBotao, confirmar, perguntar, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
       nome: (t) => { if (k.el.nome && k.el.nome.textContent !== t) k.el.nome.textContent = t; },
       hospedeiro: () => hospedeiro,
     });
@@ -2576,7 +2632,7 @@
   }
 
   function montarPainel() {
-    kit.el.status = criar('div', { className: 'status', textContent: '"Fila" coleta as buscas da lista; "Todas", a busca aberta.' });
+    kit.el.status = criar('div', { className: 'status', textContent: 'Pronto.' });
     el.filaContagem = kit.selo('');
     const contarFila = () => { el.filaContagem.textContent = `${lerItensFila(el.filaTexto.value).length} buscas`; };
     el.filaTexto = criar('textarea', { value: gmLer(CHAVE_FILA_TEXTO, FILA_PADRAO) || FILA_PADRAO, spellcheck: false,
@@ -2611,7 +2667,7 @@
       rotulo: 'Bairros', dica: 'Bairros de Salvador para montar as buscas: marque um ou mais; os 11 primeiros (10 bairros) são os de maior renda, os demais seguem em ordem alfabética',
       aoMudar: (lista) => { montagem.bairros = lista; prever(); },
     });
-    const outros = criar('input', { type: 'text', value: montagem.outros || '', placeholder: 'outros bairros (vírgula)',
+    const outros = criar('input', { type: 'text', value: montagem.outros || '', placeholder: 'outros',
       dica: 'Outros bairros de Salvador, separados por vírgula, como o portal escreve na URL (ex.: Caminho das Árvores, Stiep)',
       oninput: () => { montagem.outros = outros.value; prever(); } });
     const campoArea = (campo, dica) => criar('input', { type: 'number', min: 0, step: 10, value: montagem[campo] ?? '', placeholder: '–', dica,
@@ -2620,7 +2676,7 @@
     const areaMax = campoArea('areaMax', 'Área máxima em m² (vazio: sem máximo; menor que a mínima é ignorada)');
     const selosTipo = Object.entries(TIPOS_BUSCA).map(([k, t]) => seloLista('tipos', k, t.rotulo, t.dica));
     const selosPortal = PORTAIS_BUSCA.map((p) => seloLista('portais', p, NOMES_PORTAL[p], `Montar buscas no ${NOMES_PORTAL[p]}`));
-    el.bGerar = botao('magnifying-glass', 'Gerar fila', 'Gerar fila: troca a lista da fila pelas buscas montadas aqui (cada portal × bairro × tipo, com a área escolhida); depois, "Fila" coleta', () => {
+    el.bGerar = botao('magnifying-glass', 'Gerar', 'Gerar fila: troca a lista da fila pelas buscas montadas aqui (cada portal × bairro × tipo, com a área escolhida); depois, "Fila" coleta', () => {
       const r = montarBuscas(montagem);
       if (!r.urls.length) { status('Nada a buscar: escolha ao menos um bairro, um tipo e um portal que tenha esse tipo.', 'alerta'); return; }
       el.filaTexto.value = r.urls.join('\n');
@@ -2682,7 +2738,7 @@
       css: CSS_PAINEL,
       extras: [kit.botaoBaixarCada('Baixar cada busca ao terminar (fila): além do CSV da rodada no fim')],
       filhos: [
-        kit.secao('montar', 'Montar buscas', [
+        kit.secao('montar', 'Montar', [
           kit.linha([rotuloIco('map-pin', 'Bairros'), menuBairros, outros]),
           kit.linha([rotuloIco('adjustments-horizontal', 'Área em m²'), rotuloTxt('de'), areaMin, rotuloTxt('a'), areaMax, rotuloTxt('m²')]),
           criar('div', { className: 'tags' }, [rotuloIco('tag', 'Tipo de imóvel comercial'), ...selosTipo]),
@@ -2698,8 +2754,8 @@
         criar('div', { className: 'caixa' }, [el.geral, el.resumo]),
         el.funil,
         criar('div', { className: 'tags' }, [rotuloIco('adjustments-horizontal', 'Filtros dos indicadores'), ...selos]),
-        kit.secao('qualidade', 'Qualidade da busca', [criar('div', { className: 'caixa' }, [el.campos, el.mistura, el.alvo])]),
-        kit.secao('fila', ['Buscas da fila', el.filaContagem], [el.filaTexto, kit.linha([bPadrao]), el.filaTabela]),
+        kit.secao('qualidade', 'Qualidade', [criar('div', { className: 'caixa' }, [el.campos, el.mistura, el.alvo])]),
+        kit.secao('fila', ['Fila', el.filaContagem], [el.filaTexto, kit.linha([bPadrao]), el.filaTabela]),
         kit.secao('hist', [el.histTitulo], [el.hist]),
         kit.secao('buscas', [el.buscasTitulo], [el.buscas]),
       ],

@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- Página local para ver o painel de um webscript sem abrir o site: carrega o instalável
+     (_instalaveis/<script>.user.js) com o armazenamento do Tampermonkey simulado em memória.
+     Uso: servir _src/webScripts (python3 -m http.server 8791 --directory _src/webScripts) e abrir
+     http://localhost:8791/_kit_painel/demo.html?script=acervo
+     Só confere o painel (ícones, dicas, perguntas, cores); a leitura de cada site é dos testes. -->
+<meta charset="utf-8">
+<title>Painel de teste</title>
+<body style="font-family:system-ui;background:#e5e7eb;min-height:100vh;margin:24px">
+<h3 id="titulo"></h3>
+<p id="scripts"></p>
+<p>R$ 10,00 item 1</p><p>R$ 12,00 item 2</p><p>R$ 13,00 item 3</p><p>R$ 14,00 item 4</p><p>R$ 15,00 item 5</p><p>R$ 16,00 item 6</p>
+<script>
+  const SCRIPTS = ['acervo', 'cardapio', 'instagram', 'instagram_snowball', 'maps_entorno', 'maps_horarios_pico', 'maps_busca', 'maps_ficha', 'maps_avaliacoes', 'aluguel', 'mobiliario'];
+  const nome = new URLSearchParams(location.search).get('script') || 'acervo';
+  document.getElementById('titulo').textContent = `Painel de teste: ${nome}`;
+  document.getElementById('scripts').innerHTML = SCRIPTS.map((s) => `<a href="?script=${s}">${s}</a>`).join(' · ');
+  const v = {};
+  Object.assign(window, {
+    GM_getValue: (k, p) => (k in v ? v[k] : p), GM_setValue: (k, x) => { v[k] = x; }, GM_deleteValue: (k) => { delete v[k]; },
+    GM_listValues: () => Object.keys(v), GM_info: { script: { version: 'demo' } }, unsafeWindow: window,
+  });
+  if (SCRIPTS.includes(nome)) document.body.appendChild(Object.assign(document.createElement('script'), { src: `../_instalaveis/${nome}.user.js` }));
+</script>
+</body>

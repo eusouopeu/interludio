@@ -40,6 +40,8 @@ import requests
 ROOT = pathlib.Path(__file__).resolve().parents[4]
 ENTRADA = ROOT / "dados-agregados" / "B1_estabelecimentos" / "3_triagem" / "B1_aprovadas_metro_av100.xlsx"
 SAIDA = ROOT / "dados-agregados" / "B1_estabelecimentos" / "3_triagem" / "B1_instagram_aprovadas.csv"
+# Fora da população (não são luderias), como em B1b_resumo.py.
+EXCLUIDAS = {"Machado Games", "Ilusões Industriais"}
 
 CABECALHOS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
                             "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"}
@@ -115,6 +117,7 @@ def perfis_no_site(url):
 
 def main():
     aprovadas = pd.read_excel(ENTRADA)
+    aprovadas = aprovadas[~aprovadas["nome"].isin(EXCLUIDAS)]
     hoje = datetime.date.today().isoformat()
     linhas = []
     for _, a in aprovadas.iterrows():

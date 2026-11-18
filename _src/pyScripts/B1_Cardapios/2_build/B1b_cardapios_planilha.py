@@ -282,6 +282,33 @@ FONTES = {
                               formato="página da unidade no Get In (reservas)", data_cardapio="", status="extraído",
                               data_coleta="2026-11-12", nota="só a taxa de entrada"),
 }
+# Recoleta de 16/11/2026 (pedido do autor: todos os preços na mesma semana). Registro em
+# dados-agregados/B1_cardapios/B1_cardapios_recoleta.csv; originais em ca_<cidade>/ca_<casa>/recoleta_2026-11-16/.
+# Fonte igual à anterior: a transcrição vale e só a data de coleta muda. Fonte mudada: transcrição refeita.
+RECOLETA = {
+    # arquivo idêntico byte a byte ao original já transcrito
+    **dict.fromkeys(["ludus", "bodogami", "arcadea", "fortaludica", "tabuclub", "luderia_carioca", "alcapao"],
+                    "recoleta de 16/11/2026: arquivo idêntico ao transcrito"),
+    # conferido item a item, sem mudança de preço
+    **dict.fromkeys(["boardz", "boardz_couvert", "placegames", "joyjoy", "dungeon", "playeasy"],
+                    "recoleta de 16/11/2026: preços iguais aos transcritos"),
+    "tocadorato": "recoleta de 16/11/2026: cardápio reorganizado (pizzas P/M/G e bebidas agrupadas), preços iguais; "
+                  "seções Mais Pedidos e Combos da Toca fora",
+    "bardomago": "recoleta de 16/11/2026: preços iguais; menu sazonal de Halloween fora",
+    "shelf": "recoleta de 16/11/2026: preços e couvert iguais; saíram 2 itens e entraram 2 refrigerantes",
+    "nalaland": "recoleta de 16/11/2026: preços iguais; entraram drinks, doses e bebidas sem álcool (API do Menudino)",
+    # preços mudaram
+    "latabuleria": "recoleta de 16/11/2026: 22 preços maiores (drinks)",
+    "castelos": "recoleta de 16/11/2026: imagens novas no site, 41 de 69 preços maiores",
+    "arenabg": "recoleta de 16/11/2026: cardápio refeito (19 itens saíram, sobremesas mais caras); entrada igual",
+    "asgard": "recoleta de 16/11/2026: 5 preços maiores; passaporte igual",
+    "gameofboards": "recoleta de 16/11/2026: passaporte de R$ 15/25 para R$ 20/30",
+    "sidequest": "recoleta de 16/11/2026: refrigerantes e cervejas + R$ 1, Wingspan e sanduíche de frango fora; "
+                 "ingresso igual (página inicial do site)",
+}
+for _arq, _nota in RECOLETA.items():
+    FONTES[_arq]["data_coleta"] = "2026-11-16"
+    FONTES[_arq]["nota"] = "; ".join(x for x in (FONTES[_arq]["nota"], _nota) if x)
 # aprovado com cardápio acessível, mas sem transcrição
 SEM_TRANSCRICAO = {
 }

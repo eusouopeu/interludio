@@ -12,7 +12,7 @@ Regras:
 - estilo editorial de `_src/extras/graficos_comum.py`: título com a
   conclusão, calculada dos dados (muda sozinha se a coleta mudar), cinza
   para tudo e vermelho só para Salvador;
-- Instagram de LudoCafé e Dominaria fica de fora (perfil errado coletado);
+- Instagram pela coleta de 12/11/2026, com os perfis de LudoCafé e Dominaria corrigidos;
 - casas sem o dado ficam fora só do gráfico daquele dado, com o n no subtítulo.
 
 Saídas (dados-agregados/B1_estabelecimentos/5_graficos/graficos/):
@@ -44,7 +44,7 @@ PASTA = ROOT / "dados-agregados" / "B1_estabelecimentos" / "5_graficos" / "grafi
 FONTE_MAPS = ("Fonte: elaboração própria com dados do Google Maps (Places API, set. 2026; casas novas em "
               "12/10/2026), recorte B1.")
 FONTE_HOR = "Fonte: elaboração própria com horários do Google Maps e dos perfis das casas (15/10/2026), recorte B1."
-FONTE_IG = "Fonte: elaboração própria com perfis do Instagram coletados de 11 a 15/10/2026, recorte B1."
+FONTE_IG = "Fonte: elaboração própria com perfis do Instagram coletados em 12/11/2026, recorte B1."
 DIAS = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado", "domingo"]
 NOME_DIA = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
 

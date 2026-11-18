@@ -1,0 +1,123 @@
+﻿comparacao;grupo_a;grupo_b;tema;polaridade;n_grupo_a;pct_grupo_a;n_grupo_b;pct_grupo_b;dif_pp;razao_chances;p_fisher;q_bh
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);qualquer tema;crítica;18;9.7;24;100.0;-90.3;0.0;0.0;
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);regras da casa;crítica;3;1.6;10;41.7;-40.0;0.03;0.0;0.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);atendimento presencial;elogio;126;68.1;2;8.3;59.8;19.13;0.0;0.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);atendimento presencial;crítica;4;2.2;21;87.5;-85.3;0.0;0.0;0.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);preço da entrada;crítica;1;0.5;6;25.0;-24.5;0.02;0.0;0.0001
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);comida;crítica;2;1.1;9;37.5;-36.4;0.02;0.0;0.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);qualquer tema;elogio;166;89.7;8;33.3;56.4;16.57;0.0;
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);preço de outros itens;crítica;0;0.0;3;12.5;-12.5;0.02;0.0013;0.0081
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);curadoria e conservação do acervo;crítica;0;0.0;3;12.5;-12.5;0.02;0.0013;0.0081
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);preço do cardápio;crítica;4;2.2;4;16.7;-14.5;0.11;0.007;0.0365
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);rapidez do serviço;crítica;2;1.1;3;12.5;-11.4;0.08;0.0115;0.044
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);porções;crítica;2;1.1;3;12.5;-11.4;0.08;0.0115;0.044
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);limpeza;crítica;2;1.1;3;12.5;-11.4;0.08;0.0115;0.044
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);comida;elogio;68;36.8;3;12.5;24.3;3.58;0.0209;0.0731
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);variedade do acervo;elogio;43;23.2;1;4.2;19.1;4.78;0.0321;0.1038
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);variedade do acervo;crítica;1;0.5;2;8.3;-7.8;0.07;0.0354;0.1062
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);ambiente e decoração;elogio;53;28.6;2;8.3;20.3;3.63;0.046;0.1287
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);espaço e lotação;crítica;2;1.1;2;8.3;-7.3;0.12;0.0658;0.1626
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);explicação de jogos;crítica;2;1.1;2;8.3;-7.3;0.12;0.0658;0.1626
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);atendimento online;elogio;3;1.6;2;8.3;-6.7;0.17;0.102;0.2297
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);ambiente e decoração;crítica;0;0.0;1;4.2;-4.2;0.04;0.1148;0.2297
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);atendimento online;crítica;0;0.0;1;4.2;-4.2;0.04;0.1148;0.2297
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);localização e acesso;crítica;0;0.0;1;4.2;-4.2;0.04;0.1148;0.2297
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);espaço e lotação;elogio;21;11.4;0;0.0;11.4;6.4;0.141;0.2692
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);explicação de jogos;elogio;39;21.1;2;8.3;12.7;2.43;0.1774;0.324
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);comemorações e grupos;crítica;1;0.5;1;4.2;-3.6;0.13;0.217;0.3797
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);bebidas;elogio;18;9.7;0;0.0;9.7;5.41;0.2355;0.3957
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);bebidas;crítica;2;1.1;1;4.2;-3.1;0.21;0.3078;0.4971
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);curadoria e conservação do acervo;elogio;13;7.0;0;0.0;7.0;3.83;0.3704;0.5761
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);conforto e barulho;crítica;5;2.7;1;4.2;-1.5;0.48;0.5235;0.742
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);rapidez do serviço;elogio;8;4.3;0;0.0;4.3;2.35;0.6007;0.742
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);preço de outros itens;elogio;8;4.3;0;0.0;4.3;2.35;0.6007;0.742
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);preço do cardápio;elogio;8;4.3;0;0.0;4.3;2.35;0.6007;0.742
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);porções;elogio;8;4.3;0;0.0;4.3;2.35;0.6007;0.742
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);limpeza;elogio;8;4.3;0;0.0;4.3;2.35;0.6007;0.742
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);indicações de jogos;elogio;8;4.3;0;0.0;4.3;2.35;0.6007;0.742
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);conforto e barulho;elogio;11;5.9;0;0.0;5.9;3.23;0.6194;0.7433
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);comemorações e grupos;elogio;15;8.1;1;4.2;3.9;1.42;0.7008;0.8176
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);preço da entrada;elogio;4;2.2;0;0.0;2.2;1.21;1.0;1.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);regras da casa;elogio;2;1.1;0;0.0;1.1;0.67;1.0;1.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);localização e acesso;elogio;2;1.1;0;0.0;1.1;0.67;1.0;1.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);eventos e comunidade;elogio;10;5.4;1;4.2;1.2;0.94;1.0;1.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);variedade do cardápio;elogio;5;2.7;0;0.0;2.7;1.49;1.0;1.0
+a) volta x não volta;volta (n = 185);nao_volta (n = 24);variedade do cardápio;crítica;4;2.2;0;0.0;2.2;1.21;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);atendimento presencial;crítica;4;22.2;21;87.5;-65.3;0.05;0.0;0.001
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);qualquer tema;elogio;18;100.0;8;33.3;66.7;71.82;0.0;
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);atendimento presencial;elogio;11;61.1;2;8.3;52.8;13.8;0.0005;0.009
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);ambiente e decoração;elogio;9;50.0;2;8.3;41.7;9.0;0.004;0.0516
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);comida;elogio;10;55.6;3;12.5;43.1;7.59;0.0058;0.0569
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);limpeza;elogio;5;27.8;0;0.0;27.8;19.96;0.0101;0.0786
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);variedade do cardápio;crítica;4;22.2;0;0.0;22.2;15.21;0.0273;0.1777
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);conforto e barulho;crítica;5;27.8;1;4.2;23.6;6.38;0.0684;0.3811
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);comida;crítica;2;11.1;9;37.5;-26.4;0.25;0.0796;0.3883
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);regras da casa;crítica;3;16.7;10;41.7;-25.0;0.31;0.1038;0.4496
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);preço da entrada;elogio;2;11.1;0;0.0;11.1;7.42;0.1777;0.495
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);bebidas;elogio;2;11.1;0;0.0;11.1;7.42;0.1777;0.495
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);preço do cardápio;elogio;2;11.1;0;0.0;11.1;7.42;0.1777;0.495
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);curadoria e conservação do acervo;elogio;2;11.1;0;0.0;11.1;7.42;0.1777;0.495
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);rapidez do serviço;elogio;2;11.1;0;0.0;11.1;7.42;0.1777;0.495
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);preço da entrada;crítica;1;5.6;6;25.0;-19.4;0.24;0.208;0.5407
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);preço de outros itens;crítica;0;0.0;3;12.5;-12.5;0.17;0.2474;0.5675
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);curadoria e conservação do acervo;crítica;0;0.0;3;12.5;-12.5;0.17;0.2474;0.5675
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);comemorações e grupos;elogio;3;16.7;1;4.2;12.5;3.54;0.2972;0.6101
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);variedade do acervo;elogio;3;16.7;1;4.2;12.5;3.54;0.2972;0.6101
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);espaço e lotação;elogio;1;5.6;0;0.0;5.6;4.2;0.4286;0.6964
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);conforto e barulho;elogio;1;5.6;0;0.0;5.6;4.2;0.4286;0.6964
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);porções;elogio;1;5.6;0;0.0;5.6;4.2;0.4286;0.6964
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);variedade do cardápio;elogio;1;5.6;0;0.0;5.6;4.2;0.4286;0.6964
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);preço de outros itens;elogio;1;5.6;0;0.0;5.6;4.2;0.4286;0.6964
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);atendimento online;elogio;0;0.0;2;8.3;-8.3;0.24;0.4983;0.7773
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);bebidas;crítica;2;11.1;1;4.2;6.9;2.37;0.5672;0.8509
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);explicação de jogos;elogio;3;16.7;2;8.3;8.3;2.03;0.636;0.9186
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);preço do cardápio;crítica;4;22.2;4;16.7;5.6;1.41;0.7061;0.9836
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);rapidez do serviço;crítica;2;11.1;3;12.5;-1.4;0.93;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);variedade do acervo;crítica;1;5.6;2;8.3;-2.8;0.77;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);explicação de jogos;crítica;2;11.1;2;8.3;2.8;1.36;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);localização e acesso;crítica;0;0.0;1;4.2;-4.2;0.42;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);limpeza;crítica;2;11.1;3;12.5;-1.4;0.93;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);eventos e comunidade;elogio;1;5.6;1;4.2;1.4;1.34;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);espaço e lotação;crítica;2;11.1;2;8.3;2.8;1.36;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);comemorações e grupos;crítica;1;5.6;1;4.2;1.4;1.34;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);atendimento online;crítica;0;0.0;1;4.2;-4.2;0.42;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);ambiente e decoração;crítica;0;0.0;1;4.2;-4.2;0.42;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);porções;crítica;2;11.1;3;12.5;-1.4;0.93;1.0;1.0
+b) com crítica: volta x não volta;volta_criticando (n = 18);nao_volta (n = 24);qualquer tema;crítica;18;100.0;24;100.0;0.0;0.76;1.0;
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);atendimento presencial;crítica;21;87.5;47;45.2;42.3;7.44;0.0002;0.0064
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);regras da casa;crítica;10;41.7;15;14.4;27.2;4.18;0.0076;0.1334
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);atendimento online;elogio;2;8.3;0;0.0;8.3;23.22;0.034;0.3962
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);preço da entrada;crítica;6;25.0;12;11.5;13.5;2.6;0.1054;0.7419
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);comida;crítica;9;37.5;21;20.2;17.3;2.38;0.106;0.7419
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);explicação de jogos;elogio;2;8.3;2;1.9;6.4;4.56;0.1593;0.8203
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);localização e acesso;crítica;1;4.2;0;0.0;4.2;13.34;0.1875;0.8203
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);eventos e comunidade;elogio;1;4.2;0;0.0;4.2;13.34;0.1875;0.8203
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);variedade do acervo;crítica;2;8.3;3;2.9;5.4;3.22;0.2353;0.915
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);variedade do cardápio;crítica;0;0.0;7;6.7;-6.7;0.27;0.3462;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);curadoria e conservação do acervo;elogio;0;0.0;7;6.7;-6.7;0.27;0.3462;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);limpeza;crítica;3;12.5;6;5.8;6.7;2.47;0.3681;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);curadoria e conservação do acervo;crítica;3;12.5;7;6.7;5.8;2.12;0.3959;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);porções;crítica;3;12.5;7;6.7;5.8;2.12;0.3959;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);atendimento online;crítica;1;4.2;11;10.6;-6.4;0.52;0.462;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);comemorações e grupos;elogio;1;4.2;2;1.9;2.2;2.62;0.4666;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);ambiente e decoração;crítica;1;4.2;2;1.9;2.2;2.62;0.4666;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);preço do cardápio;crítica;4;16.7;11;10.6;6.1;1.78;0.4798;0.933
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);espaço e lotação;crítica;2;8.3;17;16.3;-8.0;0.56;0.5244;0.9661
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);comemorações e grupos;crítica;1;4.2;3;2.9;1.3;1.85;0.569;0.9884
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);qualquer tema;crítica;24;100.0;99;95.2;4.8;2.71;0.5829;
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);eventos e comunidade;crítica;0;0.0;6;5.8;-5.8;0.31;0.5931;0.9884
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);explicação de jogos;crítica;2;8.3;6;5.8;2.6;1.68;0.6434;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);comida;elogio;3;12.5;9;8.7;3.8;1.64;0.6964;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);rapidez do serviço;crítica;3;12.5;19;18.3;-5.8;0.71;0.7643;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);localização e acesso;elogio;0;0.0;1;1.0;-1.0;1.41;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);qualquer tema;elogio;8;33.3;37;35.6;-2.2;0.93;1.0;
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);espaço e lotação;elogio;0;0.0;3;2.9;-2.9;0.59;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);conforto e barulho;crítica;1;4.2;8;7.7;-3.5;0.72;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);conforto e barulho;elogio;0;0.0;1;1.0;-1.0;1.41;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);preço de outros itens;elogio;0;0.0;4;3.8;-3.8;0.46;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);preço de outros itens;crítica;3;12.5;12;11.5;1.0;1.2;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);variedade do acervo;elogio;1;4.2;6;5.8;-1.6;0.97;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);bebidas;crítica;1;4.2;5;4.8;-0.6;1.15;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);atendimento presencial;elogio;2;8.3;10;9.6;-1.3;1.0;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);indicações de jogos;crítica;0;0.0;3;2.9;-2.9;0.59;1.0;1.0
+c) nota 1-2: não volta x sem decisão;nao_volta (n = 24);nota_baixa_sem_decisao (n = 104);ambiente e decoração;elogio;2;8.3;12;11.5;-3.2;0.82;1.0;1.0

@@ -1,6 +1,6 @@
 """
 Bloco B1 - concorrentes abertos em cada hora de cada dia da semana, para levar
-a circulação medida no pico (B3) ao dia inteiro (premissa R15 do cap. 9).
+a circulação medida no pico (B3) ao dia inteiro (premissa R02 do cap. 9).
 
 Uma casa conta como aberta numa faixa de 1 h quando o meio da faixa (h:30) cai
 num intervalo do horário do Google Maps; a madrugada conta no dia em que a
@@ -8,7 +8,7 @@ casa abriu. A referência é a média das casas abertas nas janelas das visitas
 do B3, ponderada pela sobreposição de cada janela com cada faixa. As horas de
 pico equivalentes de um dia são a soma, nas horas abertas do plano, das casas
 abertas ÷ referência (decisão do autor, 02/11/2026). As mesmas horas, com o
-horário da São Jogue, convertem as NFC-e por dia em circulação no pico (R04
+horário da São Jogue, convertem as NFC-e por dia em circulação no pico (R01
 pessimista).
 
 Entradas: B1_resumo_estabelecimentos.xlsx (aba estabelecimentos);

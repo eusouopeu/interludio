@@ -1,6 +1,6 @@
 """
 Bloco B1 - horas de pico equivalentes pelo índice "Horários de pico" do Google
-Maps (premissas R05 e R15 do cap. 9; decisão do autor, 12/11/2026, que troca a
+Maps (premissas R03 e R02 do cap. 9; decisão do autor, 12/11/2026, que troca a
 contagem de casas abertas por hora, B1a_abertos_por_hora.py, por uma medida
 de movimento).
 
@@ -15,9 +15,9 @@ sábado), ponderado pela sobreposição de cada janela com cada faixa, média da
 quatro visitas. As horas de pico equivalentes de um dia são a soma da curva
 nas horas abertas ÷ referência: quantas horas com o movimento das visitas o
 dia contém. A mesma conta vale para o dia útil, que deixa de precisar da razão
-de gasto com cartão (antiga R05) e do ajuste do horário (antiga R19). Com o
+de gasto com cartão (antiga R03) e do ajuste do horário (antiga R19). Com o
 horário da São Jogue, os sete dias da semana convertem as NFC-e por dia em
-circulação no pico (R04 pessimista).
+circulação no pico (R01 pessimista).
 
 Entradas: dados-agregados/B1_estabelecimentos/B1_horarios_pico_concorrentes_horas.csv
           (B1a_horarios_pico.py); B1_resumo_estabelecimentos.xlsx (horários);

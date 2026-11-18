@@ -6,7 +6,7 @@
 // Mesmo padrão do coletor de preços (B5): seletor com as sementes, marcadas como coletadas;
 // escolher uma abre o perfil, abre a lista "seguindo", rola e baixa (uma fila de uma
 // semente); "Próximo" faz o mesmo com a próxima que falta. Sementes: as 11 da rodada 1
-// (dados-agregados/B1_redes_sociais/snowball/B1_snowball_sementes.csv) e as 41 próximas, por capital
+// (dados-agregados/B1_redes_sociais/snowball/B1_snowball_sementes.csv) e as 39 próximas, por capital (sem Machado Games e Ilusões Industriais, fora da população)
 // (B1_snowball_proximas_sementes.csv). [perfil, estabelecimento, grupo]
 var LISTA_INSTAGRAM_SNOWBALL = [
   ["alcapaojogos", "", "Rodada 1"],
@@ -34,8 +34,6 @@ var LISTA_INSTAGRAM_SNOWBALL = [
   ["insidegamestore", "Inside Games", "Brasília"],
   ["ludocafebh", "LudoCafé", "Belo Horizonte"],
   ["chefonplay", "Chef on Play", "Florianópolis"],
-  ["ilusoesindustriais", "Ilusões Industriais", "Porto Alegre"],
-  ["machadogames", "Machado Games", "Vitória"],
   ["luderiacariocajogos", "Luderia Carioca", "Rio de Janeiro"],
   ["boardzgamepub", "BoardZ Game Pub", "Curitiba"],
   ["covilgb", "Covil Game Bar", "São Paulo"],

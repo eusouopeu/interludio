@@ -49,6 +49,29 @@ test('lê o card do Acervo de Jogos como o Python (preço, período e período d
   assert.equal(r.mais, true);
 });
 
+test('lê o card personalizado do Acervo de Jogos (tema lojacard, como a Bardo Mago)', () => {
+  const t = carregar();
+  const html = '<a href="/boardgames/ito" aria-label="Ito" class="lojacard-portal"><img></a>'
+    + '<h3 class="lojacard-titulo lojacard-font-bold"><a href="/boardgames/ito" class="lojacard-hover:underline">Ito</a></h3>'
+    + '<p class="lojacard-pt-2">R$ 10 / 1 dia</p>'
+    + '<h3 class="lojacard-titulo"><a href="/boardgames/trial" class="lojacard-hover:underline">Trial by Trolley</a></h3>'
+    + '<p>R$ 1.020,50 / 3 dias</p>';
+  const r = t.lerAcervoDeJogos(html, 'bardomago', 1);
+  assert.equal(JSON.stringify(r.jogos.map((j) => [j.jogo, j.aluguel_rs, j.aluguel_dias])), JSON.stringify([['Ito', 10, 1], ['Trial by Trolley', 1020.5, 3]]));
+  assert.equal(r.mais, false);
+});
+
+test('lê o card de outro tema (Shelf) e pula card sem título e botão "Ver"', () => {
+  const t = carregar();
+  const html = '<a href="/boardgames/ito-copia-2" class="lojacard-block"><img src="x"><span>Disponível</span></a>'
+    + '<a href="/boardgames/ito-copia-2" class="lojacard-font-bold">ito</a><span class="lojacard-text-base">R$ 15 / 1 dia</span>'
+    + '<a href="/boardgames/ito-copia-2" class="acao">Ver</a>'
+    + '<a href="/boardgames/sem-nome" class="x"></a><b>R$ 9</b><a href="/boardgames/sem-nome">Ver</a>'
+    + '<a href="/boardgames/catan">Catan</a><span>R$ 30<span> / 2 dias</span></span>';
+  const r = t.lerAcervoDeJogos(html, 'shelf', 1);
+  assert.equal(JSON.stringify(r.jogos.map((j) => [j.jogo, j.aluguel_rs, j.aluguel_dias])), JSON.stringify([['ito', 15, 1], ['Catan', 30, 2]]));
+});
+
 test('lê a rejoy pelo __NUXT_DATA__', () => {
   const t = carregar();
   const d = [{ data: 1 }, { 'boardgames-1': 2 }, ['Reactive', 3], { data: 4, meta: 7 }, [5], { name: 6, price_category: null }, ' Azul ', { last_page: 8 }, 2];

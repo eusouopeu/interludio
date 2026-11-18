@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1890" height="1260" viewBox="0 0 1890 1260">
+  <rect width="1890" height="1260" fill="#ffffff"/>
+  <text x="945" y="76" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" fill="#25232a">Tipos de evidência usados no plano</text>
+  <text x="945" y="128" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#5e5965">Os códigos descrevem a origem da evidência, não sua qualidade geral</text>
+
+  <!-- N1 -->
+  <g transform="translate(75,180)">
+    <rect width="560" height="330" rx="20" fill="#fbf9fd" stroke="#7b2cbf" stroke-width="4"/>
+    <rect x="28" y="26" width="96" height="46" rx="23" fill="#7b2cbf"/>
+    <text x="76" y="58" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#ffffff">N1</text>
+    <text x="30" y="124" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#29252e">
+      <tspan x="30" dy="0">Orçamento, cotação, contrato</tspan>
+      <tspan x="30" dy="38">ou tabela oficial</tspan>
+    </text>
+    <text x="30" y="238" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#5e5965">
+      <tspan x="30" dy="0">Ex.: alíquotas do Simples Nacional.</tspan>
+    </text>
+  </g>
+
+  <!-- N2 -->
+  <g transform="translate(665,180)">
+    <rect width="560" height="330" rx="20" fill="#fbf9fd" stroke="#7b2cbf" stroke-width="4"/>
+    <rect x="28" y="26" width="96" height="46" rx="23" fill="#7b2cbf"/>
+    <text x="76" y="58" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#ffffff">N2</text>
+    <text x="30" y="124" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#29252e">
+      <tspan x="30" dy="0">Dado público estruturado</tspan>
+    </text>
+    <text x="30" y="205" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#5e5965">
+      <tspan x="30" dy="0">Ex.: IBGE, Novo CAGED, FipeZap</tspan>
+      <tspan x="30" dy="32">e Banco Central.</tspan>
+    </text>
+  </g>
+
+  <!-- N3 -->
+  <g transform="translate(1255,180)">
+    <rect width="560" height="330" rx="20" fill="#fbf9fd" stroke="#7b2cbf" stroke-width="4"/>
+    <rect x="28" y="26" width="96" height="46" rx="23" fill="#7b2cbf"/>
+    <text x="76" y="58" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#ffffff">N3</text>
+    <text x="30" y="124" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#29252e">
+      <tspan x="30" dy="0">Benchmark de concorrentes</tspan>
+      <tspan x="30" dy="38">por rastros digitais</tspan>
+    </text>
+    <text x="30" y="238" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#5e5965">
+      <tspan x="30" dy="0">Ex.: preços, horários e acervos</tspan>
+      <tspan x="30" dy="32">do Bloco B1.</tspan>
+    </text>
+  </g>
+
+  <!-- N4 -->
+  <g transform="translate(75,555)">
+    <rect width="560" height="330" rx="20" fill="#fbf9fd" stroke="#7b2cbf" stroke-width="4"/>
+    <rect x="28" y="26" width="96" height="46" rx="23" fill="#7b2cbf"/>
+    <text x="76" y="58" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#ffffff">N4</text>
+    <text x="30" y="124" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#29252e">
+      <tspan x="30" dy="0">Relatório ou referência setorial</tspan>
+    </text>
+    <text x="30" y="205" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#5e5965">
+      <tspan x="30" dy="0">Ex.: margens de bares e</tspan>
+      <tspan x="30" dy="32">restaurantes.</tspan>
+    </text>
+  </g>
+
+  <!-- N5 -->
+  <g transform="translate(665,555)">
+    <rect width="560" height="330" rx="20" fill="#fbf9fd" stroke="#7b2cbf" stroke-width="4"/>
+    <rect x="28" y="26" width="96" height="46" rx="23" fill="#7b2cbf"/>
+    <text x="76" y="58" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#ffffff">N5</text>
+    <text x="30" y="124" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#29252e">
+      <tspan x="30" dy="0">Coleta primária comportamental</tspan>
+      <tspan x="30" dy="38">do próprio autor</tspan>
+    </text>
+    <text x="30" y="238" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#5e5965">
+      <tspan x="30" dy="0">Ex.: contagem direta no Bloco B3.</tspan>
+    </text>
+  </g>
+
+  <!-- N6 -->
+  <g transform="translate(1255,555)">
+    <rect width="560" height="330" rx="20" fill="#fbf9fd" stroke="#7b2cbf" stroke-width="4"/>
+    <rect x="28" y="26" width="96" height="46" rx="23" fill="#7b2cbf"/>
+    <text x="76" y="58" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#ffffff">N6</text>
+    <text x="30" y="124" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#29252e">
+      <tspan x="30" dy="0">Estimativa do autor ou</tspan>
+      <tspan x="30" dy="38">entrevista informal</tspan>
+    </text>
+    <text x="30" y="238" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#5e5965">
+      <tspan x="30" dy="0">Ex.: rampa de maturação.</tspan>
+    </text>
+  </g>
+
+  <g transform="translate(75,930)">
+    <rect width="1740" height="260" rx="20" fill="#f4eff9" stroke="#d7c2ea" stroke-width="2"/>
+    <rect width="14" height="260" rx="7" fill="#7b2cbf"/>
+    <text x="48" y="58" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#29252e">Como interpretar os códigos</text>
+    <text x="48" y="112" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#4f4a55">Uma premissa pode combinar mais de um tipo — por exemplo, N3 + N5.</text>
+    <text x="48" y="158" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#4f4a55">Avalie a adequação à pergunta, o método, a cobertura, a atualidade e as limitações.</text>
+    <text x="48" y="204" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#4f4a55">N1–N6 são categorias, não uma escala universal de confiabilidade.</text>
+  </g>
+</svg>

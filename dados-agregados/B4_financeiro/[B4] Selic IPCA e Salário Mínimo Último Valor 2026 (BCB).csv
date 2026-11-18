@@ -1,7 +1,7 @@
 codigo_sgs,serie,data,valor
-13522,ipca_acumulado_12_meses,2026-08-01,4.22
-433,ipca_variacao_mensal,2026-08-01,-0.32
-1619,salario_minimo,2026-09-01,1621.0
-4189,selic_anualizada_base_252,2026-09-01,13.9
-4390,selic_acumulada_no_mes,2026-09-01,0.41
-432,selic_meta,2026-09-14,14.0
+13522,ipca_acumulado_12_meses,2026-10-01,4.63
+433,ipca_variacao_mensal,2026-10-01,0.14
+1619,salario_minimo,2026-11-01,1621.0
+4189,selic_anualizada_base_252,2026-11-01,13.65
+4390,selic_acumulada_no_mes,2026-11-01,0.46
+432,selic_meta,2026-11-15,13.75

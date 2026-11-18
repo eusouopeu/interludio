@@ -130,6 +130,16 @@ FONTES = {
     "60 Minutos Escape, Hamburgueria e Boardgames": ("lista", "sessentaminutos"),
     # acervo da marca: o cardápio de jogos do @covilgb atende as duas unidades
     "Covil Game Bar SBC": ("covil", ""),
+    # 15/11/2026: varredura das casas sem acervo
+    "Muito Geek | TCG • Board Games • Fliperama": ("acervodejogos", "muito"),
+    # página /jogos do site (cards "N / ACERVO"), em lista_boardz.txt
+    "BoardZ Game Pub": ("lista", "boardz"),
+    # catálogo de locação do site (/locacao?page=N), em lista_gameofboards.txt
+    "Game Of Boards": ("lista", "gameofboards"),
+    # lista "Encounter Board Games | Acervo de Jogos" da Ludopedia (perfil Encounter Cafe), em lista_encounter.txt
+    "Encounter | Jogos de Tabuleiro | Board Games": ("lista", "encounter"),
+    # cardápio Takeat, categorias de jogos (sem os quebra-cabeças), em lista_cartola.txt
+    "Cartola Luderia Bar": ("lista", "cartola"),
 }
 # Período do aluguel básico publicado pela casa, para os cards sem "/ N dias".
 PERIODO_DA_CASA = {"saojogue": 4}
@@ -160,14 +170,22 @@ def acervodejogos(sub):
     jogos, pagina = [], 1
     while True:
         texto = baixa(f"{base}&page={pagina}", RAW / sub / f"p{pagina:02d}.html")
-        # Cada card: título (link line-clamp-2) e, logo depois, "R$ X<span> / N dia(s)</span>".
-        for bloco in texto.split("line-clamp-2")[1:]:
-            nome = re.match(r'[^"]*" href="/boardgames/[^"]+">([^<]+)</a>', bloco)
+        # Cada loja pode ter o próprio tema de card (padrão line-clamp-2, Bardo Mago, Shelf…),
+        # então a leitura não depende de classe: um card é a sequência de links /boardgames/<jogo>
+        # com o mesmo jogo; o título é o primeiro desses links só com texto (o da imagem tem <img>
+        # e o selo "Disponível"; o botão "Ver" vem depois); o preço é o primeiro "R$ X / N dia(s)"
+        # até o card seguinte. Card sem título é pulado.
+        cards = []
+        for m in re.finditer(r'<a\b[^>]*?href="/boardgames/([^"?#/]+)"[^>]*>([^<]*)</a>', texto):
+            if not (cards and cards[-1][1] == m.group(1)):
+                cards.append((m.start(), m.group(1), limpa(m.group(2))))
+        for i, (pos, _, nome) in enumerate(cards):
             if not nome:
                 continue
-            preco = re.search(r"R\$\s*([\d.,]+)(?:\s*<span[^>]*>\s*/\s*(\d+)\s*dias?\s*</span>)?", bloco)
+            fim = cards[i + 1][0] if i + 1 < len(cards) else len(texto)
+            preco = re.compile(r"R\$\s*([\d.,]+)(?:\s*(?:<[^>]+>\s*)*/\s*(\d+)\s*dias?\b)?").search(texto, pos, fim)
             dias = int(preco.group(2)) if preco and preco.group(2) else PERIODO_DA_CASA.get(sub)
-            jogos.append((limpa(nome.group(1)),
+            jogos.append((nome,
                           float(preco.group(1).replace(".", "").replace(",", ".")) if preco else None,
                           dias if preco else None))
         if f"page={pagina + 1}&amp;sort=mais_alugados" not in texto:

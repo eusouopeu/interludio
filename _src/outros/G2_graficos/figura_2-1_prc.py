@@ -30,16 +30,18 @@ def painel(ax, titulo, queda, alta):
     ax.axhline(0, color=gc.CLARO, lw=0.9, zorder=0)
     ax.axvline(0, color=gc.APAGADO, lw=0.9, zorder=0)
     ax.plot(xs, ys, color=gc.BASE, lw=2.4, marker="o", ms=6, zorder=3)
+    # pontos da penalidade e da recompensa em destaque, na cor dos rótulos
+    ax.plot([-1, 1], [-queda, alta], ls="none", marker="o", ms=6, color=gc.ROXO, zorder=4)
     # penalidade: queda até o ponto da esquerda
     ax.annotate("", xy=(-1, -queda), xytext=(-1, 0),
                 arrowprops=dict(arrowstyle="-|>", color=gc.TINTA2, lw=1.3))
     ax.text(-1, -queda - 0.14, f"Penalidade\n{'grande' if queda > alta else 'pequena'}",
-            ha="center", va="top", fontsize=10, color=gc.TINTA, linespacing=1.1)
+            ha="center", va="top", fontsize=10, color=gc.ROXO, linespacing=1.1)
     # recompensa: alta até o ponto da direita
     ax.annotate("", xy=(1, alta), xytext=(1, 0),
                 arrowprops=dict(arrowstyle="-|>", color=gc.TINTA2, lw=1.3))
     ax.text(1, alta + 0.14, f"Recompensa\n{'grande' if alta > queda else 'pequena'}",
-            ha="center", va="bottom", fontsize=10, color=gc.TINTA, linespacing=1.1)
+            ha="center", va="bottom", fontsize=10, color=gc.ROXO, linespacing=1.1)
     ax.set_title(titulo, fontsize=12, color=gc.TINTA, fontweight="semibold", pad=10)
     ax.set_xlim(-1.35, 1.35)
     ax.set_ylim(-1.75, 1.75)

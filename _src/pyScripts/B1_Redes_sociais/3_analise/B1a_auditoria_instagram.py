@@ -4,7 +4,7 @@ fidelidade dos perfis e dos posts à página (_docs/_instrucoes/4_metodologia.md
 
 Desenho:
 - perfis: todos (conferência exaustiva; são poucos e cada um leva um minuto):
-  seguidores, número de posts declarado e data do primeiro post;
+  seguidores, número de posts declarado, data do primeiro post e bio;
 - posts: 200 posts, cada perfil um estrato, com mínimo de 3 por perfil (ou
   todos, se tiver menos), resto na proporção do número de posts do perfil
   descontado o mínimo, maiores restos e menores chaves da semente
@@ -50,6 +50,8 @@ MINIMO_POR_PERFIL = 3
 CONFERIR_PERFIS = ["seguidores_na_pagina", "n_posts_na_pagina", "primeiro_post_na_pagina", "perfil_e_da_casa"]
 CONFERIR_POSTS = ["post_existe", "data_confere", "tipo_confere", "curtidas_na_pagina", "comentarios_na_pagina",
                   "legenda_confere"]
+# Só coletas dos 10 dias até 16/11/2026 (decisão de 16/11/2026: contadores e auditoria; as legendas usam o histórico).
+COLETA_MINIMA = "2026-11-06"
 NOME = re.compile(r"^(\d{4}-\d{2}-\d{2})_(.+)_instagram_(perfis|posts)(?:_(\d+))?\.csv$")
 
 
@@ -58,7 +60,7 @@ def coletas(tipo: str) -> list[Path]:
     melhores = {}
     for f in ENTRADA.glob("rs_*/rs_*/*.csv"):
         m = NOME.match(f.name)
-        if not m or m.group(3) != tipo:
+        if not m or m.group(3) != tipo or m.group(1) < COLETA_MINIMA:
             continue
         ordem = (m.group(1), int(m.group(4) or 1))
         if m.group(2) not in melhores or ordem > melhores[m.group(2)][0]:
@@ -78,14 +80,23 @@ def ler(caminhos: list[Path]) -> pd.DataFrame:
     return pd.concat(partes, ignore_index=True)
 
 
+# Perfis da população (B1b_instagram_resumo.py): fora os errados, os da marca e os de casas fora do objeto.
+RESUMO = ENTRADA / "B1_instagram_resumo.csv"
+
+
+def da_populacao(caminhos: list[Path]) -> list[Path]:
+    validos = set(pd.read_csv(RESUMO, sep=";", dtype=str).perfil_instagram.dropna().str.lower())
+    return [f for f in caminhos if NOME.match(f.name).group(2).lower() in validos]
+
+
 def main():
-    arq_perfis, arq_posts = coletas("perfis"), coletas("posts")
+    arq_perfis, arq_posts = da_populacao(coletas("perfis")), da_populacao(coletas("posts"))
     perfis = ler(arq_perfis)
     perfis["link_perfil"] = "https://www.instagram.com/" + perfis.perfil_coleta + "/"
     perfis = perfis.drop_duplicates("perfil_coleta", keep="last")
     perfis["estrato_sorteio"], perfis["chave_sorteio"] = "todos", ""
     cols_p = ["estrato_sorteio", "chave_sorteio", "perfil_coleta", "link_perfil", "seguidores", "n_posts_declarado",
-              "n_posts_coletados", "primeiro_post", "ultimo_post", "coletado_em", "arquivo"]
+              "n_posts_coletados", "primeiro_post", "ultimo_post", "bio", "coletado_em", "arquivo"]
     aa.gravar(perfis[cols_p], SAIDA, "B1_auditoria_instagram_perfis.csv", CONFERIR_PERFIS, script=__file__,
               semente="", populacao=len(perfis), origem=arq_perfis, desenho="todos os perfis (exaustivo)")
 

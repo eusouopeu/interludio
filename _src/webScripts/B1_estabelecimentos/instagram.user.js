@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Coletor de perfis do Instagram (TCC Luderia)
 // @namespace    tcc-luderia
-// @version      2026.11.13-3
+// @version      2026.11.16-2
 // @description  Mostra data, curtidas e comentários sobre cada post da grade; rola até o primeiro post; coleta posts e dados de perfis e exporta CSV/JSON.
 // @match        https://www.instagram.com/*
 // @run-at       document-start
+// @noframes
 // @grant        none
 // @require      lista_instagram.js
 // ==/UserScript==
@@ -161,8 +162,17 @@
     }
   }
 
+  // Reiniciar (lixeira, em dois cliques): baixa antes um backup JSON de tudo e apaga os posts,
+  // os perfis, as marcações, a fila e o histórico do menu (feitos, marcas e perfil escolhido).
   async function apagarSalvos() {
-    if (!confirm('Apagar todos os posts e perfis salvos neste navegador? Exporte antes o que quiser guardar.')) return;
+    const nPosts = posts.size, nPerfis = perfis.size;
+    if (nPosts || nPerfis) {
+      const d = new Date(), z = (n) => String(n).padStart(2, '0');
+      baixar(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}_${z(d.getHours())}${z(d.getMinutes())}_instagram_backup.json`,
+        JSON.stringify({ perfis: [...perfis.entries()], posts: [...posts.values()], validacao: [...validacao.entries()],
+          feitos: lerLs(CHAVE_FEITOS, {}), marcas: lerLs(CHAVE_MARCAS, {}) }, null, 1), 'application/json');
+    }
+    for (const c of [CHAVE_FEITOS, CHAVE_MARCAS, CHAVE_ALVO, CHAVE_ABRIR]) gravarLs(c, null);
     posts.clear(); perfis.clear(); capturados.clear(); totais.clear(); totalPagina.clear(); validacao.clear();
     sujos.clear(); versaoValidacao++;
     try { localStorage.removeItem(CHAVE_FILA); localStorage.removeItem(CHAVE_CURSORES); } catch (_) { /* ignora */ }
@@ -173,7 +183,9 @@
       tx.objectStore('kv').delete('estado');
     }
     ultimoKv = '';
-    status('Dados salvos apagados.');
+    kit.estado('');
+    if (menu) menu.rotular();
+    status(`Reiniciado: ${nPosts} posts e ${nPerfis} perfis apagados${nPosts || nPerfis ? ' (backup JSON baixado antes)' : ''} e histórico zerado.`, 'ok');
     lerDadosEmbutidos();
     agendarSelos();
     atualizarResumo();
@@ -1003,14 +1015,14 @@
       const u = perfilAtual() || p.perfil;
       const n = numeros(u).get(p.shortcode);
       const v = vinculo(p, u);
-      const marca = v === 'colaboração' ? '🤝 ' : v === 'sem dono identificado' ? '❔ ' : '';
-      const prefixo = (mostrarNumero && n ? `#${n} · ` : p.fixado ? '📌 · ' : '') + marca;
-      const linha1 = `${prefixo}${dataCurta(p.taken_at)} · ♥ ${compacto(p.curtidas)} · 💬 ${compacto(p.comentarios)}` +
+      const marca = v === 'colaboração' ? 'colab. · ' : v === 'sem dono identificado' ? 'sem dono · ' : '';
+      const prefixo = (mostrarNumero && n ? `#${n} · ` : p.fixado ? 'fixado · ' : '') + marca;
+      const linha1 = `${prefixo}${dataCurta(p.taken_at)} · ♥ ${compacto(p.curtidas)} · ${compacto(p.comentarios)} com.` +
         (p.visualizacoes !== '' ? ` · ▶ ${compacto(p.visualizacoes)}` : '');
       const val = validacao.get(p.shortcode);
       const marcaVal = val === 'sim' ? ' ✔' : val === 'não' ? ' ✘' : '';
-      const linha2 = ehEvento(p) ? `🎲 ${p.categorias_evento}${p.evento === 'possível' ? ' (?)' : ''}${marcaVal}`
-        : val === 'sim' ? '🎲 evento (marcado à mão) ✔' : '';
+      const linha2 = ehEvento(p) ? `◆ ${p.categorias_evento}${p.evento === 'possível' ? ' (?)' : ''}${marcaVal}`
+        : val === 'sim' ? '◆ evento (marcado à mão) ✔' : '';
       const chave = `${linha1}|${linha2}`;
       if (!selo) {
         selo = document.createElement('div');
@@ -1034,7 +1046,8 @@
   // Padrão (o do maps_avaliacoes): canto superior direito, shadow DOM preso ao <html> e
   // reposto se sumir, arrastável e redimensionável com posição salva, Montserrat,
   // Heroicons outline, roxo como cor primária, verde/âmbar/vermelho para o desfecho,
-  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto.
+  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto; perguntas
+  // (confirmar, perguntar) dentro do painel, nunca confirm() ou prompt() do navegador.
   // Só define funções: nada toca o DOM antes de montar() (os testes rodam no Node).
   function kitPainel(op = {}) {
     const P = op.prefixo || op.id || 'tcc';
@@ -1413,12 +1426,51 @@
     }
 
     // O botão vira um ✓ verde por um instante.
+    // (O conteúdo original fica guardado: um segundo clique antes de 1,2 s não grava o ✓ no lugar dele.)
+    const confirmando = new WeakMap();
     function confirmarBotao(b) {
       if (!b) return;
-      const antes = [...b.childNodes];
+      const pendente = confirmando.get(b);
+      if (pendente) clearTimeout(pendente.timer);
+      const antes = pendente ? pendente.antes : [...b.childNodes];
       b.classList.add('feito');
       b.replaceChildren(icone('check'), ...antes.filter((n) => n.nodeType === 3));
-      setTimeout(() => { b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      const timer = setTimeout(() => { confirmando.delete(b); b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      confirmando.set(b, { antes, timer });
+    }
+
+    // ---------- perguntas no painel ----------
+    // No lugar do confirm() e do prompt() do navegador, que travam a página e fogem do padrão:
+    // uma faixa âmbar no topo do painel, com ✓ (Enter) e ✗ (Esc). Devolvem uma Promise:
+    // confirmar() → true/false; perguntar() → o texto digitado ou null. Sem painel montado
+    // (testes no Node, página sem painel), caem no diálogo do navegador.
+    let fecharPergunta = null;
+    function abrirPergunta(texto, { campo = null, sim = 'Confirmar', nao = 'Cancelar' } = {}) {
+      if (fecharPergunta) fecharPergunta(campo ? null : false);
+      return new Promise((resolve) => {
+        if (painel.classList.contains('min')) minimizar(false);
+        const caixa = k.el.pergunta;
+        const fim = (v) => { fecharPergunta = null; caixa.hidden = true; caixa.replaceChildren(); fecharDica(); resolve(v); };
+        fecharPergunta = fim;
+        const bSim = botao('check', '', () => fim(campo ? campo.value : true), { classe: 'verde', dica: `${sim} (Enter)` });
+        const bNao = botao('x-mark', '', () => fim(campo ? null : false), { classe: 'leve', dica: `${nao} (Esc)` });
+        caixa.onkeydown = (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); bSim.click(); } else if (e.key === 'Escape') { e.preventDefault(); bNao.click(); }
+        };
+        caixa.replaceChildren(...[criar('span', { className: 'txt', textContent: texto }), campo, linha([esp(), bNao, bSim], 'compacta')].filter(Boolean));
+        caixa.hidden = false;
+        painel.scrollTop = 0;
+        estado('alerta');
+        try { (campo || bSim).focus(); } catch (_) { /* sem foco */ }
+      });
+    }
+    function confirmar(texto, opcoes) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof confirm === 'function' ? confirm(texto) : true);
+      return abrirPergunta(texto, opcoes);
+    }
+    function perguntar(texto, { valor = '', placeholder = '', ...opcoes } = {}) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof prompt === 'function' ? prompt(texto, valor) : null);
+      return abrirPergunta(texto, { ...opcoes, campo: criar('input', { type: 'text', value: valor, placeholder, 'aria-label': texto }) });
     }
 
     async function copiar(texto, b) {
@@ -1463,13 +1515,13 @@
         return esperarMs(600).then(() => ({ nome, via: 'navegador' }));
       }
       return new Promise((resolve) => {
-        let feito = false;
-        const fim = (via) => { if (feito) return; feito = true; soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
+        let feito = false, espera = 0;
+        const fim = (via) => { if (feito) return; feito = true; clearTimeout(espera); soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
         const comum = () => { baixarComum(nome, url); setTimeout(() => fim('navegador'), 600); };
         try {
           GM_download({ url, name: pastaDoArquivo(pasta, nome), saveAs: false, onload: () => fim('pasta'), onerror: () => { if (!feito) comum(); }, ontimeout: () => { if (!feito) comum(); } });
           // Sem resposta do Tampermonkey em 15 s: segue (o download pode ainda sair).
-          setTimeout(() => fim('pasta'), 15000);
+          espera = setTimeout(() => fim('pasta'), 15000);
         } catch (_) { comum(); }
       });
     }
@@ -1479,12 +1531,20 @@
     // Seletor por grupo com ✓ ok, ◐ parcial, ! refazer, ○ falta; contador com barra fina;
     // botões Próximo (o que falta, primeiro no mesmo grupo), Marcar/Desfazer e Só os que faltam.
     const SIMBOLO = { ok: '✓', parcial: '◐', falha: '!', falta: '○' };
+    // aoAdicionar (opcional): botão "+" que acrescenta um alvo à lista (o script pergunta os dados
+    // e guarda); depois de mudar a lista, recarregar() refaz as opções do seletor.
     function menuAlvos({ itens, id = (x) => x.id, grupo = (x) => x.capital, nome = (x) => x.nome, detalhe = () => '',
-      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, unidade = 'coletados' }) {
-      const lista = itens();
-      const grupos = [...new Set(lista.map(grupo))];
-      const select = criar('select', { 'aria-label': 'Alvo da coleta' }, grupos.map((g) => criar('optgroup', { label: g },
-        lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, aoAdicionar, dicaAdicionar = 'Adicionar à lista de alvos da coleta',
+      unidade = 'coletados' }) {
+      let lista = [];
+      const select = criar('select', { 'aria-label': 'Alvo da coleta' });
+      function opcoes() {
+        lista = itens();
+        const grupos = [...new Set(lista.map(grupo))];
+        select.replaceChildren(...grupos.map((g) => criar('optgroup', { label: g },
+          lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      }
+      opcoes();
       dica(select, `✓ ok · ◐ parcial · ! refazer · ○ falta. Escolher abre o alvo e coleta.`);
       select.onchange = () => aoEscolher(lista.find((x) => id(x) === select.value));
       let soFaltam = ler(chave('soFaltam'), false);
@@ -1493,11 +1553,13 @@
       const bMarcar = aoMarcar ? botao('check', '', () => aoMarcar(lista.find((x) => id(x) === select.value)), { classe: 'leve' }) : null;
       const bFiltro = alternaIcone({ ico: 'funnel', rotulo: 'Só os que faltam', ligado: soFaltam,
         aoMudar: (v) => { soFaltam = v; gravar(chave('soFaltam'), v); rotular(); } });
+      const bAdicionar = aoAdicionar ? botao('plus', '', async () => { if (await aoAdicionar()) { opcoes(); rotular(); } },
+        { classe: 'leve', dica: dicaAdicionar }) : null;
       const cont = criar('span', { className: 'pos' });
       const trilho = criar('div', { className: 'trilho fino' }, [criar('div', { className: 'preenchido' })]);
       const caixa = criar('div', { className: 'menu' }, [
         linha([select]),
-        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro], 'compacta'),
+        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro, bAdicionar], 'compacta'),
       ]);
       function rotular() {
         const a = atual();
@@ -1521,7 +1583,7 @@
         bMarcar.replaceChildren(icone(col ? 'arrow-uturn-left' : 'check'));
         dica(bMarcar, col ? 'Desfazer: volta a faltar' : 'Marcar como coletado, sem nova coleta');
       }
-      return { caixa, select, rotular, bProx };
+      return { caixa, select, rotular, bProx, bAdicionar, recarregar: () => { opcoes(); rotular(); } };
     }
 
     // ---------- painel ----------
@@ -1541,6 +1603,7 @@
         resize:both;min-width:224px;min-height:44px;max-width:calc(100vw - 24px);transition:box-shadow .2s}
       #painel.min{height:auto!important;min-height:0;resize:none;width:auto!important;min-width:0}
       #painel.min>*:not(header){display:none}
+      #painel.min header>button:not(.b-min){display:none}
       #painel.arrastando{user-select:none;opacity:.92;box-shadow:0 14px 40px rgba(0,0,0,.3)}
       header{display:flex;align-items:center;gap:2px;cursor:grab;touch-action:none;min-height:32px}
       #painel.arrastando header{cursor:grabbing}
@@ -1652,6 +1715,10 @@
       .aviso{color:var(--alerta);font-size:12.5px;margin:5px 0 0;font-weight:500}
       .aviso::before{content:"⚠ "}
       .st-alerta .aviso,.st-erro .aviso{color:inherit}
+      .pergunta{font-size:13px;background:var(--alerta-100);border-radius:10px;padding:7px 10px;margin:7px 0;animation:entra .2s ease-out}
+      .pergunta .txt{display:block;white-space:pre-line;font-weight:500}
+      .pergunta input{width:100%;margin-top:6px;background:var(--fundo)}
+      .pergunta .linha{margin:6px 0 0}
       .info{font-size:12.5px;background:var(--sup);border-radius:10px;padding:7px 10px;margin:7px 0;white-space:pre-line}
       .info:empty{display:none}
       .mono{font:11.5px/1.4 ui-monospace,Menlo,monospace;color:var(--suave);word-break:break-all}
@@ -1754,14 +1821,15 @@
       carregarFonte();
       k.el.ponto = criar('span', { className: 'ponto-estado' });
       k.el.nome = criar('span', { className: 'nome', textContent: nome });
-      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve', dica: 'Minimizar' });
+      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve b-min', dica: 'Minimizar' });
       const bSom = alternaIcone({ ico: 'bell', icoDesligado: 'bell-slash', rotulo: 'Som ao concluir', ligado: k.som,
         aoMudar: (v) => { k.som = v; gravar(chave('som'), v); if (v) tocar(true); } });
       const bAuto = autobaixar ? alternaIcone({ ico: 'arrow-down-tray', rotulo: 'Download automático', ligado: k.autobaixar,
         aoMudar: (v) => { k.autobaixar = v; gravar(chave('autobaixar'), v); } }) : null;
       const cab = criar('header', {}, [k.el.ponto, k.el.nome, ...extras, bSom, bAuto, ...aposAuto, k.el.bMin]);
       dica(k.el.nome, 'Clique para minimizar · arraste para mover · duplo clique volta ao canto');
-      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, ...filhos]);
+      k.el.pergunta = criar('div', { className: 'pergunta', hidden: true, role: 'alertdialog' });
+      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, k.el.pergunta, ...filhos]);
       k.el.painel = painel;
       k.el.nome.onclick = () => { if (!arrastou) minimizar(); };
       prepararArraste(cab);
@@ -1828,7 +1896,7 @@
     Object.assign(k, {
       criar, icone, dica, ajuda, botao, botaoPerigo, botaoParar, etiqueta, alternaIcone, botaoBaixarCada, pills, secao, naoAlterna,
       linha, esp, rotulo, selo, status, resumo, barra, progresso, estado, atualizarAcoes, executar, tocar, piscar,
-      confirmarBotao, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
+      confirmarBotao, confirmar, perguntar, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
       nome: (t) => { if (k.el.nome && k.el.nome.textContent !== t) k.el.nome.textContent = t; },
       hospedeiro: () => hospedeiro,
     });
@@ -1997,7 +2065,7 @@
       const rotulo = f ? ` · ${f}` : '';
       if (el.fontes[k] && el.fontes[k].textContent !== rotulo) {
         el.fontes[k].textContent = rotulo;
-        el.fontes[k].title = FONTES[f] || '';
+        kit.dica(el.fontes[k], FONTES[f] || '');
       }
     }
     el.avisoNome.textContent = d.nome_perfil.v && d.nome_perfil.v !== d.nome.v ? ` (no perfil: "${d.nome_perfil.v}")` : '';
@@ -2179,7 +2247,7 @@
         criar('span', { className: `chip ${lista.length ? 'azul' : ''}`, textContent: lista.length ? String(lista.length) : 'nenhum' }),
         precos.length ? criar('span', { className: 'suave', textContent: precos.join(', ') }) : null]);
       const itens = lista.slice(0, 15).map((x) => criar('div', { className: 'item' }, [
-        criar('a', { href: x.url, target: '_blank', title: x.texto }, [
+        criar('a', { href: x.url, target: '_blank', dica: x.texto }, [
           criar('b', { textContent: x.origem === 'bio' ? 'bio' : x.data }),
           criar('span', { textContent: `…${x.trecho}…` }),
         ]),
@@ -2210,7 +2278,7 @@
         return b;
       };
       return criar('div', { className: 'item' }, [
-        criar('a', { href: p.url, target: '_blank', title: p.legenda }, [
+        criar('a', { href: p.url, target: '_blank', dica: p.legenda }, [
           criar('b', { textContent: `${dataCurta(p.taken_at)}${p.categorias_evento ? ' · ' + p.categorias_evento : ''}${p.evento === 'possível' ? ' (?)' : ''}` }),
           criar('span', { textContent: trecho + (p.legenda.length > 110 ? '…' : '') }),
         ]),
@@ -2312,11 +2380,11 @@
     return p ? { perfil: p.perfil, data_hora: dataHora(p.taken_at), curtidas: p.curtidas, comentarios: p.comentarios, tipo: p.tipo, legenda: (p.legenda || '').replace(/\s+/g, ' ').slice(0, 120) } : null;
   }
 
-  function iniciarConferencia() {
+  async function iniciarConferencia() {
     const codigos = [...new Set(el.confCodigos.value.split(/[\s;,]+/)
       .map((t) => (t.match(/\/(?:p|reel)\/([\w-]+)/) || [null, t.trim()])[1]).filter(Boolean))];
     if (!codigos.length) { status('Cole os shortcodes ou links sorteados, um por linha.'); return; }
-    if (Object.keys(conf.marcas).length && !confirm('Começar outra conferência apaga as marcas da atual. Exporte antes. Continuar?')) return;
+    if (Object.keys(conf.marcas).length && !(await kit.confirmar('Começar outra conferência apaga as marcas da atual. Exporte antes. Continuar?'))) return;
     conf = { codigos, i: 0, coletado: Object.fromEntries(codigos.map((s) => [s, dadosColetados(s)])), marcas: {} };
     const semDados = codigos.filter((s) => !conf.coletado[s]).length;
     gravarConf();
@@ -2333,10 +2401,12 @@
     if (s) location.href = `https://www.instagram.com/p/${s}/`;
   }
 
-  function marcarConferencia(resultado) {
+  async function marcarConferencia(resultado) {
     const s = conf.codigos[conf.i];
     if (!s) return;
-    const observacao = resultado === 'diverge' ? (prompt('O que diverge? (data, curtidas, comentários, legenda…)') || '') : '';
+    // Cancelar a pergunta (Esc) não marca o post.
+    const observacao = resultado === 'diverge' ? await kit.perguntar('O que diverge?', { placeholder: 'data, curtidas, comentários, legenda…' }) : '';
+    if (observacao == null || conf.codigos[conf.i] !== s) return;
     const c = conf.coletado[s] || {};
     conf.marcas[s] = {
       shortcode: s, perfil: c.perfil || '', url: `https://www.instagram.com/p/${s}/`, data_coletada: c.data_hora || '',
@@ -2409,19 +2479,19 @@
       botao('x-mark', '', () => { el.de.value = ''; el.ate.value = ''; aoMudarData(); }, { classe: 'leve', dica: 'Sem período' }),
     ], 'compacta');
 
-    const bApi = botao('arrow-down-tray', 'Coletar período', comPerfil((u) => executar(() => coletarPerfil(u, 'periodo').then(() => concluirPerfil(u, 'periodo')))),
-      { classe: 'primario', dica: 'Dados do perfil e posts até a data "De": pela API (2 a 3 pedidos) ou, se ela falhar, rolando a grade. Não chega ao primeiro post.' });
+    const bApi = botao('arrow-down-tray', 'Coletar', comPerfil((u) => executar(() => coletarPerfil(u, 'periodo').then(() => concluirPerfil(u, 'periodo')))),
+      { classe: 'primario', dica: 'Coletar o período: dados do perfil e posts até a data "De": pela API (2 a 3 pedidos) ou, se ela falhar, rolando a grade. Não chega ao primeiro post.' });
     const bHistorico = botao('clock', '', comPerfil((u) => executar(() => coletarPerfil(u, 'completo').then(() => concluirPerfil(u, 'completo')))),
       { dica: 'Histórico completo pela API, até o primeiro post. Muitos pedidos; continua de onde parou.' });
     kit.botaoParar(() => { parar = true; status('Parando…'); });
 
     const bRolar = botao('chevron-double-down', '', () => executar(rolarAteOFim), { classe: 'leve', dica: 'Rolar a grade até o fim (sem API)' });
     const bTopo = botao('arrow-up', '', () => { if (rolando) parar = true; window.scrollTo({ top: 0, behavior: 'smooth' }); }, { classe: 'leve', dica: 'Voltar ao topo (para a rolagem)' });
-    const bCsv = botao('arrow-down-tray', 'CSV', comPerfil((u) => { exportar([u], u); kit.piscar(bCsv); }), { classe: 'mini', dica: 'CSV de posts e de perfis deste perfil' });
+    const bCsv = botao('arrow-down-tray', 'CSV', comPerfil((u) => { exportar([u], u); kit.confirmarBotao(bCsv); }), { classe: 'mini', dica: 'Baixar CSV de posts e de perfis deste perfil, para dados-agregados/B1_redes_sociais/' });
     const bJson = botao('code-bracket', '', comPerfil((u) => {
       baixar(`instagram_${u}.json`, JSON.stringify({ perfil: linhaPerfil(u), posts: postsDe(u).map((p) => ({ ...p, evento_validado: validacao.get(p.shortcode) || '' })) }, null, 2), 'application/json');
-      kit.piscar(bJson);
-    }), { classe: 'leve', dica: 'JSON com perfil e posts' });
+      kit.confirmarBotao(bJson);
+    }), { classe: 'leve', dica: 'Baixar JSON com perfil e posts' });
 
     el.resumo = criar('div', { className: 'info' });
 
@@ -2453,7 +2523,7 @@
       campo('curtidas_periodo', '', el.avisoCurtidas),
       el.foraPeriodo,
     ]);
-    const secPerfil = secao('perfil', ['Dados do perfil', el.pronto], [
+    const secPerfil = secao('perfil', ['Perfil', el.pronto], [
       campo('nome', 'Nome do estabelecimento', el.avisoNome),
       campo('primeiro', 'Primeiro post', el.avisoPrimeiro),
       campo('seguidores', 'Seguidores'),
@@ -2465,20 +2535,20 @@
     ]);
 
     // ----- grade -----
-    el.busca = criar('input', { type: 'search', placeholder: 'Buscar na legenda (torneio, quiz…)',
+    el.busca = criar('input', { type: 'search', placeholder: 'torneio, quiz…', 'aria-label': 'Buscar na legenda',
       oninput: (e) => { busca = semAcento(e.target.value.trim()); aplicarSelos(); atualizarResumo(); } });
     const secGrade = secao('grade', ['Grade'], [
       criar('div', { className: 'tags' }, [
         etiqueta('selos', (v) => { mostrarSelos = v; aplicarSelos(); }, { ligada: mostrarSelos, ico: 'eye', dica: 'Data, curtidas e comentários sobre cada post' }),
         etiqueta('nº', (v) => { mostrarNumero = v; gravarPref(PREF_NUMERO, v); aplicarSelos(); }, { ligada: mostrarNumero, ico: 'hashtag', dica: 'Número do post nos selos' }),
         etiqueta('só eventos', (v) => { soEventos = v; aplicarSelos(); atualizarResumo(); }, { ligada: soEventos, dica: 'Esmaece os posts que não são possíveis eventos' }),
-        etiqueta('rolar ao abrir', (v) => { rolarAoAbrir = v; gravarPref(PREF_ROLAR, v); }, { ligada: rolarAoAbrir, ico: 'chevron-double-down', dica: 'Rola a grade até o fim ao abrir um perfil' }),
+        etiqueta('rolar', (v) => { rolarAoAbrir = v; gravarPref(PREF_ROLAR, v); }, { ligada: rolarAoAbrir, ico: 'chevron-double-down', dica: 'Rolar ao abrir: rola a grade até o fim ao abrir um perfil' }),
       ]),
       criar('label', { className: 'busca' }, [kit.icone('magnifying-glass'), el.busca]),
     ]);
 
     // ----- eventos e indícios -----
-    el.listaTitulo = criar('span');
+    el.listaTitulo = criar('span', { textContent: 'Eventos' });
     el.listaSelo = selo();
     el.lista = criar('div', { className: 'lista' });
     el.validacao = criar('p', { className: 'vazio' });
@@ -2491,10 +2561,10 @@
     el.fila = criar('textarea', { placeholder: 'Um @perfil ou link por linha' });
     el.modoFila = kit.pills([['periodo', 'Período', 'Rápido: só os posts do período'], ['completo', 'Histórico', 'Até o primeiro post; muitos pedidos']],
       kit.ler('igc-modo-fila', 'periodo'), (v) => kit.gravar('igc-modo-fila', v));
-    const bFila = botao('play', 'Coletar fila', () => {
+    const bFila = botao('play', 'Fila', () => {
       const us = lerUsuarios(el.fila.value);
       if (us.length) executar(() => coletarFila(us, el.modoFila.valor)); else status('Cole ao menos um @ na fila.', 'alerta');
-    }, { classe: 'mini', dica: 'Coleta em sequência, com pausa entre perfis. Com a mesma lista, continua dos que faltam.' });
+    }, { classe: 'mini', dica: 'Coletar fila: coleta em sequência, com pausa entre perfis. Com a mesma lista, continua dos que faltam.' });
     el.filaSelo = selo('', 'roxo');
     const bCada = kit.botaoBaixarCada('Baixar os CSVs de cada perfil ao terminar (fila)');
     const secFila = secao('fila', ['Fila', el.filaSelo], [el.fila, linha([el.modoFila, bFila, bCada])]);
@@ -2503,9 +2573,9 @@
     el.confCodigos = criar('textarea', { placeholder: 'Shortcodes ou links sorteados, um por linha', value: conf.codigos.join('\n') });
     el.confInfo = criar('div', { className: 'info' });
     el.confPos = criar('span', { className: 'pos' });
-    const secConf = secao('conferencia', ['Conferência'], [
+    const secConf = secao('conferencia', ['Conferência', ajuda('Compara, um a um, os posts sorteados do CSV com o que o Instagram mostra.')], [
       el.confCodigos,
-      linha([botao('play', 'Começar', iniciarConferencia, { classe: 'mini' }), esp(),
+      linha([botao('play', 'Começar', iniciarConferencia, { classe: 'mini', dica: 'Começar a conferência com os posts colados (apaga as marcas da anterior, depois de perguntar)' }), esp(),
         botao('chevron-left', '', () => moverConferencia(-1), { classe: 'leve', dica: 'Anterior' }), el.confPos,
         botao('chevron-right', '', () => moverConferencia(1), { classe: 'leve', dica: 'Próximo' })]),
       el.confInfo,
@@ -2515,8 +2585,8 @@
         botao('document-check', '', baixarConferencia, { dica: 'CSV da conferência' })]),
     ], mostrarConferencia);
 
-    const bApagar = kit.botaoPerigo('trash', 'Apagar dados salvos', apagarSalvos, { classe: 'mini', dica: 'Apaga posts, perfis e marcações guardados neste navegador' });
-    kit.acoes = [bApi, bHistorico, bRolar, bCsv, bJson, bFila];
+    const bApagar = kit.botaoPerigo('trash', '', apagarSalvos, { classe: 'leve', dica: 'Reiniciar: apaga posts, perfis, marcações, fila e o histórico do menu. Baixa antes um backup JSON. As preferências ficam' });
+    kit.acoes = [bApi, bHistorico, bRolar, bCsv, bJson, bFila, bApagar];
 
     kit.montar({
       nome: 'Coletor IG', autobaixar: true, css: CSS_EXTRA, largura: 350,
@@ -2527,11 +2597,10 @@
         linhaPeriodo,
         linha([bApi, bHistorico, kit.el.parar]),
         kit.barra('coleta'), kit.barra('fila'),
-        kit.el.status = criar('div', { className: 'status', textContent: 'Escolha um perfil no seletor ou abra um no Instagram.' }),
+        kit.el.status = criar('div', { className: 'status', textContent: 'Escolha ou abra um perfil.' }),
         el.resumo,
-        linha([kit.rotulo('Exportar'), bCsv, bJson, esp(), bRolar, bTopo]),
+        linha([bCsv, bJson, bRolar, bTopo, esp(), bApagar]),
         secPerfil, secGrade, secEventos, secIndicios, secFila, secConf,
-        linha([esp(), bApagar]),
       ],
     });
     el.painel = kit.el.painel;

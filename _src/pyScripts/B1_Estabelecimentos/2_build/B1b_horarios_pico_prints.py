@@ -37,7 +37,7 @@ Saídas (dados-agregados/B1_estabelecimentos/):
     altura_px, base_px (altura da linha tracejada) e indice_semana (0-100);
   - B1_horarios_pico_sao_jogue_resumo.csv: por dia, soma do índice (volume do
     dia, em horas da hora mais cheia), hora de pico e grupo (dia útil = terça a
-    quinta; fim de semana = sexta a domingo, como em R05), mais as razões entre
+    quinta; fim de semana = sexta a domingo, como em R03), mais as razões entre
     grupos no dia inteiro e no horário do plano.
 
 Uso:

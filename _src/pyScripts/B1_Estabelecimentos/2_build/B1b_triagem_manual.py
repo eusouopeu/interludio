@@ -2,13 +2,18 @@
 Bloco B1 - separa a curadoria manual das metrópoles (mais de 100 avaliações) em
 duas planilhas: o registro da triagem e os estabelecimentos aprovados.
 
-Protocolo da triagem (feito pelo autor, um estabelecimento por vez):
-  1. fotos do Google Maps: confirmam se mostram ao menos uma estante completa
-     de jogos de caixa e ao menos duas mesas com cadeiras;
-  2. se as fotos não bastam e o nome não indica outra atividade (ex.: "game"
-     costuma ser videogame), busca do perfil no Instagram e mesma conferência
-     na bio e nas fotos;
-  3. sem confirmação em nenhum dos dois, o caso é marcado como inconclusivo.
+Protocolo da triagem (feito pelo autor, um estabelecimento por vez; mesma
+sequência da Figura 3.3 do TCC, confirmada pelo autor em 14/11/2026):
+  1. ativo: só a ausência da marca "Permanentemente fechado" no Google Maps;
+     servir alimentos e bebidas não é critério;
+  2. foto de uma estante com pelo menos dois jogos de caixa completos;
+  3. com a estante, foto de um jogo de caixa completo aberto sobre a mesa ou
+     em uso -> aprovado; sem essa foto, decide o passo 5;
+  4. sem a estante, nome sugestivo: termo ou trocadilho ligado a jogos de
+     mesa e nenhum termo de videogame; sem isso -> reprovado;
+  5. política ou declaração explícita, no site, no Instagram ou na bio, de
+     jogos de cartas ou de tabuleiro para uso no local -> aprovado; sem
+     ela -> reprovado (ou inconclusivo, quando nada se confirma).
 
 O resultado foi anotado na coluna "Comentário 1". Este script traduz a
 anotação para as colunas da triagem pelas regras abaixo:

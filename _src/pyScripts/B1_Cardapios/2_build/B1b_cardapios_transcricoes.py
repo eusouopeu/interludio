@@ -53,10 +53,13 @@ ARQUIVO = {
     "Inside Games": "insidegames", "Ludoteca BGC": "ludotecabgc", "Utopia Games & Food": "utopia",
     "Bardo Mago": "bardomago", "La Tabuleria": "latabuleria", "Toca do Rato": "tocadorato",
 }
-# Seções que não são consumo no salão.
-FORA = {"Jogos de Tabuleiro", "Esclarecimentos"}
+# Seções que não são consumo no salão. Desde a recoleta de 16/11/2026, também as seções
+# que repetem itens de outras ("Mais Pedidos", sabores já cobertos pelo preço da pizza)
+# os combos de delivery da Toca do Rato e o menu sazonal de Halloween do Bardo Mago.
+FORA = {"Jogos de Tabuleiro", "Esclarecimentos", "Mais Pedidos", "Combos da Toca", "Halloween"}
 # Seções cujo conteúdo o nome não diz: (estabelecimento, seção) -> classe.
 SECAO_FIXA = {
+    ("Ludoteca BGC", "Crepes vegetarianos (Frisson)"): ("pratos principais", "outros", "S"),  # crepe "Lúdico", não couvert
     ("Comdado Bar", "Especiais"): ("bebidas", "drinks", "S"),  # combos e dobro de shots
     ("Chef on Play", "Carnes"): ("pratos principais", "hambúrguer", "S"),  # hambúrgueres por proteína
 }

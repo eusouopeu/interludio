@@ -11,8 +11,13 @@ Regras de atribuição (uma unidade, um grupo):
   - cada post pertence ao seu dono (coluna perfil), nunca à página em que foi
     coletado; colaboração conta uma vez, para o dono;
   - entram só posts cujo dono é uma casa da lista aprovada do B1
-    (dados-agregados/B1_estabelecimentos/3_triagem/B1_instagram_aprovadas.csv, mais os apelidos de ALIAS); posts de
+    (dados-agregados/B1_estabelecimentos/3_triagem/B1_instagram_aprovadas.csv); posts de
     parceiros que aparecem na grade de uma casa saem;
+  - o texto das legendas não muda com o tempo: entram todas as coletas das pastas rs_ (o histórico
+    de outubro inclusive); só os contadores do perfil (B1b_instagram_resumo.py) e a auditoria
+    ficam restritos às coletas dos 10 dias até 16/11/2026 (decisão de 16/11/2026);
+  - perfis errados ou de casas fora da população (@ludocafe_editora, @dominariacg.sp, @coviljogos,
+    @ilusoesindustriais) ficam em dados-agregados/B1_redes_sociais/_arquivo/;
   - cada casa recebe um único tipo (tipo_casa: casa de jogos ou loja com espaço de jogo),
     pelo dicionário ESTAB da análise de conteúdo do B2, para que as duas
     análises usem a mesma tipologia.
@@ -32,11 +37,6 @@ SCRIPT_B2 = ROOT / "_src" / "pyScripts" / "B2_Avaliacoes" / "3_analise" / "B2a_c
 B2_FREQUENCIA = (ROOT / "dados-agregados" / "B2_avaliacoes" / "analise_conteudo" / "B2_bardin_frequencia_categorias.csv")
 B2_CONTEXTO = B2_FREQUENCIA.with_name("B2_bardin_contexto.csv")
 
-# Perfil coletado com @ diferente do registrado na lista aprovada.
-ALIAS = {
-    "ludocafe_editora": "LudoCafé",
-    "dominariacg.sp": "Dominaria Cards & Games",
-}
 C, L = "casa de jogos", "loja com espaço de jogo"
 # Casas aprovadas que não entraram no corpus do B2 (sem comentários no período).
 # Casas novas do B1 (12/11/2026) sem tipo no B2: o tipo segue o grupo da categoria do Google
@@ -95,9 +95,6 @@ def casas():
         linhas.append({"perfil": r["instagram_usuario"].lower(), "estabelecimento": r["nome"],
                        "capital": r["capital_endereco"], "tipo_casa": tipo, "sigla_b2": sigla})
     tab = pd.DataFrame(linhas)
-    for perfil, nome in ALIAS.items():
-        base = tab[tab["estabelecimento"] == nome].iloc[0].to_dict()
-        tab = pd.concat([tab, pd.DataFrame([{**base, "perfil": perfil}])], ignore_index=True)
     sem_tipo = tab[tab["tipo_casa"] == ""]
     assert sem_tipo.empty, f"casas sem tipo: {sem_tipo['estabelecimento'].tolist()}"
     return tab

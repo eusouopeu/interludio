@@ -394,7 +394,7 @@ test('painel: ler, guardar, excluir e aviso de troca de página (fixture da Amaz
     URL, Blob, document, console: { info() {}, error: (...a) => { throw a[1]; } },
     location: { href: 'https://www.amazon.com.br/s?k=mesa+inox', hostname: 'www.amazon.com.br' },
     GM_getValue: (k, d) => (k in memoria ? memoria[k] : d), GM_setValue: (k, v) => { memoria[k] = v; }, GM_deleteValue: (k) => { delete memoria[k]; },
-    setInterval: (f) => { tique = f; }, setTimeout() {}, confirm: () => true,
+    setInterval: (f) => { tique = f; }, setTimeout() {}, clearTimeout() {}, confirm: () => true,
     addEventListener() {}, removeEventListener() {}, innerWidth: 1280, innerHeight: 800,
   };
   vm.runInNewContext(source, ambiente, { filename: 'mobiliario.user.js' });
@@ -527,7 +527,7 @@ test('somar: abre a próxima página e, ao carregar, soma as ofertas dela às an
       URL, Blob, document, console: { info() {}, error: (...a) => { throw a[1]; } },
       location: { href, hostname: 'www.amazon.com.br' },
       GM_getValue: (k, d) => (k in memoria ? memoria[k] : d), GM_setValue: (k, v) => { memoria[k] = v; }, GM_deleteValue: (k) => { delete memoria[k]; },
-      setInterval: (f) => { tique = f; }, setTimeout() {}, confirm: () => true,
+      setInterval: (f) => { tique = f; }, setTimeout() {}, clearTimeout() {}, confirm: () => true,
     addEventListener() {}, removeEventListener() {}, innerWidth: 1280, innerHeight: 800,
     };
     vm.runInNewContext(source, ambiente, { filename: 'mobiliario.user.js' });

@@ -1,6 +1,6 @@
 """
 Bloco B2 - gasto por pessoa declarado nas avaliações contra a cesta de consumo
-de cada casa (B1), para a premissa de gasto por pessoa do cap. 9 (R06).
+de cada casa (B1), para a premissa de gasto por pessoa do cap. 9 (R04).
 
 Cesta de consumo (decisão do autor, 04/11/2026; antes, bebida + entrada ou
 prato): taxa de entrada + bebida + hambúrguer da casa. A bebida é a mediana do
@@ -14,7 +14,7 @@ Taxa de entrada: média das taxas de cada dia ponderada pelos dias em que cada
 uma vale, só nos dias em que a casa abre (aba estabelecimentos); feriados e
 vésperas ignorados. Valores e fontes em TAXAS: todas as casas com taxa
 conhecida no B1 (cardápio, site, imprensa ou Instagram) e a São Jogue. Recorte
-do gasto (R06): casas com taxa conhecida e gasto declarado. A cesta só existe
+do gasto (R04): casas com taxa conhecida e gasto declarado. A cesta só existe
 nas casas do recorte com bebida e hambúrguer no cardápio.
 
 Saída 2: dados-agregados/B2_avaliacoes/gasto_por_pessoa/B1_cesta_casas_com_taxa.csv, a cesta de todas as casas
@@ -81,8 +81,8 @@ TAXAS = {
                                     {**dict.fromkeys(DIAS[:4], 15), "sexta": 25, "sabado": 25, "domingo": 25}),
     "ChIJZz29dnVXzpQRvRh7_YKyUN4": ("Encounter", "Instagram, 03/01/2026",
                                     {**dict.fromkeys(DIAS[:4], 35), "sexta": 40, "sabado": 45, "domingo": 40}),
-    "ChIJu1yUroF_mQAR7qxqAfxKSw4": ("Game Of Boards", "site",
-                                    {**dict.fromkeys(DIAS[:4], 15), "sexta": 25, "sabado": 25, "domingo": 25}),
+    "ChIJu1yUroF_mQAR7qxqAfxKSw4": ("Game Of Boards", "site, 16/11/2026 (passaporte)",
+                                    {**dict.fromkeys(DIAS[:4], 20), "sexta": 30, "sabado": 30, "domingo": 30}),
     "ChIJsUAT-dObpgARCT2C5QpnVKU": ("Garagem do Nerd", "Diário do Comércio, 23/06/2024", _TODOS(10)),
     "ChIJOczn8z7l3JQRNBEL_ZJ3iQo": ("Joyjoy Café", "Curitibando em Família, 01/08/2024",
                                     {**dict.fromkeys(DIAS[:5], 10), "sabado": 15, "domingo": 15}),

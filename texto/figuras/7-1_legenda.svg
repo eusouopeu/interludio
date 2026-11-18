@@ -1,0 +1,20 @@
+<svg width="830" height="333" viewBox="-15 -5 830 333" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="-15" y="-5" width="830" height="333" fill="white"/>
+<defs><marker id="seta" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#2E2E2E"/></marker><marker id="seta_verde" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#15803D"/></marker></defs>
+<text x="0" y="24" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#2E2E2E" text-anchor="start" >Legenda</text>
+<path d="M0 54H50" stroke="#15803D" stroke-width="3.5" stroke-dasharray="11 7"/>
+<text x="62" y="59" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#2E2E2E" text-anchor="start" >Rota acessível esquemática (faixa-alvo de 1,20 m, NBR 9050)</text>
+<path d="M0 88H50" stroke="#2E2E2E" stroke-width="1" marker-start="url(#seta)" marker-end="url(#seta)"/>
+<text x="62" y="93" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#2E2E2E" text-anchor="start" >Folga medida no desenho entre mobiliários e paredes</text>
+<rect x="0" y="112" width="50" height="20" fill="#F2F2F2" stroke="#2E2E2E" stroke-width="1.5"/>
+<text x="62" y="127" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#2E2E2E" text-anchor="start" >Mesas 1 a 4: mesa avulsa com 6 cadeiras</text>
+<rect x="0" y="146" width="50" height="20" fill="#F2F2F2" stroke="#2E2E2E" stroke-width="1.5"/>
+<text x="62" y="161" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#2E2E2E" text-anchor="start" >Mesas 5 a 8: booth, com 2 bancos de 3 lugares</text>
+<rect x="0" y="180" width="50" height="20" fill="#F2F2F2" stroke="#2E2E2E" stroke-width="1.5"/>
+<text x="62" y="195" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#2E2E2E" text-anchor="start" >Estante do acervo, com 60 cm de profundidade</text>
+<path d="M0 218H800" stroke="#bdbdbd" stroke-width="1"/>
+<text x="0" y="240" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#5b5b5b" text-anchor="start" >Estudo compacto em escala gráfica. Não é projeto legal nem executivo.</text>
+<text x="0" y="262" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#5b5b5b" text-anchor="start" >Portas: entrada 1,10 m; sanitário acessível 0,90 m; sanitários de 2,3 m² e da equipe 0,60 m (a conferir).</text>
+<text x="0" y="284" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#5b5b5b" text-anchor="start" >O trecho de 1,12 m do corredor do sanitário acessível fica abaixo da faixa-alvo de 1,20 m.</text>
+<text x="0" y="306" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#5b5b5b" text-anchor="start" >Medidas, rota acessível e lotação (CBMBA) devem ser confirmadas no imóvel escolhido.</text>
+</svg>

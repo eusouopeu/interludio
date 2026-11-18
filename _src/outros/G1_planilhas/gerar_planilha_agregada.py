@@ -72,7 +72,7 @@ COLS = [
     ("trilhos_500m", "trilhos até 500 m", "int"), ("trilhos_1000m", "trilhos até 1000 m", "int"),
     ("dist_trilhos_m", "distância aos trilhos (m)", "int"), ("dist_shopping_m", "distância ao shopping (m)", "int"),
     ("seguidores", "seguidores", "int"), ("n_posts_total", "posts desde o início", "int"),
-    ("idade_perfil_anos", "idade do perfil (anos)", "dec"), ("n_posts_periodo", "posts 01/09 a 01/10/2026", "int"),
+    ("idade_perfil_anos", "idade do perfil (anos)", "dec"), ("n_posts_periodo", "posts 01/07 a 01/11/2026", "int"),
     ("interacoes_por_post", "interações por post", "dec"), ("engajamento_pct", "engajamento", "pct"),
     ("itens_com_preco", "itens com preço", "int"), ("tem_cardapio", "cardápio transcrito", "int"),
     ("cobra_couvert", "couvert encontrado", "int"),
@@ -102,7 +102,7 @@ def mediana_se(col, crit_col, crit_ref):
     return ArrayFormula("A1", f'=IFERROR(MEDIAN(IF({R(crit_col)}={crit_ref},IF({R(col)}<>"",{R(col)}))),"")')
 
 
-FONTE_B1 = "B1, Google Places API (09/2026 e 15/10/2026), coletor de entorno do Google Maps (15/10/2026), Instagram (01/09 a 01/10/2026) e cardápios"
+FONTE_B1 = "B1, Google Places API (09/2026 e 15/10/2026), coletor de entorno do Google Maps (15/10/2026), Instagram (01/07 a 01/11/2026) e cardápios"
 
 # Tab 1: casas por região e metrópole
 cont = base.groupby(["regiao", "metropole"]).size().reset_index(name="n")
@@ -136,7 +136,7 @@ VARS_DESC = [
     ("Instagram", "seguidores", "Seguidores"),
     ("Instagram", "n_posts_total", "Posts desde a criação do perfil"),
     ("Instagram", "idade_perfil_anos", "Idade do perfil (anos)"),
-    ("Instagram", "n_posts_periodo", "Posts de 01/09 a 01/10/2026"),
+    ("Instagram", "n_posts_periodo", "Posts de 01/07 a 01/11/2026"),
     ("Instagram", "interacoes_por_post", "Interações por post"),
     ("Instagram", "engajamento_pct", "Engajamento (interações por post ÷ seguidores)"),
     ("Cardápio", "itens_com_preco", "Itens com preço no cardápio"),
@@ -507,6 +507,7 @@ nova_aba("Tab 19", "Tabela 19 – Simples Nacional, anexos I e III: alíquota ef
 
 bc = pd.read_csv(DADOS_AGREGADOS / "B4_financeiro" / "[B4] Selic IPCA e Salário Mínimo 2017-2026 (BCB).csv", parse_dates=["data"])
 fo = pd.read_csv(DADOS_AGREGADOS / "B4_financeiro" / "[B4] Expectativas Focus 2026-2030 (BCB).csv")
+DATA_FOCUS = pd.to_datetime(fo["Data"]).max().strftime("%d/%m/%Y")  # data do relatório Focus coletado
 anual = {}
 for serie, rot in (("selic_meta", "selic"), ("ipca_acumulado_12_meses", "ipca")):
     s = bc[bc.serie == serie].sort_values("data")
@@ -523,7 +524,7 @@ for ano in range(int(max(anual)), 2031):
     f_s = fo[(fo.Indicador == "Selic") & (fo.DataReferencia == ano)]
     f_i = fo[(fo.Indicador == "IPCA") & (fo.DataReferencia == ano)]
     if len(f_s) and len(f_i):
-        linhas_t20.append([str(ano), "Focus (mediana)", f_s.Mediana.iloc[0] / 100, f_i.Mediana.iloc[0] / 100, "11/09/2026"])
+        linhas_t20.append([str(ano), "Focus (mediana)", f_s.Mediana.iloc[0] / 100, f_i.Mediana.iloc[0] / 100, DATA_FOCUS])
 real = [l for l in linhas_t20 if l[1] == "realizado"]
 proj = [l for l in linhas_t20 if l[1] != "realizado"]
 anos = [int(l[0]) for l in real] + [int(l[0]) + 0.0 for l in proj if int(l[0]) > int(real[-1][0])]
@@ -533,7 +534,7 @@ g20 = linhas("20_selic_ipca", np.array(anos), {"Selic meta": sel, "IPCA em 12 me
              lambda v: br(v, 2, suf="%"), tracejar_depois=int(real[-1][0]))
 nova_aba("Tab 20", "Tabela 20 – Selic e IPCA: juros altos em 2026, com queda esperada até 2030",
          ["Ano", "Tipo", "Selic meta", "IPCA em 12 meses", "Referência"], linhas_t20, ["txt", "txt", "pct", "pct", "txt"],
-         "B4, Banco Central do Brasil: SGS (séries 432 e 13522) e Relatório Focus de 11/09/2026", [8, 16, 12, 14, 30], g20,
+         f"B4, Banco Central do Brasil: SGS (séries 432 e 13522) e Relatório Focus de {DATA_FOCUS}", [8, 16, 12, 14, 30], g20,
          ["Nota: realizado = último valor do ano (2026 até a data indicada); Focus = mediana das expectativas para o fim do ano."])
 
 ip = pd.read_csv(DADOS_AGREGADOS / "B4_multiuso" / "[B4] IPCA Alimentação Fora do Domicílio 2023-2026 (IBGE).csv")
@@ -549,7 +550,7 @@ linhas_t21 = [[f"{str(p)[4:]}/{str(p)[:4]}", pv.loc[p, ("Brasil", "Índice geral
 g21 = barras_v("21_ipca_alimentacao_fora", [l[0] for l in linhas_t21],
                {"Brasil: geral": [l[1] for l in linhas_t21], "Brasil: alimentação fora": [l[2] for l in linhas_t21],
                 "Salvador: geral": [l[3] for l in linhas_t21], "Salvador: alimentação fora": [l[4] for l in linhas_t21]},
-               lambda v: br(v * 100, 1, suf="%"), cores=[ROXO_800, ROXO_500, ROXO_300, SLATE_600], eixo_pct=True)
+               lambda v: br(v * 100, 1, suf="%"), cores=[SLATE_700, SLATE_400, ROXO_700, ROXO_300], eixo_pct=True)
 nova_aba("Tab 21", "Tabela 21 – IPCA em 12 meses: alimentação fora do domicílio sobe mais que o índice geral",
          ["Mês", "Brasil: índice geral", "Brasil: alimentação fora do domicílio", "Salvador: índice geral",
           "Salvador: alimentação fora do domicílio"], linhas_t21, ["txt", "pct", "pct", "pct", "pct"],

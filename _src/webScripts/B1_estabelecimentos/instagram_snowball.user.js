@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Snowball do Instagram (TCC Luderia)
 // @namespace    tcc-luderia
-// @version      2026.11.13-1
+// @version      2026.11.16-2
 // @description  Captura a lista "seguindo" de perfis-semente (snowball), um por vez ou em fila, e baixa um CSV por perfil.
 // @match        https://www.instagram.com/*
 // @run-at       document-start
+// @noframes
 // @grant        none
 // @require      lista_instagram_snowball.js
 // ==/UserScript==
@@ -531,9 +532,9 @@
   }
 
   // Uma fila de uma semente: abre o perfil, a lista, rola e baixa (rodarFila).
-  function coletarSemente(p) {
+  async function coletarSemente(p) {
     const f = lerFila();
-    if (f && f.todos.length > 1 && pendentes(f).length && !confirm(`Há uma fila de ${f.todos.length} sementes com ${pendentes(f).length} por fazer. Trocar por @${p.u}? (as listas já capturadas ficam)`)) return false;
+    if (f && f.todos.length > 1 && pendentes(f).length && !(await kit.confirmar(`Há uma fila de ${f.todos.length} sementes com ${pendentes(f).length} por fazer. Trocar por @${p.u}? (as listas já capturadas ficam)`))) return false;
     gravarLs(CHAVE_ALVO, p.u);
     gravarFila({ todos: [p.u], feitos: [], falhas: {}, tentativas: {}, ativa: true });
     if (el.fila) el.fila.value = p.u;
@@ -554,10 +555,10 @@
         return e === 'ok' ? `${n} seguidos` : e === 'parcial' ? `${n} até agora` : e === 'falha' ? 'sem lista' : '';
       },
       atual: alvoAtual,
-      aoEscolher: (p) => {
+      aoEscolher: async (p) => {
         if (ocupado) { menu.select.value = alvoAtual(); status('Espere a lista em curso terminar (ou pare).', 'alerta'); return; }
-        if (estadoDoAlvo(p.u) === 'ok' && !confirm(`@${p.u} já foi coletada. Rolar a lista de novo?`)) { gravarLs(CHAVE_ALVO, p.u); menu.rotular(); return; }
-        if (!coletarSemente(p)) menu.rotular();
+        if (estadoDoAlvo(p.u) === 'ok' && !(await kit.confirmar(`@${p.u} já foi coletada. Rolar a lista de novo?`))) { gravarLs(CHAVE_ALVO, p.u); menu.rotular(); return; }
+        if (!(await coletarSemente(p))) menu.rotular();
       },
       aoProximo: () => {
         if (ocupado) { status('Espere a lista em curso terminar (ou pare).', 'alerta'); return; }
@@ -675,12 +676,20 @@
     } catch (e) { sujo = true; console.warn('[Snowball IG] falha ao salvar', e); }
   }
 
+  // Reiniciar (lixeira): baixa antes um CSV por semente e apaga as listas, a fila e o
+  // histórico do menu (marcas e semente escolhida).
   async function apagarSalvos() {
+    const n = seguindo.size;
+    if (n) await exportar(true);
     limparFila();
     seguindo.clear(); seguindoMeta.clear();
+    gravarLs(CHAVE_MARCAS, {});
+    gravarLs(CHAVE_ALVO, null);
     sujo = true;
     await salvar();
-    status('Listas apagadas.');
+    kit.estado('');
+    if (menu) menu.rotular();
+    status(n ? `Reiniciado: ${n} lista(s) apagada(s) (CSVs baixados antes) e histórico zerado.` : 'Reiniciado: histórico de coleta zerado.', 'ok');
   }
 
   // >>> kit_painel (cópia de _src/webScripts/_kit_painel/kit_painel.js; regerar com: node _src/webScripts/_kit_painel/embutir.js)
@@ -689,7 +698,8 @@
   // Padrão (o do maps_avaliacoes): canto superior direito, shadow DOM preso ao <html> e
   // reposto se sumir, arrastável e redimensionável com posição salva, Montserrat,
   // Heroicons outline, roxo como cor primária, verde/âmbar/vermelho para o desfecho,
-  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto.
+  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto; perguntas
+  // (confirmar, perguntar) dentro do painel, nunca confirm() ou prompt() do navegador.
   // Só define funções: nada toca o DOM antes de montar() (os testes rodam no Node).
   function kitPainel(op = {}) {
     const P = op.prefixo || op.id || 'tcc';
@@ -1068,12 +1078,51 @@
     }
 
     // O botão vira um ✓ verde por um instante.
+    // (O conteúdo original fica guardado: um segundo clique antes de 1,2 s não grava o ✓ no lugar dele.)
+    const confirmando = new WeakMap();
     function confirmarBotao(b) {
       if (!b) return;
-      const antes = [...b.childNodes];
+      const pendente = confirmando.get(b);
+      if (pendente) clearTimeout(pendente.timer);
+      const antes = pendente ? pendente.antes : [...b.childNodes];
       b.classList.add('feito');
       b.replaceChildren(icone('check'), ...antes.filter((n) => n.nodeType === 3));
-      setTimeout(() => { b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      const timer = setTimeout(() => { confirmando.delete(b); b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      confirmando.set(b, { antes, timer });
+    }
+
+    // ---------- perguntas no painel ----------
+    // No lugar do confirm() e do prompt() do navegador, que travam a página e fogem do padrão:
+    // uma faixa âmbar no topo do painel, com ✓ (Enter) e ✗ (Esc). Devolvem uma Promise:
+    // confirmar() → true/false; perguntar() → o texto digitado ou null. Sem painel montado
+    // (testes no Node, página sem painel), caem no diálogo do navegador.
+    let fecharPergunta = null;
+    function abrirPergunta(texto, { campo = null, sim = 'Confirmar', nao = 'Cancelar' } = {}) {
+      if (fecharPergunta) fecharPergunta(campo ? null : false);
+      return new Promise((resolve) => {
+        if (painel.classList.contains('min')) minimizar(false);
+        const caixa = k.el.pergunta;
+        const fim = (v) => { fecharPergunta = null; caixa.hidden = true; caixa.replaceChildren(); fecharDica(); resolve(v); };
+        fecharPergunta = fim;
+        const bSim = botao('check', '', () => fim(campo ? campo.value : true), { classe: 'verde', dica: `${sim} (Enter)` });
+        const bNao = botao('x-mark', '', () => fim(campo ? null : false), { classe: 'leve', dica: `${nao} (Esc)` });
+        caixa.onkeydown = (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); bSim.click(); } else if (e.key === 'Escape') { e.preventDefault(); bNao.click(); }
+        };
+        caixa.replaceChildren(...[criar('span', { className: 'txt', textContent: texto }), campo, linha([esp(), bNao, bSim], 'compacta')].filter(Boolean));
+        caixa.hidden = false;
+        painel.scrollTop = 0;
+        estado('alerta');
+        try { (campo || bSim).focus(); } catch (_) { /* sem foco */ }
+      });
+    }
+    function confirmar(texto, opcoes) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof confirm === 'function' ? confirm(texto) : true);
+      return abrirPergunta(texto, opcoes);
+    }
+    function perguntar(texto, { valor = '', placeholder = '', ...opcoes } = {}) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof prompt === 'function' ? prompt(texto, valor) : null);
+      return abrirPergunta(texto, { ...opcoes, campo: criar('input', { type: 'text', value: valor, placeholder, 'aria-label': texto }) });
     }
 
     async function copiar(texto, b) {
@@ -1118,13 +1167,13 @@
         return esperarMs(600).then(() => ({ nome, via: 'navegador' }));
       }
       return new Promise((resolve) => {
-        let feito = false;
-        const fim = (via) => { if (feito) return; feito = true; soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
+        let feito = false, espera = 0;
+        const fim = (via) => { if (feito) return; feito = true; clearTimeout(espera); soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
         const comum = () => { baixarComum(nome, url); setTimeout(() => fim('navegador'), 600); };
         try {
           GM_download({ url, name: pastaDoArquivo(pasta, nome), saveAs: false, onload: () => fim('pasta'), onerror: () => { if (!feito) comum(); }, ontimeout: () => { if (!feito) comum(); } });
           // Sem resposta do Tampermonkey em 15 s: segue (o download pode ainda sair).
-          setTimeout(() => fim('pasta'), 15000);
+          espera = setTimeout(() => fim('pasta'), 15000);
         } catch (_) { comum(); }
       });
     }
@@ -1134,12 +1183,20 @@
     // Seletor por grupo com ✓ ok, ◐ parcial, ! refazer, ○ falta; contador com barra fina;
     // botões Próximo (o que falta, primeiro no mesmo grupo), Marcar/Desfazer e Só os que faltam.
     const SIMBOLO = { ok: '✓', parcial: '◐', falha: '!', falta: '○' };
+    // aoAdicionar (opcional): botão "+" que acrescenta um alvo à lista (o script pergunta os dados
+    // e guarda); depois de mudar a lista, recarregar() refaz as opções do seletor.
     function menuAlvos({ itens, id = (x) => x.id, grupo = (x) => x.capital, nome = (x) => x.nome, detalhe = () => '',
-      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, unidade = 'coletados' }) {
-      const lista = itens();
-      const grupos = [...new Set(lista.map(grupo))];
-      const select = criar('select', { 'aria-label': 'Alvo da coleta' }, grupos.map((g) => criar('optgroup', { label: g },
-        lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, aoAdicionar, dicaAdicionar = 'Adicionar à lista de alvos da coleta',
+      unidade = 'coletados' }) {
+      let lista = [];
+      const select = criar('select', { 'aria-label': 'Alvo da coleta' });
+      function opcoes() {
+        lista = itens();
+        const grupos = [...new Set(lista.map(grupo))];
+        select.replaceChildren(...grupos.map((g) => criar('optgroup', { label: g },
+          lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      }
+      opcoes();
       dica(select, `✓ ok · ◐ parcial · ! refazer · ○ falta. Escolher abre o alvo e coleta.`);
       select.onchange = () => aoEscolher(lista.find((x) => id(x) === select.value));
       let soFaltam = ler(chave('soFaltam'), false);
@@ -1148,11 +1205,13 @@
       const bMarcar = aoMarcar ? botao('check', '', () => aoMarcar(lista.find((x) => id(x) === select.value)), { classe: 'leve' }) : null;
       const bFiltro = alternaIcone({ ico: 'funnel', rotulo: 'Só os que faltam', ligado: soFaltam,
         aoMudar: (v) => { soFaltam = v; gravar(chave('soFaltam'), v); rotular(); } });
+      const bAdicionar = aoAdicionar ? botao('plus', '', async () => { if (await aoAdicionar()) { opcoes(); rotular(); } },
+        { classe: 'leve', dica: dicaAdicionar }) : null;
       const cont = criar('span', { className: 'pos' });
       const trilho = criar('div', { className: 'trilho fino' }, [criar('div', { className: 'preenchido' })]);
       const caixa = criar('div', { className: 'menu' }, [
         linha([select]),
-        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro], 'compacta'),
+        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro, bAdicionar], 'compacta'),
       ]);
       function rotular() {
         const a = atual();
@@ -1176,7 +1235,7 @@
         bMarcar.replaceChildren(icone(col ? 'arrow-uturn-left' : 'check'));
         dica(bMarcar, col ? 'Desfazer: volta a faltar' : 'Marcar como coletado, sem nova coleta');
       }
-      return { caixa, select, rotular, bProx };
+      return { caixa, select, rotular, bProx, bAdicionar, recarregar: () => { opcoes(); rotular(); } };
     }
 
     // ---------- painel ----------
@@ -1196,6 +1255,7 @@
         resize:both;min-width:224px;min-height:44px;max-width:calc(100vw - 24px);transition:box-shadow .2s}
       #painel.min{height:auto!important;min-height:0;resize:none;width:auto!important;min-width:0}
       #painel.min>*:not(header){display:none}
+      #painel.min header>button:not(.b-min){display:none}
       #painel.arrastando{user-select:none;opacity:.92;box-shadow:0 14px 40px rgba(0,0,0,.3)}
       header{display:flex;align-items:center;gap:2px;cursor:grab;touch-action:none;min-height:32px}
       #painel.arrastando header{cursor:grabbing}
@@ -1307,6 +1367,10 @@
       .aviso{color:var(--alerta);font-size:12.5px;margin:5px 0 0;font-weight:500}
       .aviso::before{content:"⚠ "}
       .st-alerta .aviso,.st-erro .aviso{color:inherit}
+      .pergunta{font-size:13px;background:var(--alerta-100);border-radius:10px;padding:7px 10px;margin:7px 0;animation:entra .2s ease-out}
+      .pergunta .txt{display:block;white-space:pre-line;font-weight:500}
+      .pergunta input{width:100%;margin-top:6px;background:var(--fundo)}
+      .pergunta .linha{margin:6px 0 0}
       .info{font-size:12.5px;background:var(--sup);border-radius:10px;padding:7px 10px;margin:7px 0;white-space:pre-line}
       .info:empty{display:none}
       .mono{font:11.5px/1.4 ui-monospace,Menlo,monospace;color:var(--suave);word-break:break-all}
@@ -1409,14 +1473,15 @@
       carregarFonte();
       k.el.ponto = criar('span', { className: 'ponto-estado' });
       k.el.nome = criar('span', { className: 'nome', textContent: nome });
-      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve', dica: 'Minimizar' });
+      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve b-min', dica: 'Minimizar' });
       const bSom = alternaIcone({ ico: 'bell', icoDesligado: 'bell-slash', rotulo: 'Som ao concluir', ligado: k.som,
         aoMudar: (v) => { k.som = v; gravar(chave('som'), v); if (v) tocar(true); } });
       const bAuto = autobaixar ? alternaIcone({ ico: 'arrow-down-tray', rotulo: 'Download automático', ligado: k.autobaixar,
         aoMudar: (v) => { k.autobaixar = v; gravar(chave('autobaixar'), v); } }) : null;
       const cab = criar('header', {}, [k.el.ponto, k.el.nome, ...extras, bSom, bAuto, ...aposAuto, k.el.bMin]);
       dica(k.el.nome, 'Clique para minimizar · arraste para mover · duplo clique volta ao canto');
-      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, ...filhos]);
+      k.el.pergunta = criar('div', { className: 'pergunta', hidden: true, role: 'alertdialog' });
+      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, k.el.pergunta, ...filhos]);
       k.el.painel = painel;
       k.el.nome.onclick = () => { if (!arrastou) minimizar(); };
       prepararArraste(cab);
@@ -1483,7 +1548,7 @@
     Object.assign(k, {
       criar, icone, dica, ajuda, botao, botaoPerigo, botaoParar, etiqueta, alternaIcone, botaoBaixarCada, pills, secao, naoAlterna,
       linha, esp, rotulo, selo, status, resumo, barra, progresso, estado, atualizarAcoes, executar, tocar, piscar,
-      confirmarBotao, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
+      confirmarBotao, confirmar, perguntar, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
       nome: (t) => { if (k.el.nome && k.el.nome.textContent !== t) k.el.nome.textContent = t; },
       hospedeiro: () => hospedeiro,
     });
@@ -1523,21 +1588,21 @@
     const { botao, linha, esp, secao, selo } = kit;
     menu = criarMenu();
     el.info = kit.criar('div', { className: 'info' });
-    const bRolar = botao('chevron-double-down', 'Rolar lista aberta', () => executar(() => rolarSeguindo()),
-      { classe: 'primario', dica: 'Rola a lista "seguindo" aberta até o fim; com o download automático, baixa o CSV' });
+    const bRolar = botao('chevron-double-down', 'Rolar', () => executar(() => rolarSeguindo()),
+      { classe: 'primario', dica: 'Rolar a lista aberta: rola a lista "seguindo" até o fim; com o download automático, baixa o CSV' });
     kit.botaoParar(pararFila);
-    const bCsv = botao('arrow-down-tray', 'Esta lista', () => { exportar(false); kit.piscar(bCsv); }, { classe: 'mini', dica: 'CSV da lista aberta (ou da última)' });
-    const bCsvTodas = botao('arrow-down-tray', 'Todas', () => { exportar(true); kit.piscar(bCsvTodas); }, { classe: 'mini', dica: 'Um CSV por semente capturada' });
+    const bCsv = botao('arrow-down-tray', 'CSV', () => { exportar(false); kit.confirmarBotao(bCsv); }, { classe: 'mini', dica: 'Baixar CSV da lista aberta (ou da última), em dados-brutos/B1_redes_sociais/seguindo/' });
+    const bCsvTodas = botao('arrow-down-on-square-stack', '', () => { exportar(true); kit.confirmarBotao(bCsvTodas); }, { classe: 'leve', dica: 'Baixar todas: um CSV por semente capturada' });
     el.fila = kit.criar('textarea', { placeholder: 'Sementes: um @perfil ou link por linha' });
-    const bFila = botao('play', 'Coletar fila', () => {
+    const bFila = botao('play', 'Fila', () => {
       const us = lerUsuarios(el.fila.value);
       if (us.length) iniciarFila(us); else status('Cole ao menos um @ na fila.', 'alerta');
-    }, { classe: 'mini', dica: 'Abre cada perfil e a lista "seguindo", rola, baixa o CSV e pausa antes da próxima' });
+    }, { classe: 'mini', dica: 'Coletar fila: abre cada perfil e a lista "seguindo", rola, baixa o CSV e pausa antes da próxima' });
     el.bContinuar = botao('forward', '', continuarFila, { dica: 'Continuar a fila parada de onde parou' });
     const bLimpar = kit.botaoPerigo('x-mark', '', limparFila, { dica: 'Limpar a fila salva (as listas capturadas ficam)' });
     el.filaSelo = selo('', 'roxo');
     el.falhas = kit.criar('p', { className: 'aviso' });
-    const bApagar = kit.botaoPerigo('trash', 'Apagar listas salvas', apagarSalvos, { classe: 'mini', dica: 'Apaga as listas "seguindo" guardadas neste navegador' });
+    const bApagar = kit.botaoPerigo('trash', '', apagarSalvos, { classe: 'leve', dica: 'Reiniciar: apaga as listas "seguindo" guardadas, a fila e as marcas do menu. Baixa antes um CSV por semente. As preferências ficam' });
     kit.acoes = [bRolar, bFila, bApagar];
     kit.montar({
       nome: 'Snowball IG', autobaixar: true, largura: 300,
@@ -1547,9 +1612,8 @@
         kit.barra('lista'), kit.barra('fila'),
         kit.el.status = kit.criar('div', { className: 'status' }),
         el.info,
-        linha([kit.rotulo('CSV'), bCsv, bCsvTodas]),
+        linha([bCsv, bCsvTodas, esp(), bApagar]),
         secao('fila', ['Fila', el.filaSelo], [el.fila, linha([bFila, el.bContinuar, esp(), bLimpar]), el.falhas]),
-        linha([esp(), bApagar]),
       ],
     });
     el.painel = kit.el.painel;

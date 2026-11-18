@@ -16,8 +16,8 @@ Fontes:
       50 km, de outra cidade, fica vazia; metrô, trem, VLT e "trilhos" =
       metrô + trem + VLT; VLT separado do BRT desde o coletor 2026.11.12-2;
       BRT fora da coleta desde 2026.11.13-2)
-  dados-agregados/B1_redes_sociais/B1_instagram_resumo_notion.csv        -> Instagram (retrato do
-      Notion "A - Estabelecimentos" de 15/10/2026; período 01/09 a 01/10 com
+  dados-agregados/B1_redes_sociais/B1_instagram_resumo.csv        -> Instagram (coleta de 12/11/2026,
+      B1b_instagram_resumo.py; período 01/07 a 01/11/2026, quatro meses, com
       colaborações da grade)
   dados-agregados/B1_cardapios/B1_cardapios_itens_precos.xlsx            -> cesta por pessoa
   dados-agregados/B1_acervo_jogos/B1_jogos_dos_acervos.csv e B1_acervodejogos_luderias_novas.csv
@@ -153,8 +153,8 @@ def entorno():
 
 
 def instagram():
-    i = pd.read_csv(ROOT / "dados-agregados" / "B1_redes_sociais" / "B1_instagram_resumo_notion.csv", sep=";", encoding="utf-8-sig")
-    return i.drop(columns=["estabelecimento"]).rename(columns={"observacao": "obs_instagram"})
+    i = pd.read_csv(ROOT / "dados-agregados" / "B1_redes_sociais" / "B1_instagram_resumo.csv", sep=";", encoding="utf-8-sig")
+    return i.drop(columns=["estabelecimento", "coletado_em"]).rename(columns={"observacao": "obs_instagram"})
 
 
 VEG = r"veg|plant|falafel|grão|cogumelo|shimeji|soja|tofu|lentilha|vegetais|queijo coalho empanado"
@@ -242,11 +242,11 @@ DIC = {
     "shopping_porte_500m": ("Entorno", "Shoppings de porte (1.000 avaliações ou mais no Maps) até 500 m; vazio = coleta anterior a 30/10/2026 ou avaliações não lidas", "idem"),
     "shopping_porte_1000m": ("Entorno", "Shoppings de porte até 1000 m; vazio = coleta anterior a 30/10/2026 ou avaliações não lidas", "idem"),
     "dist_shopping_m": ("Entorno", "Distância (m) ao shopping mais próximo (qualquer porte), só até 1000 m", "idem"),
-    "perfil_instagram": ("Instagram", "@ do perfil", "Notion A - Estabelecimentos, 15/10/2026"),
+    "perfil_instagram": ("Instagram", "@ do perfil", "coletor do Instagram, 12/11/2026 (B1b_instagram_resumo.py)"),
     "seguidores": ("Instagram", "Seguidores", "idem (cabeçalho do perfil ou coletor)"),
     "n_posts_total": ("Instagram", "Nº de posts declarado pelo perfil", "idem"),
     "primeiro_post": ("Instagram", "Data do primeiro post", "idem"),
-    "n_posts_periodo": ("Instagram", "Posts de 01/09 a 01/10/2026, próprios e colaborações da grade", "CSVs de posts do coletor"),
+    "n_posts_periodo": ("Instagram", "Posts de 01/07 a 01/11/2026 (quatro meses), próprios e colaborações da grade", "CSVs de posts do coletor"),
     "curtidas_periodo": ("Instagram", "Curtidas desses posts", "idem"),
     "comentarios_periodo": ("Instagram", "Comentários desses posts", "idem"),
     "obs_instagram": ("Instagram", "Ressalva da coleta", "B1"),

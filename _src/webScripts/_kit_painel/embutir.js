@@ -17,6 +17,8 @@ const ALVOS = [
   'webScripts/B1_estabelecimentos/acervo.user.js',
   'webScripts/B1_estabelecimentos/maps_entorno.user.js',
   'webScripts/B1_estabelecimentos/maps_horarios_pico.user.js',
+  'webScripts/B1_estabelecimentos/maps_busca.user.js',
+  'webScripts/B1_estabelecimentos/maps_ficha.user.js',
   'webScripts/B2_avaliacoes_recentes/maps_avaliacoes.user.js',
   'webScripts/B5_ativos_fixos/aluguel.user.js',
   'webScripts/B5_ativos_fixos/mobiliario.user.js',

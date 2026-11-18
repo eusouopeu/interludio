@@ -1,0 +1,40 @@
+﻿tema;polaridade;ambos;so_autor;so_claude;kappa
+atendimento presencial;positivos;34;2;2;0.91
+comida;positivos;21;1;3;0.89
+ambiente e decoração;positivos;20;1;3;0.88
+variedade do acervo;positivos;10;0;2;0.9
+espaço e lotação;positivos;7;1;5;0.67
+explicação de jogos;positivos;6;0;0;1.0
+conforto e barulho;positivos;5;1;2;0.75
+curadoria e conservação do acervo;positivos;5;0;4;0.69
+preço de outros itens;positivos;4;0;1;0.88
+comemorações e grupos;positivos;2;4;2;0.37
+indicações de jogos;positivos;2;0;1;0.8
+porções;positivos;2;0;2;0.66
+rapidez do serviço;positivos;2;0;0;1.0
+bebidas;positivos;1;0;3;0.39
+eventos e comunidade;positivos;1;0;2;0.49
+limpeza;positivos;1;0;0;1.0
+localização e acesso;positivos;1;0;1;0.66
+preço do cardápio;positivos;1;1;0;0.66
+variedade do cardápio;positivos;1;1;0;0.66
+atendimento online;positivos;0;1;0;0.0
+regras da casa;positivos;0;1;0;0.0
+atendimento presencial;negativos;10;0;8;0.67
+comida;negativos;8;1;1;0.88
+regras da casa;negativos;7;6;2;0.59
+limpeza;negativos;4;0;0;1.0
+rapidez do serviço;negativos;4;1;0;0.88
+variedade do cardápio;negativos;4;0;0;1.0
+conforto e barulho;negativos;3;0;1;0.85
+porções;negativos;3;0;1;0.85
+preço do cardápio;negativos;3;1;1;0.74
+preço de outros itens;negativos;3;0;0;1.0
+atendimento online;negativos;2;0;2;0.66
+bebidas;negativos;1;0;1;0.66
+curadoria e conservação do acervo;negativos;1;0;3;0.39
+eventos e comunidade;negativos;1;0;1;0.66
+preço da entrada;negativos;1;1;5;0.23
+comemorações e grupos;negativos;0;0;2;0.0
+espaço e lotação;negativos;0;0;2;0.0
+explicação de jogos;negativos;0;1;1;-0.01

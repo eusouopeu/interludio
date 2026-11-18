@@ -221,8 +221,7 @@ def linhas(nome, x, series, fmt, cores=None, tracejar_depois=None):
 CAPITULO = {
     "01_casas_por_metropole": "5-1_casas_por_metropole",
     "21_ipca_alimentacao_fora": "5-3_ipca_alimentacao_fora",
-    "07_preco_por_pessoa": "6-2_gasto_declarado_por_pessoa",
-    "20_selic_ipca": "9-1_selic_ipca",
+    "20_selic_ipca": "9-3_selic_ipca",
 }
 
 

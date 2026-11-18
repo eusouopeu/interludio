@@ -2,10 +2,11 @@
 Base por casa usada pelos gráficos, pictogramas e cartogramas do B1.
 
 Parte de `montar_dados()` do B1a_estatistica_descritiva.py (mesmas regras:
-cada place_id uma vez, na metrópole do endereço; Instagram de LudoCafé e
-Dominaria vazio; couvert só onde se cobra) e troca a nota média e o volume de
-avaliações pelos do CSV da curadoria (B1_curadoria_metro_f_av100.csv) e, para
-as 5 casas novas, de B1_acervodejogos_luderias_novas.csv. A planilha anotada à
+cada place_id uma vez, na metrópole do endereço; Instagram pela coleta de
+12/11/2026; couvert só onde se cobra) e troca a nota média e o volume de
+avaliações pelos da recoleta de 16/11/2026 (B1_notas_volume.csv); na falta,
+pelos do CSV da curadoria (B1_curadoria_metro_f_av100.csv) e, para as 5 casas
+novas, de B1_acervodejogos_luderias_novas.csv. A planilha anotada à
 mão já gravou nota como data no Excel; o CSV não tem esse risco.
 """
 
@@ -35,7 +36,10 @@ def casas() -> pd.DataFrame:
     # Luderias da repaginação (12/11/2026): nota e volume vêm da planilha de aprovadas, que os leu da API.
     apr = pd.read_excel(ROOT / "dados-agregados" / "B1_estabelecimentos" / "3_triagem" / "B1_aprovadas_metro_av100.xlsx")
     rep = apr[apr["origem"] == "repaginacao"]
-    ref = pd.concat([cur, nov, rep])[["place_id", "avaliacao_media", "volume_avaliacoes"]].drop_duplicates("place_id")
+    # Recoleta de 16/11/2026 (B1c_notas_volume.py): todas as casas no mesmo dia; vale antes das demais fontes.
+    nv = pd.read_csv(ROOT / "dados-agregados" / "B1_estabelecimentos" / "B1_notas_volume.csv", sep=";", encoding="utf-8-sig")
+    nv = nv.rename(columns={"nota_depois": "avaliacao_media", "volume_depois": "volume_avaliacoes"})
+    ref = pd.concat([nv, cur, nov, rep])[["place_id", "avaliacao_media", "volume_avaliacoes"]].drop_duplicates("place_id")
     x = d.drop(columns=["avaliacao_media", "volume_avaliacoes"]).merge(ref, on="place_id", how="left")
     assert len(x) == len(d) and x.place_id.is_unique
     falta = x[x.avaliacao_media.isna()]

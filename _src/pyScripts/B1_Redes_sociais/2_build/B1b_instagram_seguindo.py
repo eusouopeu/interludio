@@ -17,7 +17,7 @@ Regras:
   - grau de entrada = nº de sementes distintas que seguem a conta; a semente não
     conta a si mesma;
   - situação, por atributo da própria conta, numa só categoria, na ordem:
-    "aprovada no B1" (@ em B1_instagram_aprovadas.csv ou ALIAS) >
+    "aprovada no B1" (@ em B1_instagram_aprovadas.csv) >
     "na curadoria do Maps" (@ em B1_curadoria.csv, busca do Google Places) >
     "no Acervo de Jogos" (@ em B1_acervodejogos_lojas.csv) > "nova";
   - minimização (LGPD): só contas seguidas por ao menos CORTE_GRAVAR sementes

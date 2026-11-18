@@ -46,7 +46,7 @@ test('baixa na pasta da coleta pelo GM_download e espera o download antes de seg
   const amb = {
     URL: { createObjectURL: () => 'blob:x', revokeObjectURL() {} }, Blob: class { constructor(p) { this.p = p; } },
     GM_download: (o) => { pedidos.push(o); setTimeout(o.onload, 5); },
-    setTimeout, document: { createElement: () => ({ click() {}, remove() {} }), documentElement: { appendChild() {} } },
+    setTimeout, clearTimeout, document: { createElement: () => ({ click() {}, remove() {} }), documentElement: { appendChild() {} } },
   };
   const ctx = { localStorage: { getItem: () => null, setItem() {}, removeItem() {} }, ...amb };
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, 'kit_painel.js'), 'utf8') + '\nglobalThis.k = kitPainel({ id: "t", pastaDownload: "dados-brutos/B1_entorno" });', ctx);
@@ -60,7 +60,7 @@ test('baixa na pasta da coleta pelo GM_download e espera o download antes de seg
 test('cai no download comum quando o Tampermonkey recusa', async () => {
   let cliques = 0;
   const ctx = {
-    localStorage: { getItem: () => null, setItem() {}, removeItem() {} }, setTimeout,
+    localStorage: { getItem: () => null, setItem() {}, removeItem() {} }, setTimeout, clearTimeout,
     URL: { createObjectURL: () => 'blob:x', revokeObjectURL() {} }, Blob: class {},
     GM_download: (o) => setTimeout(() => o.onerror({ error: 'not_whitelisted' }), 5),
     document: { createElement: () => ({ click() { cliques++; }, remove() {} }), documentElement: { appendChild() {} } },
@@ -103,4 +103,19 @@ test('cada webscript com menu declara a lista no cabeçalho e para sem ela', () 
     assert.equal(avisos.length, 1, `${nome}: não avisou`);
     assert.match(avisos[0], new RegExp(`lista_${nome}\\.js`));
   }
+});
+
+test('sem painel montado, confirmar e perguntar caem no diálogo do navegador', async () => {
+  const k = kit({ confirm: (t) => t === 'sim?', prompt: (t, v) => `${v}!` });
+  assert.equal(await k.confirmar('sim?'), true);
+  assert.equal(await k.confirmar('não?'), false);
+  assert.equal(await k.perguntar('O que diverge?', { valor: 'nota' }), 'nota!');
+  // Sem confirm() no ambiente (Node), confirma: os testes não travam numa pergunta.
+  assert.equal(await kit().confirmar('x'), true);
+});
+
+test('os instaláveis (script + lista num arquivo só) estão em dia', () => {
+  const { spawnSync } = require('node:child_process');
+  const r = spawnSync('python3', [path.join(SRC, 'outros', 'G5_outros', 'gerar_instalaveis.py'), '--conferir'], { encoding: 'utf8' });
+  assert.equal(r.status, 0, `${r.stderr}rode python3 _src/outros/G5_outros/gerar_instalaveis.py`);
 });

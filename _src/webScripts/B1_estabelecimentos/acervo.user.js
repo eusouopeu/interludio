@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Coletor de acervos de jogos (TCC Luderia)
 // @namespace    tcc-luderia
-// @version      2026.11.13-2
+// @version      2026.11.16-3
 // @description  Procura as 63 casas do B1 na Ludopedia, no Acervo de Jogos e na rejoy, lê cada acervo achado e exporta o TXT da Ludopedia, um CSV por acervo e o CSV da varredura, com a situação da coleta.
 // @match        https://ludopedia.com.br/*
 // @match        https://*.acervodejogos.com.br/*
@@ -96,15 +96,25 @@
   const numero = (t) => (t ? +String(t).replace(/\./g, '').replace(',', '.') : '');
 
   // Página do Acervo de Jogos: [{ jogo, aluguel_rs, aluguel_dias }] e se há página seguinte.
+  // Cada loja pode ter o próprio tema de card (padrão line-clamp-2, Bardo Mago, Shelf…), então a
+  // leitura não depende de classe: um card é a sequência de links /boardgames/<jogo> com o mesmo
+  // jogo; o título é o primeiro desses links que só tem texto (o da imagem tem <img> e o selo
+  // "Disponível"; o botão "Ver" vem depois); o preço é o primeiro "R$ X / N dia(s)" até o card
+  // seguinte. Card sem título é pulado.
   function lerAcervoDeJogos(texto, sub, pagina) {
-    const jogos = [];
-    for (const bloco of texto.split('line-clamp-2').slice(1)) {
-      const nome = bloco.match(/^[^"]*" href="\/boardgames\/[^"]+">([^<]+)<\/a>/);
-      if (!nome) continue;
-      const preco = bloco.match(/R\$\s*([\d.,]+)(?:\s*<span[^>]*>\s*\/\s*(\d+)\s*dias?\s*<\/span>)?/);
-      const dias = preco && preco[2] ? +preco[2] : PERIODO_DA_CASA[sub] ?? '';
-      jogos.push({ jogo: limpa(nome[1]), aluguel_rs: preco ? numero(preco[1]) : '', aluguel_dias: preco ? dias : '' });
+    const cards = [];
+    for (const m of texto.matchAll(/<a\b[^>]*?href="\/boardgames\/([^"?#/]+)"[^>]*>([^<]*)<\/a>/g)) {
+      if (cards.length && cards[cards.length - 1].slug === m[1]) continue;
+      cards.push({ slug: m[1], pos: m.index, nome: limpa(m[2]) });
     }
+    const jogos = [];
+    cards.forEach((c, i) => {
+      if (!c.nome) return;
+      const trecho = texto.slice(c.pos, i + 1 < cards.length ? cards[i + 1].pos : texto.length);
+      const preco = trecho.match(/R\$\s*([\d.,]+)(?:\s*(?:<[^>]+>\s*)*\/\s*(\d+)\s*dias?\b)?/);
+      const dias = preco && preco[2] ? +preco[2] : PERIODO_DA_CASA[sub] ?? '';
+      jogos.push({ jogo: c.nome, aluguel_rs: preco ? numero(preco[1]) : '', aluguel_dias: preco ? dias : '' });
+    });
     return { jogos, mais: texto.includes(`page=${pagina + 1}&amp;sort=mais_alugados`) };
   }
 
@@ -282,13 +292,13 @@
   function baixarCsv() {
     if (!resultado) return;
     kit.baixarArquivo(`${hoje()}_${resultado.alvo.chave}_acervo.csv`, kit.csv(linhasCsv(), COLS));
-    kit.piscar(el.bCsv);
+    kit.confirmarBotao(el.bCsv);
   }
 
   function baixarTxt() {
     if (!resultado?.jogos.length) return;
     kit.baixarArquivo(`ludopedia_${resultado.alvo.chave}.txt`, [resultado.url, ...resultado.jogos.map((j) => j.jogo)].join('\n') + '\n', 'text/plain;charset=utf-8');
-    kit.piscar(el.bTxt);
+    kit.confirmarBotao(el.bTxt);
   }
 
   // Itens do menu em lista_acervo.js (pasta deste script).
@@ -528,7 +538,7 @@
 
   function baixarVarredura() {
     kit.baixarArquivo(`${hoje()}_acervos_varredura.csv`, kit.csv(linhasVarredura(), COLS_VARREDURA));
-    if (el.bVarredura) kit.piscar(el.bVarredura);
+    if (el.bVarredura) kit.confirmarBotao(el.bVarredura);
   }
 
   function mostrarVarredura(casas = CASAS) {
@@ -602,7 +612,8 @@
   // Padrão (o do maps_avaliacoes): canto superior direito, shadow DOM preso ao <html> e
   // reposto se sumir, arrastável e redimensionável com posição salva, Montserrat,
   // Heroicons outline, roxo como cor primária, verde/âmbar/vermelho para o desfecho,
-  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto.
+  // explicações em dicas (ⓘ ou sobre o próprio botão) em vez de texto solto; perguntas
+  // (confirmar, perguntar) dentro do painel, nunca confirm() ou prompt() do navegador.
   // Só define funções: nada toca o DOM antes de montar() (os testes rodam no Node).
   function kitPainel(op = {}) {
     const P = op.prefixo || op.id || 'tcc';
@@ -981,12 +992,51 @@
     }
 
     // O botão vira um ✓ verde por um instante.
+    // (O conteúdo original fica guardado: um segundo clique antes de 1,2 s não grava o ✓ no lugar dele.)
+    const confirmando = new WeakMap();
     function confirmarBotao(b) {
       if (!b) return;
-      const antes = [...b.childNodes];
+      const pendente = confirmando.get(b);
+      if (pendente) clearTimeout(pendente.timer);
+      const antes = pendente ? pendente.antes : [...b.childNodes];
       b.classList.add('feito');
       b.replaceChildren(icone('check'), ...antes.filter((n) => n.nodeType === 3));
-      setTimeout(() => { b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      const timer = setTimeout(() => { confirmando.delete(b); b.classList.remove('feito'); b.replaceChildren(...antes); }, 1200);
+      confirmando.set(b, { antes, timer });
+    }
+
+    // ---------- perguntas no painel ----------
+    // No lugar do confirm() e do prompt() do navegador, que travam a página e fogem do padrão:
+    // uma faixa âmbar no topo do painel, com ✓ (Enter) e ✗ (Esc). Devolvem uma Promise:
+    // confirmar() → true/false; perguntar() → o texto digitado ou null. Sem painel montado
+    // (testes no Node, página sem painel), caem no diálogo do navegador.
+    let fecharPergunta = null;
+    function abrirPergunta(texto, { campo = null, sim = 'Confirmar', nao = 'Cancelar' } = {}) {
+      if (fecharPergunta) fecharPergunta(campo ? null : false);
+      return new Promise((resolve) => {
+        if (painel.classList.contains('min')) minimizar(false);
+        const caixa = k.el.pergunta;
+        const fim = (v) => { fecharPergunta = null; caixa.hidden = true; caixa.replaceChildren(); fecharDica(); resolve(v); };
+        fecharPergunta = fim;
+        const bSim = botao('check', '', () => fim(campo ? campo.value : true), { classe: 'verde', dica: `${sim} (Enter)` });
+        const bNao = botao('x-mark', '', () => fim(campo ? null : false), { classe: 'leve', dica: `${nao} (Esc)` });
+        caixa.onkeydown = (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); bSim.click(); } else if (e.key === 'Escape') { e.preventDefault(); bNao.click(); }
+        };
+        caixa.replaceChildren(...[criar('span', { className: 'txt', textContent: texto }), campo, linha([esp(), bNao, bSim], 'compacta')].filter(Boolean));
+        caixa.hidden = false;
+        painel.scrollTop = 0;
+        estado('alerta');
+        try { (campo || bSim).focus(); } catch (_) { /* sem foco */ }
+      });
+    }
+    function confirmar(texto, opcoes) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof confirm === 'function' ? confirm(texto) : true);
+      return abrirPergunta(texto, opcoes);
+    }
+    function perguntar(texto, { valor = '', placeholder = '', ...opcoes } = {}) {
+      if (!painel || !k.el.pergunta) return Promise.resolve(typeof prompt === 'function' ? prompt(texto, valor) : null);
+      return abrirPergunta(texto, { ...opcoes, campo: criar('input', { type: 'text', value: valor, placeholder, 'aria-label': texto }) });
     }
 
     async function copiar(texto, b) {
@@ -1031,13 +1081,13 @@
         return esperarMs(600).then(() => ({ nome, via: 'navegador' }));
       }
       return new Promise((resolve) => {
-        let feito = false;
-        const fim = (via) => { if (feito) return; feito = true; soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
+        let feito = false, espera = 0;
+        const fim = (via) => { if (feito) return; feito = true; clearTimeout(espera); soltar(); resolve({ nome: via === 'pasta' ? pastaDoArquivo(pasta, nome) : nome, via }); };
         const comum = () => { baixarComum(nome, url); setTimeout(() => fim('navegador'), 600); };
         try {
           GM_download({ url, name: pastaDoArquivo(pasta, nome), saveAs: false, onload: () => fim('pasta'), onerror: () => { if (!feito) comum(); }, ontimeout: () => { if (!feito) comum(); } });
           // Sem resposta do Tampermonkey em 15 s: segue (o download pode ainda sair).
-          setTimeout(() => fim('pasta'), 15000);
+          espera = setTimeout(() => fim('pasta'), 15000);
         } catch (_) { comum(); }
       });
     }
@@ -1047,12 +1097,20 @@
     // Seletor por grupo com ✓ ok, ◐ parcial, ! refazer, ○ falta; contador com barra fina;
     // botões Próximo (o que falta, primeiro no mesmo grupo), Marcar/Desfazer e Só os que faltam.
     const SIMBOLO = { ok: '✓', parcial: '◐', falha: '!', falta: '○' };
+    // aoAdicionar (opcional): botão "+" que acrescenta um alvo à lista (o script pergunta os dados
+    // e guarda); depois de mudar a lista, recarregar() refaz as opções do seletor.
     function menuAlvos({ itens, id = (x) => x.id, grupo = (x) => x.capital, nome = (x) => x.nome, detalhe = () => '',
-      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, unidade = 'coletados' }) {
-      const lista = itens();
-      const grupos = [...new Set(lista.map(grupo))];
-      const select = criar('select', { 'aria-label': 'Alvo da coleta' }, grupos.map((g) => criar('optgroup', { label: g },
-        lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      estadoDe, atual, aoEscolher, aoProximo, aoMarcar, aoAdicionar, dicaAdicionar = 'Adicionar à lista de alvos da coleta',
+      unidade = 'coletados' }) {
+      let lista = [];
+      const select = criar('select', { 'aria-label': 'Alvo da coleta' });
+      function opcoes() {
+        lista = itens();
+        const grupos = [...new Set(lista.map(grupo))];
+        select.replaceChildren(...grupos.map((g) => criar('optgroup', { label: g },
+          lista.filter((x) => grupo(x) === g).map((x) => criar('option', { value: id(x), textContent: nome(x) })))));
+      }
+      opcoes();
       dica(select, `✓ ok · ◐ parcial · ! refazer · ○ falta. Escolher abre o alvo e coleta.`);
       select.onchange = () => aoEscolher(lista.find((x) => id(x) === select.value));
       let soFaltam = ler(chave('soFaltam'), false);
@@ -1061,11 +1119,13 @@
       const bMarcar = aoMarcar ? botao('check', '', () => aoMarcar(lista.find((x) => id(x) === select.value)), { classe: 'leve' }) : null;
       const bFiltro = alternaIcone({ ico: 'funnel', rotulo: 'Só os que faltam', ligado: soFaltam,
         aoMudar: (v) => { soFaltam = v; gravar(chave('soFaltam'), v); rotular(); } });
+      const bAdicionar = aoAdicionar ? botao('plus', '', async () => { if (await aoAdicionar()) { opcoes(); rotular(); } },
+        { classe: 'leve', dica: dicaAdicionar }) : null;
       const cont = criar('span', { className: 'pos' });
       const trilho = criar('div', { className: 'trilho fino' }, [criar('div', { className: 'preenchido' })]);
       const caixa = criar('div', { className: 'menu' }, [
         linha([select]),
-        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro], 'compacta'),
+        linha([criar('div', { className: 'contador' }, [cont, trilho]), bProx, bMarcar, bFiltro, bAdicionar], 'compacta'),
       ]);
       function rotular() {
         const a = atual();
@@ -1089,7 +1149,7 @@
         bMarcar.replaceChildren(icone(col ? 'arrow-uturn-left' : 'check'));
         dica(bMarcar, col ? 'Desfazer: volta a faltar' : 'Marcar como coletado, sem nova coleta');
       }
-      return { caixa, select, rotular, bProx };
+      return { caixa, select, rotular, bProx, bAdicionar, recarregar: () => { opcoes(); rotular(); } };
     }
 
     // ---------- painel ----------
@@ -1109,6 +1169,7 @@
         resize:both;min-width:224px;min-height:44px;max-width:calc(100vw - 24px);transition:box-shadow .2s}
       #painel.min{height:auto!important;min-height:0;resize:none;width:auto!important;min-width:0}
       #painel.min>*:not(header){display:none}
+      #painel.min header>button:not(.b-min){display:none}
       #painel.arrastando{user-select:none;opacity:.92;box-shadow:0 14px 40px rgba(0,0,0,.3)}
       header{display:flex;align-items:center;gap:2px;cursor:grab;touch-action:none;min-height:32px}
       #painel.arrastando header{cursor:grabbing}
@@ -1220,6 +1281,10 @@
       .aviso{color:var(--alerta);font-size:12.5px;margin:5px 0 0;font-weight:500}
       .aviso::before{content:"⚠ "}
       .st-alerta .aviso,.st-erro .aviso{color:inherit}
+      .pergunta{font-size:13px;background:var(--alerta-100);border-radius:10px;padding:7px 10px;margin:7px 0;animation:entra .2s ease-out}
+      .pergunta .txt{display:block;white-space:pre-line;font-weight:500}
+      .pergunta input{width:100%;margin-top:6px;background:var(--fundo)}
+      .pergunta .linha{margin:6px 0 0}
       .info{font-size:12.5px;background:var(--sup);border-radius:10px;padding:7px 10px;margin:7px 0;white-space:pre-line}
       .info:empty{display:none}
       .mono{font:11.5px/1.4 ui-monospace,Menlo,monospace;color:var(--suave);word-break:break-all}
@@ -1322,14 +1387,15 @@
       carregarFonte();
       k.el.ponto = criar('span', { className: 'ponto-estado' });
       k.el.nome = criar('span', { className: 'nome', textContent: nome });
-      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve', dica: 'Minimizar' });
+      k.el.bMin = botao('minus', '', () => minimizar(), { classe: 'leve b-min', dica: 'Minimizar' });
       const bSom = alternaIcone({ ico: 'bell', icoDesligado: 'bell-slash', rotulo: 'Som ao concluir', ligado: k.som,
         aoMudar: (v) => { k.som = v; gravar(chave('som'), v); if (v) tocar(true); } });
       const bAuto = autobaixar ? alternaIcone({ ico: 'arrow-down-tray', rotulo: 'Download automático', ligado: k.autobaixar,
         aoMudar: (v) => { k.autobaixar = v; gravar(chave('autobaixar'), v); } }) : null;
       const cab = criar('header', {}, [k.el.ponto, k.el.nome, ...extras, bSom, bAuto, ...aposAuto, k.el.bMin]);
       dica(k.el.nome, 'Clique para minimizar · arraste para mover · duplo clique volta ao canto');
-      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, ...filhos]);
+      k.el.pergunta = criar('div', { className: 'pergunta', hidden: true, role: 'alertdialog' });
+      painel = criar('div', { id: 'painel', style: `--largura:${Math.round(largura * ESCALA)}px` }, [cab, k.el.pergunta, ...filhos]);
       k.el.painel = painel;
       k.el.nome.onclick = () => { if (!arrastou) minimizar(); };
       prepararArraste(cab);
@@ -1396,7 +1462,7 @@
     Object.assign(k, {
       criar, icone, dica, ajuda, botao, botaoPerigo, botaoParar, etiqueta, alternaIcone, botaoBaixarCada, pills, secao, naoAlterna,
       linha, esp, rotulo, selo, status, resumo, barra, progresso, estado, atualizarAcoes, executar, tocar, piscar,
-      confirmarBotao, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
+      confirmarBotao, confirmar, perguntar, copiar, celula, csv, baixarArquivo, pastaDoArquivo, menuAlvos, montar, garantir, minimizar,
       nome: (t) => { if (k.el.nome && k.el.nome.textContent !== t) k.el.nome.textContent = t; },
       hospedeiro: () => hospedeiro,
     });
@@ -1426,7 +1492,7 @@
     el.lista.replaceChildren(...jogos.slice(0, 200).map((j, i) => kit.criar('div', { className: 'jogo' }, [
       kit.criar('span', { className: 'pos', textContent: String(i + 1) }), j.jogo,
       j.aluguel_rs !== '' ? kit.criar('span', { className: 'chip azul', textContent: `R$ ${String(j.aluguel_rs).replace('.', ',')}${j.aluguel_dias ? `/${j.aluguel_dias}d` : ''}` }) : null,
-    ])), jogos.length > 200 ? kit.criar('p', { className: 'vazio', textContent: `… e mais ${jogos.length - 200}` }) : null);
+    ])), ...(jogos.length > 200 ? [kit.criar('p', { className: 'vazio', textContent: `… e mais ${jogos.length - 200}` })] : []));
     el.bTxt.hidden = alvo.fonte !== 'ludopedia';
   }
 
@@ -1481,20 +1547,34 @@
   }
 
   function montarPainel() {
-    const { botao, linha, secao, selo, criar } = kit;
+    const { botao, linha, esp, secao, selo, criar } = kit;
     menu = criarMenu();
-    const bColetar = botao('arrow-down-tray', 'Coletar acervo', () => kit.executar(coletar), { classe: 'primario', dica: 'Lê todas as páginas do acervo aberto e baixa o CSV (e o TXT da Ludopedia)' });
+    const bColetar = botao('arrow-down-tray', 'Coletar', () => kit.executar(coletar), { classe: 'primario', dica: 'Coletar este acervo: lê todas as páginas do acervo aberto e baixa o CSV (e o TXT da Ludopedia)' });
     kit.botaoParar(() => { kit.parar = true; kit.gravar(CHAVE_CADEIA, false); status('Parando…'); });
     const bProcurar = botao('magnifying-glass', 'Procurar', () => kit.executar(() => varrer()),
-      { classe: 'mini', dica: 'Procura as 63 casas do B1 no Acervo de Jogos, na rejoy e na Ludopedia (catálogos, busca e endereço do Instagram/site). Leva alguns minutos.' });
-    const bTodos = botao('play', 'Coletar todos', () => { kit.gravar(CHAVE_CADEIA, true); seguirCadeia(); },
-      { classe: 'mini', dica: 'Abre cada acervo achado que falta, um após o outro, e coleta sozinho' });
+      { classe: 'mini', dica: 'Procurar acervos: procura as 63 casas do B1 no Acervo de Jogos, na rejoy e na Ludopedia (catálogos, busca e endereço do Instagram/site). Leva alguns minutos.' });
+    const bTodos = botao('play', 'Todos', () => { kit.gravar(CHAVE_CADEIA, true); seguirCadeia(); },
+      { classe: 'mini', dica: 'Coletar todos: abre cada acervo achado que falta, um após o outro, e coleta sozinho' });
     el.bVarredura = botao('queue-list', '', baixarVarredura, { classe: 'leve', dica: 'CSV da varredura: cada casa, onde foi achada, semelhança e situação' });
-    el.bCsv = botao('arrow-down-tray', 'CSV', baixarCsv, { classe: 'mini', dica: 'CSV com posição, título, aluguel e situação' });
-    el.bTxt = botao('document-text', 'TXT', baixarTxt, { classe: 'mini', dica: 'ludopedia_<chave>.txt, no formato que o Python lê' });
+    el.bCsv = botao('arrow-down-tray', 'CSV', baixarCsv, { classe: 'mini', dica: 'Baixar CSV com posição, título, aluguel e situação, em dados-brutos/B1_acervo_jogos/acervos_luderias/' });
+    // Reiniciar (lixeira): baixa antes o CSV da varredura e um backup JSON e apaga o histórico
+    // de coleta (acervos feitos, marcas, varredura, cadeia e último escolhido).
+    const bLimpar = kit.botaoPerigo('trash', '', () => {
+      const copia = { feitos: kit.ler(CHAVE_FEITOS, {}), marcas: kit.ler(CHAVE_MARCAS, {}), achados: kit.ler(CHAVE_ACHADOS, {}) };
+      const n = Object.keys(copia.feitos).length, v = Object.keys(copia.achados).length;
+      if (n || v) kit.baixarArquivo(`${hoje()}_acervos_backup.json`, JSON.stringify(copia, null, 1), 'application/json');
+      for (const c of [CHAVE_FEITOS, CHAVE_MARCAS, CHAVE_ACHADOS, CHAVE_CADEIA, CHAVE_ULTIMO, CHAVE_ABRIR]) kit.gravar(c, null);
+      resultado = null;
+      el.selo.textContent = '';
+      el.lista.replaceChildren();
+      kit.estado('');
+      refazerMenu();
+      status(n || v ? `Reiniciado: ${n} acervos coletados e a varredura de ${v} casas saíram do histórico (backup JSON baixado antes).` : 'Reiniciado: histórico de coleta zerado.', 'ok');
+    }, { classe: 'leve', dica: 'Reiniciar: apaga o histórico de coleta (acervos feitos, marcas e varredura). Baixa antes um backup JSON. Os arquivos já baixados e as preferências ficam' });
+    el.bTxt = botao('document-text', 'TXT', baixarTxt, { classe: 'mini', dica: 'Baixar TXT da Ludopedia (ludopedia_<chave>.txt), no formato que o Python lê' });
     el.selo = selo();
     el.lista = criar('div', { className: 'lista' });
-    kit.acoes = [bColetar, bProcurar, bTodos, el.bCsv, el.bTxt];
+    kit.acoes = [bColetar, bProcurar, bTodos, el.bCsv, el.bTxt, bLimpar];
     const alvo = alvoDaPagina();
     const varridas = Object.keys(kit.ler(CHAVE_ACHADOS, {})).length;
     kit.montar({
@@ -1505,9 +1585,9 @@
         linha([bProcurar, bTodos, el.bVarredura]),
         linha([bColetar, kit.el.parar]),
         kit.barra('varredura'), kit.barra('coleta'),
-        kit.el.status = criar('div', { className: 'status', textContent: alvo ? `${alvo.nome} (${PLATAFORMA[alvo.fonte]}): clique em "Coletar acervo".`
-          : varridas ? 'Escolha um acervo no seletor ou "Coletar todos".' : 'Clique em "Procurar" para achar os acervos das casas do B1.' }),
-        linha([kit.rotulo('Baixar'), el.bCsv, el.bTxt]),
+        kit.el.status = criar('div', { className: 'status', textContent: alvo ? `${alvo.nome} · ${PLATAFORMA[alvo.fonte]}`
+          : varridas ? 'Escolha um acervo.' : 'Comece por "Procurar".' }),
+        linha([el.bCsv, el.bTxt, esp(), bLimpar]),
         secao('titulos', ['Títulos', el.selo], [el.lista]),
       ],
     });

@@ -49,6 +49,8 @@ ROOT = Path(__file__).resolve().parents[4]
 ENTRADA = ROOT / "dados-agregados" / "B1_estabelecimentos" / "B1_resumo_estabelecimentos.xlsx"
 CURADORIA = ROOT / "dados-agregados" / "B1_estabelecimentos" / "2_recorte" / "B1_curadoria_metro_f_av100.csv"
 NOVAS = ROOT / "dados-agregados" / "B1_acervo_jogos" / "B1_acervodejogos_luderias_novas.csv"
+# Aprovadas na triagem (inclui as casas da repaginação de 12/11/2026, que não estão na curadoria antiga).
+APROVADAS = ROOT / "dados-agregados" / "B1_estabelecimentos" / "3_triagem" / "B1_aprovadas_metro_av100.xlsx"
 SAIDA = ROOT / "dados-agregados" / "B1_estabelecimentos" / "_auditoria"
 
 SEMENTE = 20261015
@@ -65,8 +67,9 @@ def faixa(volume) -> str:
 def main():
     pop = pd.read_excel(ENTRADA, sheet_name="estabelecimentos", dtype=str)
     assert pop.place_id.is_unique
-    datas = pd.concat([pd.read_csv(f, sep=None, engine="python", dtype=str, encoding="utf-8-sig")[["place_id", "data_coleta"]]
-                       for f in (CURADORIA, NOVAS)]).drop_duplicates("place_id", keep="last")
+    datas = pd.concat([pd.read_excel(APROVADAS, dtype=str)[["place_id", "data_coleta"]]]
+                      + [pd.read_csv(f, sep=None, engine="python", dtype=str, encoding="utf-8-sig")[["place_id", "data_coleta"]]
+                         for f in (CURADORIA, NOVAS)]).dropna().drop_duplicates("place_id", keep="last")
     pop = pop.merge(datas, on="place_id", how="left")
     assert pop.data_coleta.notna().all(), "casa sem data de coleta"
     pop["faixa_volume"] = pop["volume_avaliacoes"].map(faixa)
@@ -76,7 +79,7 @@ def main():
     cols = ["estrato_sorteio", "chave_sorteio", "place_id", "nome", "capital_endereco", "faixa_volume",
             "avaliacao_media", "volume_avaliacoes", "endereco", "data_coleta", "link_google_maps"]
     caminho = aa.gravar(amostra[cols], SAIDA, "B1_auditoria_estabelecimentos.csv", CONFERIR,
-                        script=__file__, semente=SEMENTE, populacao=len(pop), origem=[ENTRADA, CURADORIA, NOVAS],
+                        script=__file__, semente=SEMENTE, populacao=len(pop), origem=[ENTRADA, APROVADAS, CURADORIA, NOVAS],
                         desenho=f"{FRACAO:.0%} estratificado por capital e faixa de volume, maiores restos")
     aa.resumo("B1 estabelecimentos", len(pop), amostra)
     print(amostra.groupby("capital_endereco").size().to_string())

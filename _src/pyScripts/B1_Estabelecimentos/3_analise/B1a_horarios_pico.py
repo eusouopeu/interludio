@@ -25,7 +25,7 @@ Medidas, por casa (índice do Google, 0-100, 100 = hora mais cheia da semana):
   - movimento do dia = soma do índice nas horas do dia ÷ 100 (horas
     equivalentes à hora mais cheia);
   - dia útil = média dos dias abertos de terça a quinta; fim de semana = média
-    dos dias abertos de sexta a domingo (como na R05);
+    dos dias abertos de sexta a domingo (como na R03);
   - razao_util_fds = dia útil ÷ fim de semana.
 O índice mede presença (pessoas no local × tempo), não entradas nem gasto, e
 casas em shopping recebem o movimento do entorno (ver L23 em docs/pendencias.md).

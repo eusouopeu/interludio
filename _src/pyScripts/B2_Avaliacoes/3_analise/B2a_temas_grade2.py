@@ -29,6 +29,9 @@ Regras de contagem:
 
 Uso:
     python3 "_src/pyScripts/B2_Avaliacoes/3_analise/B2a_temas_grade2.py"
+    python3 "_src/pyScripts/B2_Avaliacoes/3_analise/B2a_temas_grade2.py" \
+        --base dados-brutos/B2_avaliacoes/analise_conteudo/2026-11-16_2_comentarios_grade2_reaproveitados.csv \
+        --pasta dados-agregados/B2_avaliacoes/analise_conteudo/coleta_2026-11-16_reaproveitada
 """
 # Caminhos: _src/extras/ (log comum e padrão de gráficos); log em ../logs/
 import sys
@@ -52,6 +55,7 @@ PASTA = B2 / "analise_conteudo"
 BASE = ROOT / "dados-brutos" / "B2_avaliacoes" / "analise_conteudo" / "2026-11-03_2_comentarios_grade2.csv"
 GRAF = B2 / "graficos"
 FIG_CAP = ROOT / "textos" / "graficos" / "6-1_temas_avaliacoes.png"
+N_ESPERADO = 1628  # base de 03/11; com --base, o total é o do arquivo dado
 
 TEMAS = ["ambiente e decoração", "atendimento online", "atendimento presencial", "bebidas", "comemorações e grupos",
          "comida", "conforto e barulho", "curadoria e conservação do acervo", "espaço e lotação",
@@ -73,7 +77,7 @@ def carrega():
     d["neg"] = d["Itens negativos"].map(itens)
     d["ctx"] = d["Contexto"].map(itens)
     d["nota"] = pd.to_numeric(d["Nota geral"], errors="coerce")
-    assert len(d) == 1628, len(d)
+    assert N_ESPERADO is None or len(d) == N_ESPERADO, len(d)
     return d
 
 
@@ -123,7 +127,7 @@ def recodificacao():
     sp = lambda v: {x.strip() for x in str(v).split("|") if x.strip()} if pd.notna(v) else set()
     lin = []
     for rodada in (1, 2):
-        r = pd.read_csv(PASTA / f"B2_recodificacao_rodada{rodada}.csv", sep=";", dtype=str)
+        r = pd.read_csv(B2 / "analise_conteudo" / f"B2_recodificacao_rodada{rodada}.csv", sep=";", dtype=str)
         temas = sorted(set().union(*[sp(v) for c in ("autor_positivos", "autor_negativos", "claude_positivos",
                                                        "claude_negativos") for v in r[c]]))
         pares, marcas_a, marcas_c, comum = [], 0, 0, 0
@@ -182,11 +186,24 @@ def figura(f):
             fontweight="semibold")
     val = f[["tema", "pct_elogio", "pct_critica", "comentarios_elogio", "comentarios_critica"]]
     gc.salvar(fig, GRAF, "B2_temas_polaridade", val)
-    FIG_CAP.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(GRAF / "png" / "B2_temas_polaridade.png", FIG_CAP)
+    if FIG_CAP is not None:
+        FIG_CAP.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(GRAF / "png" / "B2_temas_polaridade.png", FIG_CAP)
 
 
 def main():
+    global BASE, PASTA, GRAF, FIG_CAP, N_ESPERADO
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[1])
+    ap.add_argument("--base", type=Path, help="outra base no formato da grade 2 (ex.: a de 16/11, de "
+                    "B2b_comentarios_reaproveitados.py); a figura do capítulo não é substituída")
+    ap.add_argument("--pasta", type=Path, help="pasta das saídas com --base (tabelas e gráficos)")
+    a = ap.parse_args()
+    if a.base:
+        BASE, N_ESPERADO, FIG_CAP = a.base.resolve(), None, None
+        PASTA = (a.pasta or PASTA / f"base_{a.base.stem}").resolve()
+        GRAF = PASTA / "graficos"
+        PASTA.mkdir(parents=True, exist_ok=True)
     d = carrega()
     f = frequencia(d)
     f.to_csv(PASTA / "B2_temas_frequencia.csv", sep=";", index=False, encoding="utf-8-sig")
@@ -194,8 +211,10 @@ def main():
     c.to_csv(PASTA / "B2_temas_contexto.csv", sep=";", index=False, encoding="utf-8-sig")
     e = estabelecimentos(d)
     e.to_csv(PASTA / "B2_temas_estabelecimentos.csv", sep=";", index=False, encoding="utf-8-sig")
+    # O kappa é da recodificação da base de 03/11; com --base ele não muda e não é regravado.
     k = recodificacao()
-    k.to_csv(PASTA / "B2_recodificacao_kappa.csv", sep=";", index=False, encoding="utf-8-sig")
+    if N_ESPERADO is not None:
+        k.to_csv(PASTA / "B2_recodificacao_kappa.csv", sep=";", index=False, encoding="utf-8-sig")
     figura(f)
     com_tema = int(((d["pos"].map(len) + d["neg"].map(len)) > 0).sum())
     print(f"{len(d)} comentários; {com_tema} com tema; {d['Estabelecimento'].nunique()} estabelecimentos "
@@ -203,7 +222,7 @@ def main():
     print(f.to_string(index=False))
     print(c.to_string(index=False))
     print(k.to_string(index=False))
-    print(f"OK: {FIG_CAP.relative_to(ROOT)}")
+    print(f"OK: {(FIG_CAP or PASTA).relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

@@ -13,8 +13,8 @@ couvert, só nas casas com couvert encontrado no cardápio (decisão de 30/10/20
 Regras:
 - cada place_id conta uma vez, na metrópole do endereço (capital_endereco) e
   na região da UF dessa capital (IBGE);
-- Instagram de LudoCafé e Dominaria fica vazio: o perfil coletado não é o da
-  casa aprovada (editora e unidade de São Paulo);
+- Instagram pela coleta de 12/11/2026 (B1b_instagram_resumo.py), com os perfis
+  de LudoCafé e Dominaria corrigidos;
 - couvert entra só nas casas com couvert encontrado (não encontrado = vazio, não 0;
   não encontrar o couvert não quer dizer que a casa não cobra);
   a cesta completa também: couvert não encontrado não entra como 0;
@@ -72,7 +72,7 @@ REGIAO = {
     "Curitiba": "Sul", "Florianópolis": "Sul", "Porto Alegre": "Sul",
 }
 ORDEM_REGIAO = ["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"]
-PERFIL_ERRADO = {"LudoCafé", "Dominaria Cards & Games"}
+PERFIL_ERRADO = set()  # perfis de LudoCafé e Dominaria corrigidos na coleta de 12/11/2026
 DIAS = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado", "domingo"]
 NOME_DIA = {"segunda": "segunda", "terca": "terça", "quarta": "quarta", "quinta": "quinta",
             "sexta": "sexta", "sabado": "sábado", "domingo": "domingo"}
@@ -100,7 +100,7 @@ VARS = {
     "seguidores": ("Instagram", "Seguidores", "seguidores", INT),
     "n_posts_total": ("Instagram", "Posts desde a criação do perfil", "posts", INT),
     "idade_perfil_anos": ("Instagram", "Idade do perfil (desde o primeiro post até 15/10/2026)", "anos", DEC1),
-    "n_posts_periodo": ("Instagram", "Posts de 01/09 a 01/10/2026", "posts", DEC1),
+    "n_posts_periodo": ("Instagram", "Posts de 01/07 a 01/11/2026 (quatro meses)", "posts", DEC1),
     "curtidas_periodo": ("Instagram", "Curtidas no período", "curtidas", INT),
     "comentarios_periodo": ("Instagram", "Comentários no período", "comentários", INT),
     "interacoes_por_post": ("Instagram", "Interações por post no período (curtidas + comentários)", "interações", DEC1),

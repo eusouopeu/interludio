@@ -73,7 +73,8 @@ def saipos(dominio):
 
 def vucafood(url):
     html = get(url).replace('\\"', '"')
-    padrao = re.compile(r'\{"id":\d+,"categoria":"((?:[^"\\]|\\.)*)","nome":"((?:[^"\\]|\\.)*)",'
+    # Desde nov/2026 a página traz campos extras (idProduto, idItemCardapio, idCategoria) entre id e categoria.
+    padrao = re.compile(r'\{"id":\d+,(?:"id\w+":\d+,)*"categoria":"((?:[^"\\]|\\.)*)","nome":"((?:[^"\\]|\\.)*)",'
                         r'"descricao":"((?:[^"\\]|\\.)*)","preco":([\d.]+)')
     vistos = set()
     for cat, nome, desc, preco in padrao.findall(html):

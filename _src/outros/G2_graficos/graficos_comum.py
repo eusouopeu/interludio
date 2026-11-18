@@ -35,6 +35,7 @@ FONTE = "Source Sans 3"
 TINTA, TINTA2, TINTA3 = "#1f1f1f", "#525252", "#8a8a8a"
 BASE, MEDIO, CLARO, APAGADO = "#4d4d4d", "#8f8f8f", "#c4c4c4", "#e8e8e8"
 VERMELHO = "#b91c1c"
+ROXO = "#7e22ce"  # purple-700 do Tailwind; destaque nas figuras e diagramas (pedido do autor, 14/11/2026)
 GRADE = "#ececec"
 HALO = [pe.withStroke(linewidth=3.2, foreground="white")]
 # Escala sequencial de uma cor só (cinza claro -> grafite), para mapas e calor.
