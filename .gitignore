@@ -2,3 +2,7 @@
 node_modules/
 __pycache__/
 .venv/
+
+# Temporários do Google Drive
+.tmp.driveupload/
+.tmp.drivedownload/
