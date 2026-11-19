@@ -1,5 +1,5 @@
 // Renderizador dos blocos de conteúdo das abas do plano (src/conteudo/plano.json).
-// Tipos: kpis, texto, lista, cartoes, passos, chamada, tabela, barras, abas, sanfona, grade.
+// Tipos: kpis, downloads, texto, lista, cartoes, passos, chamada, tabela, barras, abas, sanfona, grade.
 // As tabelas e os quadros não são digitados: vêm de src/conteudo/tabelas.json, gerado do TMin por
 // scripts/sincronizar_tabelas.py, e o bloco só aponta o número ("Tabela 9.4").
 import { useState } from "react";
@@ -8,6 +8,7 @@ import tabelas from "../conteudo/tabelas.json";
 import { Cartao, Reveal, Nota, Sanfona } from "./ui";
 import { Kpi, Pilulas, Dica } from "./graficos";
 import { QRCodeSVG } from "qrcode.react";
+import downloads from "../conteudo/downloads.json";
 import site from "../conteudo/site.json";
 import { numero, slug } from "../auxiliares";
 
@@ -280,8 +281,67 @@ function Abas({ b }) {
   );
 }
 
+/* Botões para baixar o texto, os slides e as planilhas. Os arquivos e o índice saem de
+   scripts/copiar_downloads.py, que roda antes do dev e do build; o que falta na máquina fica desativado. */
+const tamanho = (b) => (b >= 1048576 ? `${(b / 1048576).toFixed(1).replace(".", ",")} MB` : `${Math.round(b / 1024)} KB`);
+
+function IconeBaixar() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+    </svg>
+  );
+}
+
+function BotaoBaixar({ d, destaque }) {
+  const base = "flex h-full items-center gap-3 rounded-lg border-[1.5px] p-3.5 text-left transition-colors";
+  const conteudo = (
+    <>
+      <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wide ${destaque ? "bg-white/15" : "bg-lavanda-100 text-roxo-700"}`}>{d.formato}</span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-semibold">{d.rotulo}</span>
+        <span className={`block text-xs leading-snug ${destaque ? "text-on-ink/80" : "text-azul-700"}`}>
+          {d.arquivo ? `${d.detalhe} · ${tamanho(d.tamanho)}` : "Indisponível nesta versão do site"}
+        </span>
+      </span>
+      {d.arquivo && <IconeBaixar />}
+    </>
+  );
+  if (!d.arquivo)
+    return <span aria-disabled="true" className={`${base} cursor-not-allowed border-papel-200 bg-papel-100 text-azul-700 opacity-60`}>{conteudo}</span>;
+  return (
+    <a
+      href={`${import.meta.env.BASE_URL}${d.arquivo}`}
+      download
+      className={`${base} ${destaque ? "border-roxo-700 bg-roxo-600 text-on-ink hover:bg-roxo-700" : "border-papel-200 bg-white text-azul-950 hover:border-roxo-600 hover:text-roxo-600"}`}
+    >
+      {conteudo}
+    </a>
+  );
+}
+
+function Downloads({ b }) {
+  return (
+    <Reveal>
+      <Cartao tom="areia" className="p-5 sm:p-6">
+        {b.titulo && <p className="text-xs font-semibold tracking-[0.14em] text-roxo-600 uppercase">{b.titulo}</p>}
+        {b.descricao && <p className="mt-1 text-sm leading-relaxed text-azul-700">{b.descricao}</p>}
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {downloads.trabalho.map((d) => <BotaoBaixar key={d.rotulo} d={d} destaque />)}
+        </div>
+        <p className="mt-5 text-[11px] font-semibold tracking-[0.14em] text-azul-700 uppercase">Planilhas de dados agregados</p>
+        <div className="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {downloads.planilhas.map((d) => <BotaoBaixar key={d.rotulo} d={d} />)}
+        </div>
+      </Cartao>
+    </Reveal>
+  );
+}
+
 export function Bloco({ b }) {
   switch (b.tipo) {
+    case "downloads":
+      return <Downloads b={b} />;
     case "qrcode":
       return <QrCode />;
     case "kpis":

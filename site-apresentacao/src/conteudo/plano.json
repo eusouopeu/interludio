@@ -45,6 +45,11 @@
     "tipo": "qrcode"
    },
    {
+    "tipo": "downloads",
+    "titulo": "Baixe o trabalho",
+    "descricao": "O texto completo do TCC, os slides da defesa e as planilhas com os dados agregados de cada bloco de coleta."
+   },
+   {
     "tipo": "cartoes",
     "titulo": "Agenda",
     "colunas": 5,

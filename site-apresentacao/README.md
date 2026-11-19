@@ -30,6 +30,10 @@ na barra lateral.
   Depois de cada versão do texto: `pnpm run tabelas`.
 - **Abas 9 a 13:** `src/conteudo/b1-estatisticas.json`, `b2-conteudo.json` e `auditorias.json`, com os textos em
   `s8-*.json`, `s11-*.json` e `s12-*.json`.
+- **Downloads (aba 1):** `scripts/copiar_downloads.py` roda antes do `dev` e do `build` e copia para
+  `public/downloads/` (fora do git) o `textos/TCC_luderia_v<n>.docx` de maior n, o
+  `slides-video-apresentacao/slides-vfinal.pptx` e as `textos/planilhas/B<n>_dados_agregados*.xlsx`, com o índice em
+  `src/conteudo/downloads.json`. Arquivo ausente na máquina vira botão desativado.
 - **Abas, títulos e tempos:** `src/conteudo/site.json`.
 
 Os números escritos à mão em `plano.json` (KPIs, gráficos de entorno, sensibilidade da matriz de bairros) vêm do
