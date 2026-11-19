@@ -1,5 +1,5 @@
 {
- "Quadro 13": {
+ "Quadro 15": {
   "titulo": "Matriz SWOT",
   "colunas": [
    "Pontos",
@@ -79,10 +79,10 @@
     "Seções 5.3 e 6.3"
    ]
   ],
-  "fonte": "elaborado pelo próprio autor, com base nos capítulos 5 a 9.",
+  "fonte": "elaborado pelo próprio autor, com base nos caps. 5 a 9.",
   "nota": ""
  },
- "Quadro 14": {
+ "Quadro 16": {
   "titulo": "Matriz de riscos",
   "colunas": [
    "Risco",
@@ -184,10 +184,10 @@
     "N6 (C13)"
    ]
   ],
-  "fonte": "elaborado pelo próprio autor, com base nos capítulos 5 a 9.",
-  "nota": "riscos agrupados pelo impacto e, dentro de cada grupo, do mais para o menos grave. Probabilidade, pelo critério do autor (N6): alta, se a evidência disponível já aponta para o valor adverso; média, se a faixa medida ou estimada inclui o valor adverso; baixa, se o risco depende de um fato que o projeto controla antes da abertura. Impacto, pelo VPL com a premissa no pessimista e as demais no provável, de R$ 703.248 (Figura 11): alto, VPL negativo; médio, queda de R$ 100 mil ou mais, com VPL positivo; baixo, queda menor que R$ 100 mil. Aluguel: custo total no 3º quartil; reforma e cozinha: reforma e instalações (I01) e cozinha e bar (I03). Gatilhos G1 a G6 no Quadro 16. n.a.: risco sem premissa própria no modelo (a São Jogue atua sobre a circulação e o gasto; a lotação, sobre o número de mesas) ou sem gatilho na operação."
+  "fonte": "elaborado pelo próprio autor, com base nos caps. 5 a 9.",
+  "nota": "riscos agrupados pelo impacto e, dentro de cada grupo, do mais para o menos grave. Probabilidade, pelo critério do autor (N6): alta, se a evidência disponível já aponta para o valor adverso; média, se a faixa medida ou estimada inclui o valor adverso; baixa, se o risco depende de um fato que o projeto controla antes da abertura. Impacto, pelo VPL com a premissa no pessimista e as demais no provável, de R$ 703.248 (Figura 12): alto, VPL negativo; médio, queda de R$ 100 mil ou mais, com VPL positivo; baixo, queda menor que R$ 100 mil. Aluguel: custo total no 3º quartil; reforma e cozinha: reforma e instalações (I01) e cozinha e bar (I03). Gatilhos G1 a G6 no Quadro 18. n.a.: risco sem premissa própria no modelo (a São Jogue atua sobre a circulação e o gasto; a lotação, sobre o número de mesas) ou sem gatilho na operação."
  },
- "Quadro 15": {
+ "Quadro 17": {
   "titulo": "Etapas de expansão",
   "colunas": [
    "Etapa",
@@ -214,7 +214,7 @@
   "fonte": "elaborado pelo próprio autor. Limites dos gatilhos propostos pelo autor (N6).",
   "nota": ""
  },
- "Quadro 16": {
+ "Quadro 18": {
   "titulo": "Gatilhos de perda máxima, em ordem de análise",
   "colunas": [
    "Gatilho",
@@ -253,11 +253,11 @@
     "→ Troca de formato (só eventos, aluguel e venda de jogos, com comidas recebidas prontas); · → Encerramento, com venda do acervo e do mobiliário para limitar a perda ao investimento menos o valor de revenda"
    ]
   ],
-  "fonte": "elaborado pelo próprio autor. Limites propostos pelo autor (N6), salvo o equilíbrio operacional, do modelo do capítulo 9.",
+  "fonte": "elaborado pelo próprio autor. Limites propostos pelo autor (N6), salvo o equilíbrio operacional, do modelo do cap. 9.",
   "nota": ""
  },
  "Quadro 1": {
-  "titulo": "Conceitos do referencial teórico, definições, referências e aplicação no plano",
+  "titulo": "Quadro Teórico",
   "colunas": [
    "Conceito",
    "Definição",
@@ -828,7 +828,7 @@
     "Tabela 9"
    ]
   ],
-  "fonte": "elaborado pelo próprio autor, com base nos capítulos 7, 8 e 9.",
+  "fonte": "elaborado pelo próprio autor, com base nos caps. 7, 8 e 9.",
   "nota": ""
  },
  "Tabela 3": {
@@ -881,6 +881,73 @@
   "nota": "pessimista com as notas fiscais da São Jogue convertidas em circulação (seção 9.1) e a curva mediana do índice; otimista com a visita mais cheia e a curva média; fim de semana de sexta e sábado."
  },
  "Quadro 9": {
+  "titulo": "Áreas do estudo compacto",
+  "colunas": [
+   "Ambiente",
+   "m²",
+   "% do bruto"
+  ],
+  "linhas": [
+   [
+    "Salão de jogos (8 mesas, 48 lugares, estante e circulação)",
+    "61,6",
+    "56,3"
+   ],
+   [
+    "Cozinha",
+    "14,0",
+    "12,8"
+   ],
+   [
+    "Balcão e caixa",
+    "4,8",
+    "4,4"
+   ],
+   [
+    "Sanitário acessível",
+    "4,2",
+    "3,8"
+   ],
+   [
+    "Despensa",
+    "4,2",
+    "3,8"
+   ],
+   [
+    "Sanitários feminino, masculino e da equipe (3 × 2,3)",
+    "6,9",
+    "6,3"
+   ],
+   [
+    "Soma dos ambientes rotulados",
+    "95,7",
+    "87,4"
+   ],
+   [
+    "Paredes internas e ajustes",
+    "7,4",
+    "6,8"
+   ],
+   [
+    "Área interna (paredes externas de 15 cm descontadas)",
+    "103,1",
+    "94,2"
+   ],
+   [
+    "Paredes externas",
+    "6,4",
+    "5,8"
+   ],
+   [
+    "Envelope bruto externo (8,00 × 13,69 m)",
+    "109,5",
+    "100,0"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, a partir da planta da Figura 8.",
+  "nota": "salão por lugar de 1,28 m² e bruto por lugar de 2,28 m², para 48 lugares (8 mesas × 6)."
+ },
+ "Quadro 10": {
   "titulo": "Equipe proposta",
   "colunas": [
    "Função",
@@ -917,7 +984,7 @@
   "fonte": "elaborado pelo próprio autor, com base no Novo CAGED e no modelo financeiro (Apêndices E e H).",
   "nota": "o custo inclui adicionais da escala, encargos e provisões; a memória de cálculo está no Apêndice H. No Simples Nacional, a contribuição patronal previdenciária está incluída no DAS. A convenção coletiva da categoria (CONVENÇÃO..., 2025) fixa o piso de R$ 1.543,00 desde 1º de janeiro de 2025, abaixo dos salários do quadro (R$ 1.653,75 e R$ 1.700,00), e o adicional noturno de 35%, já aplicado. Ela vigorou até 30 de abril de 2026, e o plano mantém suas cláusulas até o registro da seguinte."
  },
- "Quadro 10": {
+ "Quadro 11": {
   "titulo": "Cronograma de implantação",
   "colunas": [
    "Etapa",
@@ -975,7 +1042,7 @@
     "9.3"
    ]
   ],
-  "fonte": "elaborado pelo próprio autor, com base nos capítulos 7 a 10.",
+  "fonte": "elaborado pelo próprio autor, com base nos caps. 7 a 10.",
   "nota": ""
  },
  "Tabela 4": {
@@ -1025,7 +1092,34 @@
   "fonte": "elaborado pelo próprio autor, com base na LC n. 123/2006 (anexos I e III), Lei n. 9.249/1995 (arts. 15 e 20), Lei n. 9.718/1998 e Lei n. 8.212/1991 (art. 22); receita e folha do modelo financeiro (Apêndice E).",
   "nota": "n.a.: tributo incluído no DAS do Simples Nacional. Receita e folha do ano maduro: A&B de R$ 587.129,09, taxa de entrada de R$ 203.109,57 e aluguel de jogos de R$ 10.800,00; folha de 13,33 remunerações mensais de R$ 5.710,69, com os adicionais da escala (12 meses, 13º salário e um terço de férias). Sem o adicional de 10% do IRPJ, porque a base presumida fica abaixo de R$ 240 mil por ano. O ISS incide só sobre a taxa de entrada, porque a locação de bem móvel não é serviço."
  },
- "Quadro 11": {
+ "Quadro 12": {
+  "titulo": "Enquadramento das receitas no Simples Nacional",
+  "colunas": [
+   "Receita",
+   "Anexo e fundamento",
+   "Carga no ano maduro"
+  ],
+  "linhas": [
+   [
+    "Alimentos e bebidas",
+    "Anexo I, revenda de mercadoria (art. 18, § 5º-F, LC n. 123/2006)",
+    "7,9%"
+   ],
+   [
+    "Taxa de entrada",
+    "Anexo III, serviço de recreação (art. 18, § 5º-F)",
+    "11,6%"
+   ],
+   [
+    "Aluguel de jogos",
+    "Anexo III, locação de bem móvel, sem ISS (art. 18, § 4º, V)",
+    "11,6%"
+   ]
+  ],
+  "fonte": "elaborado pelo próprio autor, com base na LC n. 123/2006 (arts. 18, § 4º, V, e § 5º-F) e nas cargas da Tabela 4.",
+  "nota": ""
+ },
+ "Quadro 13": {
   "titulo": "Obrigações legais para abrir e operar a luderia em Salvador",
   "colunas": [
    "Obrigação",
@@ -1155,9 +1249,9 @@
    ]
   ],
   "fonte": "elaborado pelo próprio autor.",
-  "nota": "a escala observa o intervalo do art. 71 da CLT, o adicional noturno de 35% da convenção coletiva sobre as horas das 22h em diante, a folga dominical quinzenal da mulher (art. 386), a folga do homem em um domingo a cada três semanas (Portaria MTP n. 671/2021, art. 58, § 3º), o pagamento em dobro do domingo e do feriado sem folga e o piso de R$ 1.543,00 da convenção (CONVENÇÃO..., 2025). A refeição no local não tem natureza salarial (CLT, art. 457, § 2º). O detalhamento da escala está na seção 7.5."
+  "nota": "A escala observa o intervalo do art. 71 da CLT, o adicional noturno de 35% da convenção coletiva sobre as horas das 22h em diante, a folga dominical quinzenal da mulher (art. 386), a folga do homem em um domingo a cada três semanas (Portaria MTP n. 671/2021, art. 58, § 3º), o pagamento em dobro do domingo e do feriado sem folga e o piso de R$ 1.543,00 da convenção (CONVENÇÃO..., 2025). A refeição no local não tem natureza salarial (CLT, art. 457, § 2º). O detalhamento da escala está na seção 7.5."
  },
- "Quadro 12": {
+ "Quadro 14": {
   "titulo": "Premissas de maior impacto no VPL",
   "colunas": [
    "ID",
@@ -1690,7 +1784,7 @@
    ]
   ],
   "fonte": "elaborado pelo próprio autor, com base no modelo financeiro (Apêndice E) e nos Blocos B1 a B5 (10 de outubro a 16 de novembro de 2026).",
-  "nota": "a faixa testada vai do pessimista ao otimista do registro de premissas. Código do tipo de evidência de cada premissa no Quadro 12 e no Apêndice E."
+  "nota": "a faixa testada vai do pessimista ao otimista do registro de premissas. Código do tipo de evidência de cada premissa no Quadro 14 e no Apêndice E."
  },
  "Tabela 10": {
   "titulo": "Escada da demanda, do piso de clientes à capacidade do salão",

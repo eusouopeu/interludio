@@ -9,19 +9,19 @@ blocos:
     rotulo: SWOT
     blocos:
     - tipo: tabela
-      id: Quadro 13
+      id: Quadro 15
   - id: riscos
     rotulo: Riscos
     blocos:
     - tipo: tabela
-      id: Quadro 14
+      id: Quadro 16
   - id: etapas
     rotulo: Expansão
     blocos:
     - tipo: tabela
-      id: Quadro 15
+      id: Quadro 17
   - id: gat
     rotulo: Gatilhos
     blocos:
     - tipo: tabela
-      id: Quadro 16
+      id: Quadro 18
