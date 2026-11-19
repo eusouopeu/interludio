@@ -40,7 +40,7 @@ import pandas as pd
 ROOT = _AQUI.parents[4]
 PASTA = ROOT / "dados-agregados" / "B2_avaliacoes" / "analise_conteudo"
 DOC = ROOT / "textos" / "_planejamento" / "_instrumentos" / "_arquivo" / "analise_conteudo_bardin_B2.md"
-SAIDA = ROOT / "_src" / "outros" / "App_Apresentacao" / "src" / "conteudo" / "b2-conteudo.json"
+SAIDA = ROOT.parent / "interludio" / "site-apresentacao" / "src" / "conteudo" / "b2-conteudo.json"
 TIPOS = {"total": "total", "casa de jogos": "casas", "loja com espaço de jogo": "lojas"}
 
 
@@ -152,7 +152,7 @@ def main():
     SAIDA.write_text(json.dumps(dados, ensure_ascii=False, indent=1), encoding="utf-8")
     c = dados["corpus"]
     print(f"{c['comentarios']} comentários, {c['estabelecimentos']} estabelecimentos, {len(cats)} categorias, "
-          f"{len(lista)} achados -> {SAIDA.relative_to(ROOT)}")
+          f"{len(lista)} achados -> {SAIDA.relative_to(ROOT.parent)}")
     print("por tipo:", c["por_tipo"], "| soma:", sum(v["comentarios"] for v in c["por_tipo"].values()))
 
 

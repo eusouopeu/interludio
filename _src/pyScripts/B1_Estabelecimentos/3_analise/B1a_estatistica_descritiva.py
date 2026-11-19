@@ -58,7 +58,7 @@ RESUMO = ROOT / "dados-agregados" / "B1_estabelecimentos" / "B1_resumo_estabelec
 PASTA = ROOT / "dados-agregados" / "B1_estabelecimentos" / "4_estatistica_descritiva"
 SAIDA_GERAL = PASTA / "B1_estatistica_descritiva_geral.xlsx"
 SAIDA_GRUPO = PASTA / "B1_estatistica_descritiva_por_grupo.xlsx"
-SAIDA_SITE = ROOT / "_src" / "outros" / "App_Apresentacao" / "src" / "conteudo" / "b1-estatisticas.json"
+SAIDA_SITE = ROOT.parent / "interludio" / "site-apresentacao" / "src" / "conteudo" / "b1-estatisticas.json"
 DATA_REF = date(2026, 10, 15)
 FONTE = "Arial"
 
@@ -534,7 +534,7 @@ def main():
     print(d.regiao.value_counts().reindex(ORDEM_REGIAO).to_string())
     print("soma por região:", d.regiao.value_counts().sum(), "| soma por metrópole:", d.metropole.value_counts().sum())
     for p in (SAIDA_GERAL, SAIDA_GRUPO, SAIDA_SITE):
-        print("->", p.relative_to(ROOT))
+        print("->", p.relative_to(ROOT.parent))
 
 
 if __name__ == "__main__":

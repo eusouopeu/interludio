@@ -11,7 +11,7 @@ estrato, e calcula, pelo intervalo de Wilson a 95% (amostrar_auditoria.py):
 Só números agregados vão para o site; as amostras (com texto de avaliações e
 @ de perfis) ficam fora do git.
 
-Saída: _src/outros/App_Apresentacao/src/conteudo/auditorias.json
+Saída: ../interludio/site-apresentacao/src/conteudo/auditorias.json
 
 Uso:
     python3 _src/outros/G5_outros/auditorias_site.py
@@ -32,7 +32,7 @@ from amostrar_auditoria import Z_95, wilson_superior  # noqa: E402
 
 ROOT = _AQUI.parents[3]
 B2 = ROOT / "dados-brutos" / "B2_avaliacoes"
-SAIDA = ROOT / "_src" / "outros" / "App_Apresentacao" / "src" / "conteudo" / "auditorias.json"
+SAIDA = ROOT.parent / "interludio" / "site-apresentacao" / "src" / "conteudo" / "auditorias.json"
 CRITERIO = 0.05
 FONTES_B4 = ["bcb", "caged", "concla", "fipezap", "ibge_censo_2022", "ibge_sidra", "legislacao"]
 
@@ -117,7 +117,7 @@ def main():
     SAIDA.write_text(json.dumps(dados, ensure_ascii=False, indent=1), encoding="utf-8")
     for k, v in out.items():
         print(f"{k}: n={v['n']} de {v['populacao']}, zero erros -> {v['wilson_zero']}%, aceita até {v['max_erros']} erros")
-    print("n mínimo com zero erros:", dados["n_minimo_zero_erros"], "->", SAIDA.relative_to(ROOT))
+    print("n mínimo com zero erros:", dados["n_minimo_zero_erros"], "->", SAIDA.relative_to(ROOT.parent))
 
 
 if __name__ == "__main__":
