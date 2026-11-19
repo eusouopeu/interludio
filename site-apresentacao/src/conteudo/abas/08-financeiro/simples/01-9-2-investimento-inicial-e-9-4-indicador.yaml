@@ -1,0 +1,29 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 9.2 Investimento inicial e 9.4 Indicadores de viabilidade
+descricao: 'Resultado do objetivo (v): projeção financeira.'
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: VPL
+    valor: R$ 703 mil
+    detalhe: R$ 188 mil sem o valor residual
+  - rotulo: TIR real
+    valor: 51,0%
+    detalhe: 30,6% sem o valor residual
+  - rotulo: Payback descontado
+    valor: 3,5 anos
+    detalhe: horizonte de 5 anos
+  centralizar: true
+- tipo: kpis
+  itens:
+  - rotulo: Investimento
+    valor: R$ 391 mil
+  - rotulo: Receita madura
+    valor: R$ 68,0 mil/mês
+  - rotulo: Equilíbrio
+    valor: R$ 44,2 mil/mês
+    detalhe: 542 pessoas
+  centralizar: true
+fonte: modelo financeiro, 18/11/2026 (Tabela 8; capítulo 9)

@@ -3,30 +3,35 @@
 Site de apresentação do TCC *"Dados em jogo: plano de negócios baseado em evidências para uma luderia em
 Salvador"* — Bacharelado em Administração, Escola de Administração, UFBA.
 
-Treze abas na barra lateral, em dois grupos. As oito do **plano** somam cerca de 10 minutos de fala; as cinco de
-**dados de apoio** servem para responder à banca.
+Catorze abas na barra lateral, em dois grupos: nove do **plano** e cinco de **dados de apoio**, para responder à banca.
 
 | # | Aba | Capítulo do TMin | Tempo |
 |---|---|---|---|
-| 1 | Introdução | 1 e 4 | 1min |
+| 1 | Introdução | 1 | 1min |
 | 2 | Referencial teórico | 2 | 1min |
 | 3 | Metodologia | 3 | 1min30 |
-| 4 | Análise de mercado | 5 | 1min30 |
-| 5 | Plano de marketing | 6 | 1min30 |
-| 6 | Plano operacional | 7 | 1min |
-| 7 | Plano financeiro | 9 | 1min30 |
-| 8 | Análise de riscos | 10 e 11 | 1min |
-| 9 a 13 | Panorama (B1), por metrópole, por região, análise de conteúdo (B2) e auditoria | dados | apoio |
+| 4 | Síntese dos resultados | 9 e 11 | 30s |
+| 5 | Análise de mercado | 5 e 6 | 1min30 |
+| 6 | Plano de marketing | 6 | 1min30 |
+| 7 | Plano operacional | 7 e 8 | 1min |
+| 8 | Plano financeiro | 9 | 1min30 |
+| 9 | Análise de riscos | 10 e 11 | 1min |
+| 10 a 14 | Panorama (B1), por metrópole, por região, análise de conteúdo (B2) e auditoria | dados | apoio |
 
-As setas **←** e **→** do teclado navegam entre as abas. O tema segue o sistema (claro ou escuro) e pode ser trocado
-na barra lateral.
+Cada aba mostra uma seção por vez: os botões do topo escolhem a seção, os do pé da seção passam para a anterior e a
+próxima, e os do rodapé passam de aba. As setas **←** e **→** do teclado passam as seções e, na primeira ou na
+última, a aba. O endereço guarda a aba e a seção (`#marketing/2`).
+
+Um botão discreto no cabeçalho alterna o **modo simples** (padrão: o roteiro dos slides da defesa, em 20 minutos) e
+o **modo completo** (o conteúdo detalhado, com as tabelas do TMin). Nas abas de dados, o modo simples mostra só o
+resumo e os achados. O botão do canto superior direito alterna o tema claro e o escuro.
 
 ## De onde vêm os números
 
-- **Texto das abas 1 a 8:** `src/conteudo/plano.json` (blocos: kpis, texto, lista, cartões, passos, chamada, tabela,
-  barras, abas e sanfona; renderizados por `src/components/blocos.jsx`).
+- **Texto das abas 1 a 9:** `src/conteudo/abas/`, uma pasta por aba e um `.yaml` por seção, em `simples/` e
+  `completo/`, sem código; o guia dos campos está em `src/conteudo/abas/LEIA-ME.md`.
 - **Tabelas e quadros:** não são digitados. `scripts/sincronizar_tabelas.py` extrai todas as tabelas e quadros do TMin
-  (`textos/capitulos/`) para `src/conteudo/tabelas.json`, e o `plano.json` só aponta o número ("Tabela 9.4").
+  (`textos/capitulos/`) para `src/conteudo/tabelas.json`, e o `.yaml` da seção só aponta o número ("Tabela 5").
   Depois de cada versão do texto: `pnpm run tabelas`.
 - **Abas 9 a 13:** `src/conteudo/b1-estatisticas.json`, `b2-conteudo.json` e `auditorias.json`, com os textos em
   `s8-*.json`, `s11-*.json` e `s12-*.json`.
@@ -34,9 +39,10 @@ na barra lateral.
   `public/downloads/` (fora do git) o `textos/TCC_luderia_v<n>.docx` de maior n, o
   `slides-video-apresentacao/slides-vfinal.pptx` e as `textos/planilhas/B<n>_dados_agregados*.xlsx`, com o índice em
   `src/conteudo/downloads.json`. Arquivo ausente na máquina vira botão desativado.
-- **Abas, títulos e tempos:** `src/conteudo/site.json`.
+- **Abas de dados de apoio e moldura do site:** `src/conteudo/site.json`; títulos e tempos das abas do plano, no
+  `_aba.yaml` de cada pasta.
 
-Os números escritos à mão em `plano.json` (chamadas, KPIs e cartões) seguem a apresentação final
+Os números escritos à mão nos `.yaml` (chamadas, KPIs e cartões) seguem a apresentação final
 (`slides-vfinal.pptx`, modelo financeiro de 18/11/2026, TMin v50) e precisam ser conferidos quando o texto mudar.
 
 ## Identidade visual

@@ -1,0 +1,19 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Pressupostos
+descricao: 'Sem hipóteses estatísticas: três pressupostos declarados.'
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: '1'
+    titulo: Preferência por dados comportamentais e relatos espontâneos
+    texto: Não se utilizam questionários nem entrevistas.
+  - rotulo: '2'
+    titulo: São Jogue como referência de comportamento, não de porte
+    texto: Circulação, tamanho dos grupos e permanência.
+  - rotulo: '3'
+    titulo: O movimento fora do pico acompanha o índice “Horários de pico” do Google Maps
+    texto: Declarado e tratado como limitação.
+fonte: capítulo 3, seções 3.4 e 3.6; capítulo 7

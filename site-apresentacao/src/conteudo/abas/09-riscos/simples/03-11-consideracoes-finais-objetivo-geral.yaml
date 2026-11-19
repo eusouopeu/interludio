@@ -1,0 +1,18 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: '11 Considerações finais: objetivo geral'
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: VPL positivo
+    valor: 77,3%
+    detalhe: dos cenários
+  - rotulo: P10
+    valor: −R$ 346 mil
+    detalhe: do VPL
+  - rotulo: P90
+    valor: R$ 1,81 mi
+    detalhe: do VPL
+  centralizar: true
+fonte: simulação de Monte Carlo, 10 mil sorteios (Apêndice G; Tabela 8; Tabela G.1)

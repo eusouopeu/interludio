@@ -1,0 +1,9 @@
+# Dados da aba. "titulo" e "subtitulo" aparecem na barra lateral; "cabecalho", no topo da aba;
+# "tempo" é a estimativa de fala; "capitulo" diz de onde o texto vem no TMin.
+
+titulo: Plano financeiro
+subtitulo: Investimento e indicadores
+cabecalho: 'Objetivo (v): investimento, mês maduro, DRE e indicadores de viabilidade'
+capitulo: Capítulo 9 do TMin
+tempo: 1min30
+grupo: Plano

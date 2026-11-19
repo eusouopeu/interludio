@@ -1,0 +1,21 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Resumo
+blocos:
+- tipo: chamada
+  texto: Os instrutores indicam o jogo e explicam a regra (diferenciação); a cozinha garante qualidade e rapidez (paridade). A praça é a área dos dez bairros de maior renda de Salvador (QUALISalvador).
+- tipo: kpis
+  itens:
+  - rotulo: Atendimento presencial
+    valor: 55,6%
+    detalhe: das avaliações o citam
+  - rotulo: Elogio ao atendimento
+    valor: +0,18
+    detalhe: acima da mediana da nota; com a crítica, nota de 1,93
+  - rotulo: Demanda madura
+    valor: '834'
+    detalhe: pessoas por mês, ou 39 por dia aberto
+  - rotulo: Gasto por pessoa
+    valor: R$ 80,42
+    detalhe: Declarado, 21 casas (B1)

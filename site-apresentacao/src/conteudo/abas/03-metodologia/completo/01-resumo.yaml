@@ -1,0 +1,21 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Resumo
+blocos:
+- tipo: chamada
+  texto: 'Pesquisa aplicada, descritivo-exploratória e quali-quanti, sem questionários nem entrevistas: cada premissa recebe um código de tipo de evidência, de N1 a N6, que classifica a origem do dado e não forma escala de confiabilidade.'
+- tipo: kpis
+  itens:
+  - rotulo: B1 · Organizações
+    valor: '63'
+    detalhe: Luderias com mais de 100 avaliações, de 164 candidatos, em 14 das 15 metrópoles da REGIC
+  - rotulo: B2 · Documentos
+    valor: '1.628'
+    detalhe: Avaliações com texto, publicadas nos 3 meses antes da coleta (outubro de 2026)
+  - rotulo: B3 · Observação
+    valor: '4'
+    detalhe: Visitas de sexta e sábado, das 19h às 22h, nas duas unidades da São Jogue
+  - rotulo: B4 e B5 · Bases
+    valor: '26'
+    detalhe: Anúncios de aluguel de 100 a 150 m² nos 10 bairros de maior renda; 75 itens orçados

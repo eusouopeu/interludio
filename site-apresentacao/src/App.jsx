@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import site from "./conteudo/site.json";
+import { ABAS as SECOES, META, BARRA, RODAPE, secoesDe } from "./conteudo";
+import { ModoContexto } from "./components/ui";
 import Secao from "./sections/Secao";
 import S8Panorama from "./sections/S8Panorama";
 import S9Metropoles from "./sections/S9Metropoles";
@@ -7,9 +8,7 @@ import S10Regioes from "./sections/S10Regioes";
 import S11Conteudo from "./sections/S11Conteudo";
 import S12Auditorias from "./sections/S12Auditorias";
 
-const { secoes: SECOES, meta: META, barraLateral: BARRA, rodape: RODAPE } = site;
-
-// Abas de dados têm componente próprio; as do plano usam a aba genérica (conteudo/plano.json).
+// Abas de dados têm componente próprio; as do plano usam a aba genérica (conteudo/abas/).
 const ESPECIAIS = {
   panorama: S8Panorama,
   metropoles: S9Metropoles,
@@ -20,16 +19,19 @@ const ESPECIAIS = {
 
 const GRUPOS = [...new Set(SECOES.map((s) => s.grupo))];
 
-function idDoHash() {
-  const h = window.location.hash.replace("#", "");
-  return SECOES.some((s) => s.id === h) ? h : SECOES[0].id;
+/* Endereço: #<aba> ou #<aba>/<seção>, com a seção contada a partir de 1. */
+function lerHash(modo) {
+  const [id, n] = window.location.hash.replace("#", "").split("/");
+  const aba = SECOES.find((s) => s.id === id) ?? SECOES[0];
+  const total = secoesDe(aba, modo)?.length ?? 1;
+  const sec = Math.min(Math.max((parseInt(n, 10) || 1) - 1, 0), total - 1);
+  return { id: aba.id, sec };
 }
 
 /* Ícones Heroicons (outline, 24): sol, lua e monitor. */
 const ICONES = {
   claro: "M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z",
   escuro: "M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z",
-  sistema: "M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25",
 };
 const Icone = ({ nome, className = "h-4 w-4" }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
@@ -38,6 +40,7 @@ const Icone = ({ nome, className = "h-4 w-4" }) => (
 );
 
 /* Tema: segue o sistema até o usuário escolher; a escolha fica só neste navegador. */
+const escuroNoSistema = () => window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
 function useTema() {
   const [tema, setTema] = useState(() => {
     try { return localStorage.getItem("tema") ?? "sistema"; } catch { return "sistema"; }
@@ -51,59 +54,90 @@ function useTema() {
       else localStorage.setItem("tema", tema);
     } catch { /* sem armazenamento */ }
   }, [tema]);
-  return [tema, setTema];
+  const escuro = tema === "escuro" || (tema === "sistema" && escuroNoSistema());
+  return [escuro, () => setTema(escuro ? "claro" : "escuro")];
 }
 
-function SeletorTema({ tema, aoMudar }) {
+/* Botão-ícone que alterna entre o tema claro e o escuro: mostra o tema para o qual vai mudar. */
+function BotaoTema({ escuro, alternar, className = "" }) {
+  const dica = escuro ? "Usar o tema claro" : "Usar o tema escuro";
   return (
-    <div role="radiogroup" aria-label="Tema" className="inline-flex rounded-lg border border-papel-200 bg-white p-0.5">
-      {[["claro", "Claro"], ["sistema", "Automático"], ["escuro", "Escuro"]].map(([id, rotulo]) => (
-        <button
-          key={id}
-          role="radio"
-          aria-checked={tema === id}
-          aria-label={rotulo}
-          title={rotulo}
-          onClick={() => aoMudar(id)}
-          className={`cursor-pointer rounded-md p-1.5 transition-colors ${tema === id ? "bg-roxo-600 text-on-ink" : "text-azul-700 hover:bg-papel-100"}`}
-        >
-          <Icone nome={id} />
-        </button>
-      ))}
-    </div>
+    <button
+      onClick={alternar}
+      title={dica}
+      aria-label={dica}
+      className={`cursor-pointer rounded-lg border border-papel-200 bg-white p-2 text-azul-700 transition-colors hover:border-roxo-600 hover:text-roxo-600 ${className}`}
+    >
+      <Icone nome={escuro ? "claro" : "escuro"} />
+    </button>
   );
 }
 
+/* Modo de leitura: simples (slides) por padrão; a escolha fica só neste navegador. */
+function useModoLeitura() {
+  const [modo, setModo] = useState(() => {
+    try { return localStorage.getItem("modo") === "completo" ? "completo" : "simples"; } catch { return "simples"; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem("modo", modo); } catch { /* sem armazenamento */ }
+  }, [modo]);
+  return [modo, setModo];
+}
+
 export default function App() {
-  const [ativa, setAtiva] = useState(idDoHash);
-  const [tema, setTema] = useTema();
+  const [modo, setModo] = useModoLeitura();
+  const [pos, setPos] = useState(() => lerHash(modo));
+  const { id: ativa, sec } = pos;
+  const [escuro, alternarTema] = useTema();
   const faixa = useRef(null);
 
   const indice = SECOES.findIndex((s) => s.id === ativa);
   const Especial = ESPECIAIS[ativa];
 
-  const ir = useCallback((id) => {
-    setAtiva(id);
-    window.location.hash = id;
+  const aba = SECOES[indice];
+  const secoes = secoesDe(aba, modo);
+  const totalSec = secoes?.length ?? 1;
+
+  // ultima: abre a aba na última seção (ao voltar de uma aba para a anterior pelo teclado).
+  const ir = useCallback((id, s = 0, ultima = false) => {
+    const alvo = SECOES.find((x) => x.id === id);
+    const n = ultima ? (secoesDe(alvo, modo)?.length ?? 1) - 1 : s;
+    setPos({ id, sec: n });
+    window.location.hash = n > 0 ? `${id}/${n + 1}` : id;
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
+  }, [modo]);
+  const irSecao = useCallback((s) => ir(ativa, s), [ativa, ir]);
 
   useEffect(() => {
-    const aoMudarHash = () => setAtiva(idDoHash());
+    const aoMudarHash = () => setPos(lerHash(modo));
     window.addEventListener("hashchange", aoMudarHash);
     return () => window.removeEventListener("hashchange", aoMudarHash);
-  }, []);
+  }, [modo]);
 
-  // Setas do teclado navegam entre as abas, e a aba ativa fica à vista na faixa do celular.
+  // Ao trocar de modo, a aba fica e a seção volta para a primeira.
+  const alternarModo = useCallback(() => {
+    setModo((m) => (m === "simples" ? "completo" : "simples"));
+    setPos((p) => ({ id: p.id, sec: 0 }));
+    window.location.hash = ativa;
+  }, [ativa, setModo]);
+
+  // Setas do teclado passam as seções; na primeira ou na última, passam para a aba vizinha.
+  // A aba ativa fica à vista na faixa do celular.
   useEffect(() => {
     const aoTeclar = (e) => {
-      if (e.target.matches("input, textarea") || e.altKey || e.ctrlKey || e.metaKey) return;
-      if (e.key === "ArrowRight" && indice < SECOES.length - 1) ir(SECOES[indice + 1].id);
-      if (e.key === "ArrowLeft" && indice > 0) ir(SECOES[indice - 1].id);
+      if (e.target?.matches?.("input, textarea") || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.key === "ArrowRight") {
+        if (sec < totalSec - 1) ir(ativa, sec + 1);
+        else if (indice < SECOES.length - 1) ir(SECOES[indice + 1].id);
+      }
+      if (e.key === "ArrowLeft") {
+        if (sec > 0) ir(ativa, sec - 1);
+        else if (indice > 0) ir(SECOES[indice - 1].id, 0, true);
+      }
     };
     window.addEventListener("keydown", aoTeclar);
     return () => window.removeEventListener("keydown", aoTeclar);
-  }, [indice, ir]);
+  }, [indice, ir, ativa, sec, totalSec]);
 
   useEffect(() => {
     faixa.current?.querySelector("[aria-current='page']")?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
@@ -118,9 +152,8 @@ export default function App() {
       {/* ─────────── Barra lateral (telas grandes) ─────────── */}
       <aside className="no-print fixed inset-y-0 left-0 z-40 hidden w-64 shrink-0 flex-col border-r border-papel-200 bg-papel-100 lg:flex xl:w-72">
         <div className="px-5 pt-6 pb-4 xl:px-6 xl:pt-8">
-          <p className="text-[10px] font-semibold tracking-[0.18em] text-roxo-600 uppercase">{BARRA.chapeu}</p>
-          <h1 className="mt-3 font-display text-[2rem] leading-[1] font-black xl:text-4xl">{META.titulo}</h1>
-          <p className="mt-3 text-xs leading-relaxed text-azul-700">{META.subtitulo.split(",")[0]}</p>
+          <h1 className="font-display text-[2rem] leading-[1] font-black xl:text-4xl">{META.titulo}</h1>
+          <p className="mt-3 text-xs leading-relaxed font-bold text-roxo-700">{META.subtitulo.split(",")[0]}</p>
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 pb-4" aria-label={BARRA.rotuloNavegacao}>
@@ -165,7 +198,6 @@ export default function App() {
               <p className="mt-0.5 text-[11px] leading-snug text-azul-700">{META.curso}</p>
               {META.orientador && <p className="mt-0.5 text-[11px] leading-snug text-azul-700">{META.orientador}</p>}
             </div>
-            <SeletorTema tema={tema} aoMudar={setTema} />
           </div>
           <p className="flex items-center gap-1.5 text-[10px] text-azul-700/80">
             <kbd className="rounded border border-papel-200 bg-white px-1.5 py-0.5">←</kbd>
@@ -180,15 +212,22 @@ export default function App() {
         <header className="no-print sticky top-0 z-20 flex items-center gap-3 border-b border-papel-200 bg-papel-50/95 px-4 py-3 backdrop-blur lg:hidden">
           <span className="shrink-0 text-sm font-bold text-roxo-600 tabular-nums">{String(SECOES[indice].n).padStart(2, "0")}</span>
           <span className="min-w-0 flex-1 truncate font-display text-lg font-bold">{SECOES[indice].titulo}</span>
-          <SeletorTema tema={tema} aoMudar={setTema} />
+          <BotaoTema escuro={escuro} alternar={alternarTema} />
         </header>
 
         <div className="no-print h-1 w-full bg-papel-200" role="progressbar" aria-valuemin={1} aria-valuemax={SECOES.length} aria-valuenow={indice + 1} aria-label="Progresso da apresentação">
           <div className="h-full bg-roxo-600 transition-all duration-500" style={{ width: `${((indice + 1) / SECOES.length) * 100}%` }} />
         </div>
 
-        <main id="conteudo-principal" className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 md:px-8 md:py-10 lg:py-14">
-          {Especial ? <Especial key={ativa} /> : <Secao key={ativa} id={ativa} />}
+        <main id="conteudo-principal" className="relative mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 md:px-8 md:py-10 lg:py-14">
+          <BotaoTema escuro={escuro} alternar={alternarTema} className="no-print absolute top-3 right-4 hidden sm:right-6 md:right-8 lg:block" />
+          <ModoContexto.Provider value={{ modo, alternar: alternarModo }}>
+            {Especial ? (
+              <div className={modo === "simples" ? "so-resumo" : undefined}><Especial key={ativa} /></div>
+            ) : (
+              <Secao key={ativa} aba={aba} secoes={secoes} atual={sec} irPara={irSecao} />
+            )}
+          </ModoContexto.Provider>
         </main>
 
         <footer className="no-print border-t border-papel-200 bg-papel-50/90 backdrop-blur">

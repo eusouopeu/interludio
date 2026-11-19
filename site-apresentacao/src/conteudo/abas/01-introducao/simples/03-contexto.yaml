@@ -1,0 +1,22 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Contexto
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: Serviços às famílias
+    titulo: +36,4%
+    texto: acima da inflação na receita bruta, de 2019 a 2023
+  - rotulo: Atividades culturais e recreativas
+    titulo: +53,5%
+    texto: acima da inflação no mesmo período
+  - rotulo: Luderias em Salvador
+    titulo: '1'
+    texto: 3ª menor densidade entre as 15 metrópoles analisadas
+  centralizar: true
+- tipo: texto
+  paragrafos:
+  - Luderias são estabelecimentos que oferecem jogos de mesa para uso no próprio local e integram o ramo do competitive socialising. No Brasil, a pioneira foi a Ludus Luderia, em São Paulo, em 2007.
+fonte: capítulo 1; IBGE, PAS, tabela 2611; BCB, SGS; KAM Insight (2022); Bloco B1

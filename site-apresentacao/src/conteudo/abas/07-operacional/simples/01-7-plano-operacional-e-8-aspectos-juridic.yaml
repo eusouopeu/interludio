@@ -1,0 +1,22 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 7 Plano operacional e 8 Aspectos jurídicos e legais
+descricao: 'Resultado do objetivo (iv): operação e jurídico.'
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: Salão
+    valor: 8 mesas
+    detalhe: 48 lugares desde a abertura; ponto de 100 a 150 m² na área dos dez bairros; até 143 pessoas por dia
+  - rotulo: Horário
+    valor: 45 h
+    detalhe: 'por semana, de terça a sábado, das 14h às 23h: cobre o pico dos concorrentes'
+  - rotulo: Equipe
+    valor: 3 + 1
+    detalhe: 2 atendentes e instrutores e 1 cozinheiro-chefe; o sócio na gestão, nas compras e nos imprevistos
+  - rotulo: Tributos
+    valor: 7,9% e 11,6%
+    detalhe: Simples Nacional sobre A&B e sobre serviços; sociedade limitada
+  centralizar: true
+fonte: capítulos 7 e 8; Figura 7; Quadro 9; Tabela 4

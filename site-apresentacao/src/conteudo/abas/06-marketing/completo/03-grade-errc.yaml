@@ -1,0 +1,8 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Grade ERRC
+descricao: Eliminar, reduzir, elevar e criar, diante do padrão dos concorrentes.
+blocos:
+- tipo: tabela
+  id: Quadro 7

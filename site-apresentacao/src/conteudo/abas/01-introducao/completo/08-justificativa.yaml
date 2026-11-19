@@ -1,0 +1,17 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Justificativa
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: Acadêmica
+    titulo: Lacuna e rigor
+    texto: Preenche uma lacuna sobre luderias e sustenta cada premissa em dados classificados por tipo de evidência.
+  - rotulo: Gerencial
+    titulo: Investimento
+    texto: Orienta ponto, acervo, preço e horários, com um processo replicável de construção de premissas.
+  - rotulo: Social
+    titulo: Lazer presencial
+    texto: Alternativa ao entretenimento mediado por telas e à socialização mediada pelo álcool.

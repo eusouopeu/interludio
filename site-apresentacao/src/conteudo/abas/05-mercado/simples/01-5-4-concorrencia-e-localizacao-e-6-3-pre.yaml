@@ -1,0 +1,19 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 5.4 Concorrência e localização e 6.3 Preço
+descricao: 'Resultado do objetivo (i): mercado e concorrência.'
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: Entrada
+    valor: R$ 18,50
+    detalhe: Média de terça a quinta; R$ 26,29 de sexta a domingo (21 casas)
+  - rotulo: Cesta
+    valor: R$ 71,26
+    detalhe: Taxa, bebida e hambúrguer (16 casas)
+  - rotulo: Gasto
+    valor: R$ 80,42
+    detalhe: Gasto declarado por pessoa (21 casas)
+  centralizar: true
+fonte: Bloco B1 (Apêndice A; seções 5.4 e 6.3)

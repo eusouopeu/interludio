@@ -1,0 +1,33 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 'Quadro 1: conceitos do referencial teórico'
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: Produto
+    titulo: Economia da experiência
+    texto: Venda de um momento memorável.
+    destaque: Pine e Gilmore apud Fitzsimmons e Fitzsimmons (2014)
+  - rotulo: Setor
+    titulo: Cinco forças; PESTEL; SWOT
+    texto: Rentabilidade do setor e ambiente externo.
+    destaque: Porter (2008); Kotler e Keller (2013)
+  - rotulo: Cliente
+    titulo: Atributo obrigatório e atrativo (PRC)
+    texto: 'Obrigatório: a falta pune mais do que a presença premia.'
+    destaque: Picolo e Tontini (2008)
+  - rotulo: Capacidade
+    titulo: Lei de Little; ponto de equilíbrio
+    texto: Ocupação = chegada × permanência; venda que cobre o custo fixo.
+    destaque: Fitzsimmons e Fitzsimmons (2014); Bruni (2018)
+  - rotulo: Viabilidade
+    titulo: VPL, TIR e payback
+    texto: Valor acima da TMA; taxa que zera o VPL; prazo de retorno.
+    destaque: Bruni (2018); Assaf Neto (2014)
+  - rotulo: Risco
+    titulo: Sensibilidade e ponto de ruptura
+    texto: Valor de uma premissa que zera o VPL.
+    destaque: Assaf Neto (2014); Pfeffer e Sutton (2006)
+fonte: capítulo 2; Quadro 1

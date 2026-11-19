@@ -1,0 +1,20 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Objetivos
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - texto: Avaliar a viabilidade mercadológica, operacional e financeira de uma luderia em Salvador, para indicar se o investimento deve ser feito e sob quais condições o negócio se sustenta.
+  - rotulo: Objetivos específicos (i) a (v)
+    lista:
+    - (i) Analisar o mercado e a concorrência.
+    - (ii) Definir posicionamento e composto de marketing.
+    - (iii) Estimar demanda, taxa de ocupação e giro.
+    - (iv) Dimensionar a operação e os requisitos jurídicos.
+    - (v) Projetar investimentos, receitas, custos e indicadores.
+  - rotulo: Objetivos específicos (vi) e (vii)
+    lista:
+    - (vi) Identificar premissas críticas e pontos de ruptura.
+    - (vii) Propor um plano de expansão e um de contingência, acionados por indicadores.

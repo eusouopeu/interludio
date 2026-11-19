@@ -46,6 +46,8 @@ export default function S12Auditorias() {
         <Kpi rotulo="n mínimo" valor={D.n_minimo_zero_erros} detalhe="para cumprir o critério com zero erros" />
       </div>
 
+      {/* Daqui para baixo, só no modo completo. */}
+      <span data-detalhe hidden />
       <Reveal>
         <h2 className="mt-12 font-display text-2xl font-bold text-azul-800">{c.regras.titulo}</h2>
       </Reveal>

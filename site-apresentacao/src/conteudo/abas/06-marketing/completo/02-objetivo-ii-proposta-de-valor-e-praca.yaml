@@ -1,0 +1,20 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 'Objetivo (ii): proposta de valor e praça'
+blocos:
+- tipo: cartoes
+  colunas: 2
+  itens:
+  - rotulo: Diferenciação
+    titulo: Instrutores
+    texto: Indicam o jogo e explicam a regra.
+  - rotulo: Paridade
+    titulo: Cozinha
+    texto: Garante qualidade e rapidez.
+  - rotulo: 6.4 Praça
+    titulo: Dez bairros de maior renda
+    texto: Área definida pelo QUALISalvador; o ponto é cotado antes de investir.
+  - rotulo: Fonte
+    titulo: Bloco B2
+    texto: Figura 5; seções 6.1 e 6.4; Picolo e Tontini (2008).

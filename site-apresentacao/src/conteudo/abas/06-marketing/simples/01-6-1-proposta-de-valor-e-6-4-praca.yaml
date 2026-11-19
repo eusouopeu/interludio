@@ -1,0 +1,21 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 6.1 Proposta de valor e 6.4 Praça
+descricao: 'Resultado do objetivo (ii): posicionamento.'
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: Atendimento presencial
+    valor: 55,6%
+    detalhe: das avaliações o citam
+  - rotulo: Elogio ao atendimento
+    valor: +0,18
+    detalhe: acima da mediana com o elogio; nota de 1,93 com a crítica
+  centralizar: true
+- tipo: chamada
+  texto: Os instrutores indicam o jogo e explicam a regra (diferenciação); a cozinha garante qualidade e rapidez (paridade).
+- tipo: texto
+  paragrafos:
+  - 'Praça: área dos dez bairros de maior renda de Salvador (QUALISalvador).'
+fonte: Bloco B2 (Figura 5; seções 6.1 e 6.4); Picolo e Tontini (2008)

@@ -1,0 +1,32 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 'Objetivo (iii): 6.6 Estimativa de demanda'
+descricao: Bloco B3; índice “Horários de pico” (Tabela 3; seções 6.6 e 7.2); lei de Little.
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: Contagem direta
+    titulo: 6,40 pessoas/h
+    texto: No pico; mediana de 5,08; as NFC-e dão o piso de 3,89.
+  - rotulo: × Horários de pico
+    titulo: 30,1 h
+    texto: 'De pico equivalentes por semana: 7,69 h na sexta e no sábado, 4,90 h no dia útil.'
+  - rotulo: = Demanda madura
+    titulo: 834 pessoas/mês
+    texto: '39 por dia aberto: 192 por semana, vezes 4,33 semanas.'
+- tipo: kpis
+  itens:
+  - rotulo: Tamanho do grupo
+    valor: 3,6
+    detalhe: pessoas
+  - rotulo: Permanência
+    valor: 109 min
+    detalhe: por grupo
+  - rotulo: Ocupação
+    valor: 27%
+    detalhe: da capacidade
+  - rotulo: Giro
+    valor: 1,3
+    detalhe: grupo por mesa por dia

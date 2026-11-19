@@ -1,0 +1,21 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Referências
+descricao: Principais obras citadas; lista completa, em ABNT, no trabalho.
+blocos:
+- tipo: lista
+  itens:
+  - ASAKURA, P. N.; SILVA, A. R. da; MELLO, D. A. (2018). Estudo de viabilidade econômica de um boardgame café
+  - ASSAF NETO, A. (2014). Finanças corporativas e valor
+  - BARDIN, L. (2002). Análise de conteúdo
+  - BRUNI, A. L. (2018). Avaliação de investimentos
+  - COHEN, J. (1960). A coefficient of agreement for nominal scales
+  - 'DORNELAS, J. (2021). Plano de negócios: seu guia definitivo'
+  - FITZSIMMONS, J. A.; FITZSIMMONS, M. J. (2014). Administração de serviços
+  - 'KAM INSIGHT (2022). Competitive socialising: winning a new customer occasion'
+  - KOTLER, P.; KELLER, K. L. (2013). Administração de marketing
+  - 'MATTAR, F. N. (1997). Pesquisa de marketing: metodologia, planejamento'
+  - PFEFFER, J.; SUTTON, R. I. (2006). Evidence-based management
+  - PICOLO, J. D.; TONTINI, G. (2008). Análise do contraste da penalidade e da recompensa (PRC)
+  - PORTER, M. E. (2008). Estratégia competitiva

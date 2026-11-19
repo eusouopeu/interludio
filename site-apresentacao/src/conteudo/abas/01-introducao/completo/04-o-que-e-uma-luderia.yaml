@@ -1,0 +1,8 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: O que é uma luderia
+blocos:
+- tipo: texto
+  paragrafos:
+  - Luderias são estabelecimentos que oferecem jogos de mesa para uso no próprio local e integram o ramo do competitive socialising (KAM Insight, 2022). No Brasil, a pioneira foi a Ludus Luderia, em São Paulo, em 2007.

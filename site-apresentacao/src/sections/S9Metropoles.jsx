@@ -46,6 +46,8 @@ export default function S9Metropoles() {
 
       <Achados titulo={T.achados} itens={achadosMetropoles()} />
 
+      {/* Daqui para baixo, só no modo completo. */}
+      <span data-detalhe hidden />
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <CartaoGrafico titulo={T.casas.titulo} descricao={T.casas.descricao} className="md:col-span-2">
           <BarrasHorizontais dados={casas} valor="casas" rotulo="rot"

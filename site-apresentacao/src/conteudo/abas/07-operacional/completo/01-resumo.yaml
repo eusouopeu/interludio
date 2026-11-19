@@ -1,0 +1,21 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Resumo
+blocos:
+- tipo: chamada
+  texto: 'Desenho enxuto: 8 mesas e 48 lugares desde a abertura, de terça a sábado, com 3 empregados e o sócio. A São Jogue é referência de comportamento, não de porte.'
+- tipo: kpis
+  itens:
+  - rotulo: Mesas e lugares
+    valor: 8 · 48
+    detalhe: Ponto de 100 a 150 m² na área dos dez bairros; até 143 pessoas por dia
+  - rotulo: Funcionamento
+    valor: 45 h/semana
+    detalhe: 'Terça a sábado, das 14h às 23h: cobre o pico dos concorrentes'
+  - rotulo: Equipe
+    valor: 3 + 1
+    detalhe: 2 atendentes e instrutores e 1 cozinheiro-chefe; o sócio na gestão, nas compras e nos imprevistos
+  - rotulo: Simples Nacional
+    valor: 7,9% e 11,6%
+    detalhe: Sobre A&B e sobre serviços; sociedade limitada

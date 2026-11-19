@@ -1,0 +1,21 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 3.2.1 a 3.2.4 Blocos de coleta
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: B1 · Organizações
+    valor: '63'
+    detalhe: Luderias, de 164 candidatos, com mais de 100 avaliações, em 14 das 15 metrópoles da REGIC
+  - rotulo: B2 · Documentos
+    valor: '1.628'
+    detalhe: Avaliações com texto, publicadas nos 3 meses antes da coleta, em outubro de 2026
+  - rotulo: B3 · Observação
+    valor: '4'
+    detalhe: Visitas nos dias de sexta e sábado, das 19h às 22h, nas duas unidades da São Jogue
+  - rotulo: B4 e B5 · Bases
+    valor: '26'
+    detalhe: Anúncios de aluguel de 100 a 150 m², nos 10 bairros de maior renda; 75 itens orçados
+  centralizar: true
+fonte: Blocos B1 a B5; Quadro 3; REGIC 2018 (IBGE)

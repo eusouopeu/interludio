@@ -1,0 +1,18 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 'Objetivo (i): 5.4 Concorrência e localização e 6.3 Preço'
+descricao: Bloco B1 (Apêndice A; seções 5.4 e 6.3).
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: Entrada
+    titulo: R$ 18,50
+    texto: Média de terça a quinta; R$ 26,29 de sexta a domingo (21 casas).
+  - rotulo: Cesta
+    titulo: R$ 71,26
+    texto: Taxa, bebida e hambúrguer (16 casas).
+  - rotulo: Gasto
+    titulo: R$ 80,42
+    texto: Gasto declarado por pessoa (21 casas).

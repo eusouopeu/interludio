@@ -1,0 +1,23 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 3.3 Tratamento dos dados e 3.4 Técnicas de análise
+blocos:
+- tipo: cartoes
+  colunas: 2
+  itens:
+  - rotulo: B1 · Concorrentes
+    titulo: Estatística descritiva
+    texto: Preço, cesta e curva semanal de 56 casas no Google Maps.
+  - rotulo: B2 · Avaliações
+    titulo: Análise de conteúdo e PRC
+    texto: 22 temas (Bardin); recodificação cega em três rodadas, kappa de 0,79 a 0,84 (Cohen).
+  - rotulo: B3 · Contagem
+    titulo: Estatística descritiva e lei de Little
+    texto: Observação sistemática, não participante; porta × mesas × NFC-e.
+  - rotulo: B1 a B5 · Modelo
+    titulo: Fluxo de caixa descontado
+    texto: Cenários, tornado, ponto de ruptura e Monte Carlo com 10 mil sorteios.
+- tipo: chamada
+  texto: 'Cada premissa recebe um código de tipo de evidência, de N1 a N6: os códigos classificam a origem do dado e não formam escala de confiabilidade.'
+fonte: seções 3.1, 3.3 e 3.4; Quadros 2 e 4

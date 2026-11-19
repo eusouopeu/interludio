@@ -1,0 +1,27 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Análise estratégica e de riscos
+blocos:
+- tipo: abas
+  itens:
+  - id: swot
+    rotulo: SWOT
+    blocos:
+    - tipo: tabela
+      id: Quadro 13
+  - id: riscos
+    rotulo: Riscos
+    blocos:
+    - tipo: tabela
+      id: Quadro 14
+  - id: etapas
+    rotulo: Expansão
+    blocos:
+    - tipo: tabela
+      id: Quadro 15
+  - id: gat
+    rotulo: Gatilhos
+    blocos:
+    - tipo: tabela
+      id: Quadro 16

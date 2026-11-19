@@ -82,6 +82,8 @@ export default function S8Panorama() {
         <Achados titulo={T.achados} itens={achadosGerais()} />
       </div>
 
+      {/* Daqui para baixo, só no modo completo. */}
+      <span data-detalhe hidden />
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <CartaoGrafico titulo={T.dias.titulo} descricao={T.dias.descricao} className="md:col-span-2">
           <ResponsiveContainer width="100%" height={230}>

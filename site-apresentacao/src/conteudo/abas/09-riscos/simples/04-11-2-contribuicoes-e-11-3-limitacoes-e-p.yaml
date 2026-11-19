@@ -1,0 +1,20 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 11.2 Contribuições e 11.3 Limitações e próximos passos
+blocos:
+- tipo: chamada
+  texto: Viável nas premissas prováveis, com circulação no pico acima de 5,05 pessoas por hora e gasto acima de R$ 61,24 por pessoa.
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: Contribuições
+    titulo: Método, dados e gestão
+    texto: 'Método: premissa com fonte e tipo de evidência; dados: primeiro levantamento das luderias das 15 metrópoles; gestão: ruptura como gatilho.'
+  - rotulo: Limitações
+    titulo: O que ficou fora
+    texto: Fluxo fora das noites de pico; quatro visitas a uma concorrente; gasto declarado em faixas; investimento sem projeto do ponto.
+  - rotulo: Próximos passos
+    titulo: Antes e depois de abrir
+    texto: 'Antes de investir: imóveis e razão entre dia útil e fim de semana; depois da abertura: fluxo, consumo e jogos procurados.'
+fonte: capítulo 11

@@ -1,0 +1,27 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Em um minuto
+blocos:
+- tipo: chamada
+  texto: 'Uma luderia em Salvador é viável nas premissas prováveis: VPL de R$ 703 mil e 77,3% dos cenários com VPL positivo. O risco se concentra em duas premissas, a circulação no pico e o gasto por pessoa, e cada uma está ligada a um dado, a uma fonte e a um tipo de evidência.'
+- tipo: kpis
+  itens:
+  - rotulo: Investimento inicial
+    valor: R$ 391 mil
+    detalhe: Equilíbrio em R$ 44,2 mil/mês (542 pessoas)
+  - rotulo: VPL
+    valor: R$ 703 mil
+    detalhe: R$ 188 mil sem o valor residual
+  - rotulo: TIR real
+    valor: 51,0%
+    detalhe: 30,6% sem o valor residual
+  - rotulo: Payback descontado
+    valor: 3,5 anos
+    detalhe: Horizonte de 5 anos
+  - rotulo: VPL positivo
+    valor: 77,3%
+    detalhe: dos 10 mil cenários de Monte Carlo
+  - rotulo: Receita madura
+    valor: R$ 68,0 mil/mês
+    detalhe: Modelo financeiro de 18/11/2026

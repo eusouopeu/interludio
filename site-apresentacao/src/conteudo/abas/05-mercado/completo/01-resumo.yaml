@@ -1,0 +1,21 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Resumo
+blocos:
+- tipo: chamada
+  texto: 'O entretenimento social cresce acima da inflação, e Salvador tem uma só luderia com mais de 100 avaliações: a 3ª menor densidade entre as 15 metrópoles analisadas.'
+- tipo: kpis
+  itens:
+  - rotulo: Serviços às famílias
+    valor: +36,4%
+    detalhe: Receita bruta acima da inflação, 2019 a 2023 (IBGE, PAS; BCB, SGS)
+  - rotulo: Atividades culturais e recreativas
+    valor: +53,5%
+    detalhe: Acima da inflação no mesmo período
+  - rotulo: Luderias no B1
+    valor: '63'
+    detalhe: Com mais de 100 avaliações, em 14 das 15 metrópoles
+  - rotulo: Luderias em Salvador
+    valor: '1'
+    detalhe: São Jogue, com duas unidades

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import site from "../conteudo/site.json";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { ABAS } from "../conteudo";
 
 /* O usuário pode ter pedido menos animação no sistema; nesse caso tudo entra já visível. */
 const semAnimacao = () =>
@@ -37,11 +37,40 @@ export function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-/* Cabeçalho da aba. Número, título e subtítulo vêm de conteudo/site.json. */
+/* Modo de leitura: "simples" (o roteiro dos slides, padrão) ou "completo" (o conteúdo detalhado). */
+export const ModoContexto = createContext({ modo: "simples", alternar: () => {} });
+export const useModo = () => useContext(ModoContexto);
+
+/* Ícones Heroicons (outline, 24): apresentação (modo simples) e documento (modo completo). */
+const ICONE_MODO = {
+  simples: "M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6",
+  completo: "M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z",
+};
+
+/* Botão discreto do cabeçalho: alterna entre o modo simples e o completo em todas as abas. */
+function BotaoModo() {
+  const { modo, alternar } = useModo();
+  const dica = modo === "simples" ? "Modo simples (slides). Clique para o modo completo" : "Modo completo. Clique para o modo simples (slides)";
+  return (
+    <button
+      onClick={alternar}
+      title={dica}
+      aria-label={dica}
+      aria-pressed={modo === "completo"}
+      className="no-print cursor-pointer rounded-md p-1 text-azul-700/60 transition-colors hover:bg-papel-100 hover:text-roxo-600"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <path d={ICONE_MODO[modo]} />
+      </svg>
+    </button>
+  );
+}
+
+/* Cabeçalho da aba. Número, título e subtítulo vêm de conteudo/abas/<aba>/_aba.yaml (ou de site.json). */
 export function TituloSecao({ id }) {
-  const s = site.secoes.find((x) => x.id === id);
+  const s = ABAS.find((x) => x.id === id);
   if (!s) return null;
-  const total = site.secoes.length;
+  const total = ABAS.length;
   return (
     <header className="mb-8 sm:mb-10">
       <div className="flex items-center gap-3 text-[11px] font-semibold tracking-[0.14em] text-azul-700 uppercase">
@@ -50,6 +79,7 @@ export function TituloSecao({ id }) {
           <span className="text-azul-700/50"> / {String(total).padStart(2, "0")}</span>
         </span>
         <span className="h-px flex-1 bg-papel-200" />
+        <BotaoModo />
         <span>{s.grupo}</span>
         {s.tempo && <span className="rounded bg-lavanda-100 px-2 py-0.5 text-roxo-700">{s.tempo}</span>}
       </div>

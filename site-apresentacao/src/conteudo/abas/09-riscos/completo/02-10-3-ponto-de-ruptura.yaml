@@ -1,0 +1,8 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 10.3 Ponto de ruptura
+descricao: Valor de cada premissa crítica que zera o VPL.
+blocos:
+- tipo: tabela
+  id: Tabela 9

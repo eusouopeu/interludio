@@ -1,0 +1,32 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Os conceitos do plano
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: '2.1'
+    titulo: Economia da experiência
+    texto: Pine e Gilmore apud Fitzsimmons e Fitzsimmons (2014). A luderia vende um momento memorável.
+    destaque: 'Dimensão: produto'
+  - rotulo: '2.2'
+    titulo: Cinco forças, PESTEL e SWOT
+    texto: Porter (2008); Kotler e Keller (2013). Rentabilidade do setor e ambiente externo.
+    destaque: 'Dimensão: setor'
+  - rotulo: '2.3'
+    titulo: Modelo Kano e PRC
+    texto: 'Picolo e Tontini (2008). Atributo obrigatório: a falta pune mais do que a presença premia.'
+    destaque: 'Dimensão: cliente'
+  - rotulo: Quadro 1
+    titulo: Equilíbrio e lei de Little
+    texto: Bruni (2018); Fitzsimmons e Fitzsimmons (2014). Ocupação = chegada × permanência; venda que cobre o custo fixo.
+    destaque: 'Dimensão: capacidade'
+  - rotulo: '2.4'
+    titulo: VPL, TIR e payback
+    texto: Bruni (2018); Assaf Neto (2014). Valor acima da TMA; taxa que zera o VPL; prazo de retorno.
+    destaque: 'Dimensão: viabilidade'
+  - rotulo: '2.4'
+    titulo: Sensibilidade e ponto de ruptura
+    texto: Assaf Neto (2014); Pfeffer e Sutton (2006). Valor de uma premissa que zera o VPL.
+    destaque: 'Dimensão: risco'

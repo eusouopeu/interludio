@@ -1,0 +1,16 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 10.3 Premissas críticas, ruptura e riscos
+descricao: 'Resultado do objetivo (vi): premissas críticas.'
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: Circulação no pico
+    valor: 5,05
+    detalhe: pessoas por hora na ruptura, ante 6,40 (−21%); logo abaixo da mediana das visitas (5,08)
+  - rotulo: Gasto por pessoa
+    valor: R$ 61,24
+    detalhe: na ruptura, ante R$ 80,42 no provável (−24%)
+  centralizar: true
+fonte: modelo financeiro (Figura 11; Tabela 9; seções 9.5 e 10.3)

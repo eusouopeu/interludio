@@ -1,0 +1,27 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Detalhes do método
+blocos:
+- tipo: abas
+  itens:
+  - id: evid
+    rotulo: Tipos de evidência
+    blocos:
+    - tipo: tabela
+      id: Quadro 2
+  - id: blocos
+    rotulo: Blocos de coleta
+    blocos:
+    - tipo: tabela
+      id: Quadro 3
+  - id: valid
+    rotulo: Validação
+    blocos:
+    - tipo: tabela
+      id: Quadro 4
+  - id: lim
+    rotulo: Limitações
+    blocos:
+    - tipo: tabela
+      id: Quadro 5

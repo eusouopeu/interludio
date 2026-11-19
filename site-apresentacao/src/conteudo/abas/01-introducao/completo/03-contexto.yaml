@@ -1,0 +1,19 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Contexto
+descricao: Receita bruta acima da inflação, de 2019 a 2023 (IBGE, PAS, tabela 2611; BCB, SGS).
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: Serviços às famílias
+    titulo: +36,4%
+    texto: Acima da inflação na receita bruta, de 2019 a 2023.
+  - rotulo: Atividades culturais e recreativas
+    titulo: +53,5%
+    texto: Acima da inflação no mesmo período.
+  - rotulo: Luderias em Salvador
+    titulo: '1'
+    texto: 'Com mais de 100 avaliações: 3ª menor densidade entre as 15 metrópoles analisadas (Bloco B1).'
+  centralizar: true

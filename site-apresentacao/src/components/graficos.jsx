@@ -13,9 +13,9 @@ export function CartaoGrafico({ titulo, descricao, children, fonte, className = 
   );
 }
 
-export function Kpi({ rotulo, valor, detalhe }) {
+export function Kpi({ rotulo, valor, detalhe, centralizar }) {
   return (
-    <Cartao className="h-full p-4">
+    <Cartao className={`h-full p-4 ${centralizar ? "text-center" : ""}`}>
       <p className="text-[11px] font-semibold tracking-wide text-azul-700/70 uppercase">{rotulo}</p>
       <p className="mt-1 font-display text-2xl font-bold text-azul-950 tabular-nums sm:text-3xl">{valor}</p>
       {detalhe && <p className="mt-1 text-xs leading-snug text-azul-700/70">{detalhe}</p>}

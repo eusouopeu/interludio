@@ -1,0 +1,27 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Resumo
+blocos:
+- tipo: chamada
+  texto: O negócio é viável no provável e se paga mesmo sem o valor residual. Duas premissas, a circulação no pico e o gasto por pessoa, concentram o risco.
+- tipo: kpis
+  itens:
+  - rotulo: VPL
+    valor: R$ 703 mil
+    detalhe: R$ 188 mil sem o valor residual
+  - rotulo: TIR real
+    valor: 51,0%
+    detalhe: 30,6% sem o valor residual
+  - rotulo: Payback descontado
+    valor: 3,5 anos
+    detalhe: Horizonte de 5 anos
+  - rotulo: Investimento
+    valor: R$ 391 mil
+    detalhe: Investimento inicial, cenário provável
+  - rotulo: Receita madura
+    valor: R$ 68,0 mil/mês
+    detalhe: Mês maduro, cenário provável
+  - rotulo: Equilíbrio
+    valor: R$ 44,2 mil/mês
+    detalhe: 542 pessoas por mês

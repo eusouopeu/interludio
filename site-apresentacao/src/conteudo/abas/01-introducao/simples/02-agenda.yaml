@@ -1,0 +1,23 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Agenda
+blocos:
+- tipo: cartoes
+  colunas: 5
+  itens:
+  - rotulo: '01'
+    titulo: Introdução
+    texto: Contexto, problema, objetivos e justificativa.
+  - rotulo: '02'
+    titulo: Referencial teórico
+    texto: Conceitos e Quadro 1.
+  - rotulo: '03'
+    titulo: Metodologia
+    texto: Fontes, técnicas de análise e unidades observadas.
+  - rotulo: '04'
+    titulo: Resultados
+    texto: Um resultado por objetivo específico e o objetivo geral.
+  - rotulo: '05'
+    titulo: Considerações finais
+    texto: Síntese, contribuições, limitações e próximos passos.

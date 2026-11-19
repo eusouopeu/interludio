@@ -158,3 +158,6 @@ button:active { transform: scale(0.98); }
   .no-print { display: none !important; }
   .papel-milimetrado { background: none; }
 }
+
+/* Modo simples nas abas de dados: some tudo depois do marcador (resumo, cartões e achados ficam). */
+.so-resumo > [data-detalhe] ~ * { display: none; }

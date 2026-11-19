@@ -71,6 +71,8 @@ export default function S11Conteudo() {
         <Kpi rotulo="Concordância (kappa)" valor={num(kTemas.kappa, 2)} detalhe={`Recodificação cega, rodada 2, ${kTemas.linhas} comentários`} />
       </div>
 
+      {/* Daqui para baixo, só no modo completo. */}
+      <span data-detalhe hidden />
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <CartaoGrafico titulo={c.temas.titulo} descricao={c.temas.descricao} className="md:col-span-2">
           <ResponsiveContainer width="100%" height={temas.length * 26 + 50}>

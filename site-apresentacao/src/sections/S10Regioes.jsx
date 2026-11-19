@@ -32,6 +32,8 @@ export default function S10Regioes() {
 
       <Achados titulo={T.achados} itens={achadosRegioes()} />
 
+      {/* Daqui para baixo, só no modo completo. */}
+      <span data-detalhe hidden />
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <CartaoGrafico titulo={T.casas.titulo} descricao={T.casas.descricao}>
           <ResponsiveContainer width="100%" height={240}>

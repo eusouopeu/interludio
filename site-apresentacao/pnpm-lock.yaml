@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      js-yaml:
+        specifier: 4.1.0
+        version: 4.1.0
       qrcode.react:
         specifier: ^4.2.0
         version: 4.2.0(react@19.2.8)
@@ -465,6 +468,9 @@ packages:
       oxc-transform-react:
         optional: true
 
+  argparse@2.0.1:
+    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
+
   array-union@2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
@@ -648,6 +654,10 @@ packages:
 
   jiti@2.7.0:
     resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
+    hasBin: true
+
+  js-yaml@4.1.0:
+    resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
 
   jsonfile@6.2.1:
@@ -1298,6 +1308,8 @@ snapshots:
       '@rolldown/pluginutils': 1.0.1
       vite: 8.2.2(jiti@2.7.0)
 
+  argparse@2.0.1: {}
+
   array-union@2.1.0: {}
 
   async@3.2.6: {}
@@ -1461,6 +1473,10 @@ snapshots:
   is-number@7.0.0: {}
 
   jiti@2.7.0: {}
+
+  js-yaml@4.1.0:
+    dependencies:
+      argparse: 2.0.1
 
   jsonfile@6.2.1:
     dependencies:

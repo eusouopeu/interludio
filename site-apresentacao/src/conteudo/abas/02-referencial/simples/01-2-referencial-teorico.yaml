@@ -1,0 +1,26 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 2 Referencial teórico
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: '2.1'
+    titulo: Economia da experiência
+    texto: Pine e Gilmore apud Fitzsimmons e Fitzsimmons (2014)
+  - rotulo: '2.2'
+    titulo: Cinco forças, PESTEL e SWOT
+    texto: Porter (2008); Kotler e Keller (2013)
+  - rotulo: '2.3'
+    titulo: Modelo Kano e PRC
+    texto: Picolo e Tontini (2008)
+  - rotulo: Quadro 1
+    titulo: Equilíbrio e lei de Little
+    texto: Bruni (2018); Fitzsimmons e Fitzsimmons (2014)
+  - rotulo: '2.4'
+    titulo: VPL, TIR e ruptura
+    texto: Bruni (2018); Assaf Neto (2014); Pfeffer e Sutton (2006)
+- tipo: chamada
+  texto: 'Os 3M de Dornelas (2021) organizam o plano: estrutura do mercado no capítulo 5, demanda no capítulo 6 e margem no capítulo 9.'
+fonte: capítulo 2

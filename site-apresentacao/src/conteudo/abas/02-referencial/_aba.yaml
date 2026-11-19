@@ -1,0 +1,9 @@
+# Dados da aba. "titulo" e "subtitulo" aparecem na barra lateral; "cabecalho", no topo da aba;
+# "tempo" é a estimativa de fala; "capitulo" diz de onde o texto vem no TMin.
+
+titulo: Referencial teórico
+subtitulo: Conceitos e Quadro 1
+cabecalho: Os conceitos do referencial e a dimensão do plano que cada um apoia
+capitulo: Capítulo 2 do TMin
+tempo: 1min
+grupo: Plano

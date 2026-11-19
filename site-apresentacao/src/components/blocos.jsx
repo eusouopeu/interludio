@@ -1,4 +1,4 @@
-// Renderizador dos blocos de conteúdo das abas do plano (src/conteudo/plano.json).
+// Renderizador dos blocos de conteúdo das abas do plano (src/conteudo/abas/).
 // Tipos: kpis, downloads, texto, lista, cartoes, passos, chamada, tabela, barras, abas, sanfona, grade.
 // As tabelas e os quadros não são digitados: vêm de src/conteudo/tabelas.json, gerado do TMin por
 // scripts/sincronizar_tabelas.py, e o bloco só aponta o número ("Tabela 9.4").
@@ -9,7 +9,7 @@ import { Cartao, Reveal, Nota, Sanfona } from "./ui";
 import { Kpi, Pilulas, Dica } from "./graficos";
 import { QRCodeSVG } from "qrcode.react";
 import downloads from "../conteudo/downloads.json";
-import site from "../conteudo/site.json";
+import { META, QRCODE } from "../conteudo";
 import { numero, slug } from "../auxiliares";
 
 const ehNumero = (s) => /^[-−+]?\d[\d.]*(,\d+)?\s?(%|min|m²|R\$)?$/.test((s ?? "").trim());
@@ -195,13 +195,13 @@ function QrCode() {
     <Reveal className="hidden lg:block">
       <Cartao tom="areia" className="flex items-center gap-6 p-5">
         <div className="shrink-0 rounded-lg bg-white p-2.5">
-          <QRCodeSVG value={site.meta.url} size={112} bgColor="#ffffff" fgColor="#1e1b26" level="M" title="QR code do site da apresentação" />
+          <QRCodeSVG value={META.url} size={112} bgColor="#ffffff" fgColor="#1e1b26" level="M" title="QR code do site da apresentação" />
         </div>
         <div className="min-w-0">
-          <h3 className="font-display text-lg font-bold text-azul-950">{site.qrcode.titulo}</h3>
-          <p className="mt-1 text-sm leading-relaxed text-azul-700">{site.qrcode.texto}</p>
-          <a href={site.meta.url} className="mt-1.5 inline-block text-sm font-semibold break-all text-roxo-600 hover:underline">
-            {site.meta.url}
+          <h3 className="font-display text-lg font-bold text-azul-950">{QRCODE.titulo}</h3>
+          {QRCODE.texto && <p className="mt-1 text-sm leading-relaxed text-azul-700">{QRCODE.texto}</p>}
+          <a href={META.url} className="mt-1.5 inline-block text-sm font-semibold break-all text-roxo-600 hover:underline">
+            {META.url}
           </a>
         </div>
       </Cartao>
@@ -230,14 +230,27 @@ function Lista({ b }) {
 function Cartoes({ b }) {
   const cols = b.colunas ?? 3;
   const grade = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-2 lg:grid-cols-3", 4: "sm:grid-cols-2 lg:grid-cols-4", 5: "sm:grid-cols-2 lg:grid-cols-5" }[cols];
+  const centro = b.centralizar ? "text-center" : "";
   return (
     <div className={`grid gap-3 ${grade}`}>
       {b.itens.map((c, i) => (
-        <Reveal key={c.titulo} delay={i * 50}>
-          <Cartao className="h-full p-4 sm:p-5">
+        <Reveal key={c.titulo ?? c.rotulo ?? i} delay={i * 50}>
+          <Cartao className={`h-full p-4 sm:p-5 ${centro}`}>
             {c.rotulo && <span className="rounded bg-lavanda-100 px-2 py-0.5 text-[11px] font-bold tracking-wide text-roxo-700">{c.rotulo}</span>}
-            <h3 className="mt-2 font-display text-base leading-snug font-bold text-azul-950 sm:text-lg">{c.titulo}</h3>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-azul-800">{c.texto}</p>
+            {c.titulo && (
+              <h3 className={`mt-2 font-display leading-snug font-bold text-azul-950 ${b.centralizar ? "text-3xl sm:text-4xl" : "text-base sm:text-lg"}`}>{c.titulo}</h3>
+            )}
+            {c.texto && <p className={`text-azul-800 ${c.titulo || c.rotulo ? "mt-1.5 text-[13px] leading-relaxed" : "text-[15px] leading-relaxed sm:text-base"}`}>{c.texto}</p>}
+            {c.lista && (
+              <ul className="mt-3 space-y-2">
+                {c.lista.map((t) => (
+                  <li key={t} className="flex items-start gap-2.5 text-[13px] leading-relaxed text-azul-900">
+                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-roxo-600" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
             {c.destaque && <p className="mt-2 text-xs font-semibold text-roxo-600">{c.destaque}</p>}
           </Cartao>
         </Reveal>
@@ -294,14 +307,13 @@ function IconeBaixar() {
 }
 
 function BotaoBaixar({ d, destaque }) {
-  const base = "flex h-full items-center gap-3 rounded-lg border-[1.5px] p-3.5 text-left transition-colors";
+  const base = "flex h-full items-center gap-2.5 rounded-lg border-[1.5px] px-3 py-2 text-left transition-colors";
   const conteudo = (
     <>
-      <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wide ${destaque ? "bg-white/15" : "bg-lavanda-100 text-roxo-700"}`}>{d.formato}</span>
       <span className="min-w-0 flex-1">
-        <span className="block text-sm font-semibold">{d.rotulo}</span>
-        <span className={`block text-xs leading-snug ${destaque ? "text-on-ink/80" : "text-azul-700"}`}>
-          {d.arquivo ? `${d.detalhe} · ${tamanho(d.tamanho)}` : "Indisponível nesta versão do site"}
+        <span className="block text-[13px] leading-snug font-semibold">{d.rotulo}</span>
+        <span className={`block text-[11px] leading-snug ${destaque ? "text-on-ink/80" : "text-azul-700"}`}>
+          {d.arquivo ? `${d.detalhe} · ${d.formato} · ${tamanho(d.tamanho)}` : "Indisponível nesta versão do site"}
         </span>
       </span>
       {d.arquivo && <IconeBaixar />}
@@ -320,20 +332,14 @@ function BotaoBaixar({ d, destaque }) {
   );
 }
 
-function Downloads({ b }) {
+/* Arquivos do trabalho para baixar: o texto e os slides em destaque, depois as planilhas, numa grade só. */
+function Downloads() {
   return (
     <Reveal>
-      <Cartao tom="areia" className="p-5 sm:p-6">
-        {b.titulo && <p className="text-xs font-semibold tracking-[0.14em] text-roxo-600 uppercase">{b.titulo}</p>}
-        {b.descricao && <p className="mt-1 text-sm leading-relaxed text-azul-700">{b.descricao}</p>}
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {downloads.trabalho.map((d) => <BotaoBaixar key={d.rotulo} d={d} destaque />)}
-        </div>
-        <p className="mt-5 text-[11px] font-semibold tracking-[0.14em] text-azul-700 uppercase">Planilhas de dados agregados</p>
-        <div className="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {downloads.planilhas.map((d) => <BotaoBaixar key={d.rotulo} d={d} />)}
-        </div>
-      </Cartao>
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {downloads.trabalho.map((d) => <BotaoBaixar key={d.rotulo} d={d} destaque />)}
+        {downloads.planilhas.map((d) => <BotaoBaixar key={d.rotulo} d={d} />)}
+      </div>
     </Reveal>
   );
 }
@@ -346,9 +352,9 @@ export function Bloco({ b }) {
       return <QrCode />;
     case "kpis":
       return (
-        <div className={`grid gap-3 ${b.itens.length > 4 ? "grid-cols-2 lg:grid-cols-3" : "grid-cols-2 lg:grid-cols-4"}`}>
+        <div className={`grid gap-3 ${b.itens.length > 4 || b.itens.length === 3 ? "grid-cols-2 lg:grid-cols-3" : "grid-cols-2 lg:grid-cols-4"}`}>
           {b.itens.map((k, i) => (
-            <Reveal key={k.rotulo} delay={i * 40}><Kpi {...k} /></Reveal>
+            <Reveal key={k.rotulo} delay={i * 40}><Kpi {...k} centralizar={b.centralizar} /></Reveal>
           ))}
         </div>
       );

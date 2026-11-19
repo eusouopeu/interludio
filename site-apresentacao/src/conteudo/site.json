@@ -1,5 +1,5 @@
 {
-  "_leiaMe": "Identificação do trabalho, abas da barra lateral e textos da moldura do site. Em cada seção: 'titulo' e 'subtitulo' aparecem na barra lateral; 'subtituloLongo' aparece no cabeçalho da aba; 'tempo' é a estimativa de fala; 'grupo' separa o plano dos dados de apoio; 'capitulo' diz de onde o texto vem no TMin. O conteúdo das abas 1 a 8 está em plano.json.",
+  "_leiaMe": "Identificação do trabalho, textos da moldura do site e as abas de dados de apoio. As abas do plano ficam em conteudo/abas/ (uma pasta por aba, um .yaml por seção).",
   "meta": {
     "titulo": "Dados em jogo",
     "subtitulo": "Plano de negócios baseado em evidências para uma luderia em Salvador",
@@ -10,12 +10,11 @@
     "orientador": "Orientador: Prof. Jair Sampaio Soares Junior"
   },
   "qrcode": {
-    "titulo": "Acompanhe pelo celular",
-    "texto": "Aponte a câmera para o código ou acesse o link para abrir esta apresentação no seu smartphone."
+    "titulo": "Acompanhe pelo celular"
   },
   "barraLateral": {
     "chapeu": "TCC · Administração · UFBA",
-    "dicaTeclado": "Use ← → para navegar entre as abas",
+    "dicaTeclado": "Use ← → para passar as seções",
     "rotuloNavegacao": "Navegação entre seções"
   },
   "rodape": {
@@ -23,86 +22,6 @@
     "fim": "Fim"
   },
   "secoes": [
-    {
-      "id": "introducao",
-      "n": 1,
-      "grupo": "Plano",
-      "titulo": "Introdução",
-      "subtitulo": "Contexto, problema, objetivos e justificativa",
-      "tempo": "1min",
-      "subtituloLongo": "Contexto, problema de pesquisa, pressupostos, objetivos e justificativa",
-      "capitulo": "Capítulo 1 do TMin"
-    },
-    {
-      "id": "referencial",
-      "n": 2,
-      "grupo": "Plano",
-      "titulo": "Referencial teórico",
-      "subtitulo": "Conceitos e Quadro 1",
-      "tempo": "1min",
-      "subtituloLongo": "Os conceitos do referencial e a dimensão do plano que cada um apoia",
-      "capitulo": "Capítulo 2 do TMin"
-    },
-    {
-      "id": "metodologia",
-      "n": 3,
-      "grupo": "Plano",
-      "titulo": "Metodologia",
-      "subtitulo": "Fontes, técnicas e unidades observadas",
-      "tempo": "1min30",
-      "subtituloLongo": "Tipo de pesquisa, blocos de coleta, técnicas de análise e matriz de evidências",
-      "capitulo": "Capítulo 3 do TMin"
-    },
-    {
-      "id": "mercado",
-      "n": 4,
-      "grupo": "Plano",
-      "titulo": "Análise de mercado",
-      "subtitulo": "Contexto, concorrência e preço",
-      "tempo": "1min30",
-      "subtituloLongo": "Objetivo (i): mercado, concorrência e preço",
-      "capitulo": "Capítulos 5 e 6 do TMin"
-    },
-    {
-      "id": "marketing",
-      "n": 5,
-      "grupo": "Plano",
-      "titulo": "Plano de marketing",
-      "subtitulo": "Posicionamento, praça e demanda",
-      "tempo": "1min30",
-      "subtituloLongo": "Objetivos (ii) e (iii): proposta de valor, praça e estimativa de demanda",
-      "capitulo": "Capítulo 6 do TMin"
-    },
-    {
-      "id": "operacional",
-      "n": 6,
-      "grupo": "Plano",
-      "titulo": "Plano operacional",
-      "subtitulo": "Operação e aspectos jurídicos",
-      "tempo": "1min",
-      "subtituloLongo": "Objetivo (iv): salão, horário, equipe, tributos e obrigações legais",
-      "capitulo": "Capítulos 7 e 8 do TMin"
-    },
-    {
-      "id": "financeiro",
-      "n": 7,
-      "grupo": "Plano",
-      "titulo": "Plano financeiro",
-      "subtitulo": "Investimento e indicadores",
-      "tempo": "1min30",
-      "subtituloLongo": "Objetivo (v): investimento, mês maduro, DRE e indicadores de viabilidade",
-      "capitulo": "Capítulo 9 do TMin"
-    },
-    {
-      "id": "riscos",
-      "n": 8,
-      "grupo": "Plano",
-      "titulo": "Análise de riscos",
-      "subtitulo": "Ruptura, contingência e conclusão",
-      "tempo": "1min",
-      "subtituloLongo": "Objetivos (vi) e (vii), objetivo geral e considerações finais",
-      "capitulo": "Capítulos 10 e 11 do TMin"
-    },
     {
       "id": "panorama",
       "n": 9,

@@ -1,0 +1,20 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Problema de pesquisa
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: Levantamentos setoriais
+    valor: '0'
+    detalhe: Não há levantamento setorial sobre luderias no Brasil
+  - rotulo: Estudo de viabilidade
+    valor: '1'
+    detalhe: Caso isolado em uma cidade do interior paulista
+  - rotulo: Em Salvador
+    valor: '1'
+    detalhe: luderia com mais de 100 avaliações; 3ª menor densidade entre as 15 metrópoles
+  centralizar: true
+- tipo: chamada
+  texto: Uma luderia em Salvador é viável? E caso seja, sob quais condições de ponto, formato, preço, acervo e investimento?
+fonte: capítulo 1; Asakura, Silva e Mello (2018)

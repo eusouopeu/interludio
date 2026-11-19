@@ -1,0 +1,28 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 'Apêndice D: matriz de evidências'
+descricao: Objetivo, dimensão, variáveis e instrumento.
+blocos:
+- tipo: cartoes
+  colunas: 3
+  itens:
+  - rotulo: (i)
+    titulo: Mercado
+    texto: 'Casas, taxa e cesta: B1 cardápios; B4 população.'
+  - rotulo: (ii)
+    titulo: Satisfação
+    texto: 'Temas e PRC: B2 texto e nota.'
+  - rotulo: (iii)
+    titulo: Demanda
+    texto: 'Circulação, grupo e permanência: B3 contagem; B1 pico.'
+  - rotulo: (iv)
+    titulo: Operação e jurídico
+    texto: 'Capacidade, equipe e tributo: B3 carga; B4 CAGED e Simples.'
+  - rotulo: (v)
+    titulo: Financeiro
+    texto: 'Investimento, custos e TMA: B5 orçamentos; B4 FipeZap e BCB.'
+  - rotulo: (vi) e (vii)
+    titulo: Risco
+    texto: 'Ruptura e gatilhos: modelo com 45 premissas.'
+fonte: matriz de evidências, Apêndice D

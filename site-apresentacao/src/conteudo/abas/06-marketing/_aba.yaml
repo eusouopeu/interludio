@@ -1,0 +1,9 @@
+# Dados da aba. "titulo" e "subtitulo" aparecem na barra lateral; "cabecalho", no topo da aba;
+# "tempo" é a estimativa de fala; "capitulo" diz de onde o texto vem no TMin.
+
+titulo: Plano de marketing
+subtitulo: Posicionamento, praça e demanda
+cabecalho: 'Objetivos (ii) e (iii): proposta de valor, praça e estimativa de demanda'
+capitulo: Capítulo 6 do TMin
+tempo: 1min30
+grupo: Plano

@@ -1,0 +1,32 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: 3.2 Fontes e instrumentos de coleta
+blocos:
+- tipo: kpis
+  itens:
+  - rotulo: Natureza
+    valor: Aplicada
+  - rotulo: Objetivo
+    valor: Descritivo-exploratória
+  - rotulo: Abordagem
+    valor: Quali-quanti
+- tipo: cartoes
+  colunas: 5
+  itens:
+  - rotulo: B1
+    titulo: Concorrentes
+    texto: 'Censo nas 15 metrópoles: preço, cardápio, acervo, horário.'
+  - rotulo: B2
+    titulo: Avaliações espontâneas
+    texto: Texto e nota no Google Maps, últimos 3 meses.
+  - rotulo: B3
+    titulo: Contagem direta
+    texto: Fluxo, permanência e tamanhos dos grupos em visitas presenciais.
+  - rotulo: B4
+    titulo: Bases públicas de dados
+    texto: IBGE, Novo CAGED, FipeZap, Banco Central.
+  - rotulo: B5
+    titulo: Ativos fixos
+    texto: SINAPI e anúncios, item a item.
+fonte: seção 3.2; Quadro 3; Mattar (1997)

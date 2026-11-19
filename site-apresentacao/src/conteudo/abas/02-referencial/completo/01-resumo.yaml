@@ -1,0 +1,7 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: Resumo
+blocos:
+- tipo: chamada
+  texto: 'Os 3M de Dornelas (2021) organizam o plano: estrutura do mercado no capítulo 5, demanda no capítulo 6 e margem no capítulo 9. Cada bloco de teoria sustenta uma decisão.'

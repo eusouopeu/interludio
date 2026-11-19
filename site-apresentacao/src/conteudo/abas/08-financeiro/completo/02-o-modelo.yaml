@@ -1,0 +1,33 @@
+# Uma seção da aba. "titulo" aparece no botão da seção e no topo; "descricao" e "fonte" são opcionais.
+# Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
+
+titulo: O modelo
+descricao: Modelo financeiro de 18/11/2026 (capítulo 9).
+blocos:
+- tipo: abas
+  itens:
+  - id: inv
+    rotulo: Investimento
+    blocos:
+    - tipo: tabela
+      id: Tabela 5
+  - id: mes
+    rotulo: Mês maduro
+    blocos:
+    - tipo: tabela
+      id: Tabela 6
+  - id: dre
+    rotulo: DRE e DFC
+    blocos:
+    - tipo: tabela
+      id: Tabela 7
+  - id: ind
+    rotulo: Indicadores
+    blocos:
+    - tipo: tabela
+      id: Tabela 8
+  - id: prem
+    rotulo: Premissas
+    blocos:
+    - tipo: tabela
+      id: Quadro 12
