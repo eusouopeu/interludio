@@ -38,9 +38,9 @@
       "n": 2,
       "grupo": "Plano",
       "titulo": "Referencial teórico",
-      "subtitulo": "Conceitos e decisões que apoiam",
+      "subtitulo": "Conceitos e Quadro 1",
       "tempo": "1min",
-      "subtituloLongo": "Os cinco blocos de teoria e a decisão que cada um sustenta",
+      "subtituloLongo": "Os conceitos do referencial e a dimensão do plano que cada um apoia",
       "capitulo": "Capítulo 2 do TMin"
     },
     {
@@ -48,9 +48,9 @@
       "n": 3,
       "grupo": "Plano",
       "titulo": "Metodologia",
-      "subtitulo": "Evidências N1 a N6 e blocos B1 a B5",
+      "subtitulo": "Fontes, técnicas e unidades observadas",
       "tempo": "1min30",
-      "subtituloLongo": "Hierarquia de evidências, blocos de coleta, validação e limitações",
+      "subtituloLongo": "Tipo de pesquisa, blocos de coleta, técnicas de análise e matriz de evidências",
       "capitulo": "Capítulo 3 do TMin"
     },
     {
@@ -58,19 +58,19 @@
       "n": 4,
       "grupo": "Plano",
       "titulo": "Análise de mercado",
-      "subtitulo": "Entretenimento social, PESTEL e forças",
+      "subtitulo": "Contexto, concorrência e preço",
       "tempo": "1min30",
-      "subtituloLongo": "O mercado do entretenimento social, o ambiente externo e a concorrência",
-      "capitulo": "Capítulo 5 do TMin"
+      "subtituloLongo": "Objetivo (i): mercado, concorrência e preço",
+      "capitulo": "Capítulos 5 e 6 do TMin"
     },
     {
       "id": "marketing",
       "n": 5,
       "grupo": "Plano",
       "titulo": "Plano de marketing",
-      "subtitulo": "Proposta de valor, preço, bairro e demanda",
+      "subtitulo": "Posicionamento, praça e demanda",
       "tempo": "1min30",
-      "subtituloLongo": "Posicionamento, composto de marketing, escolha do bairro e demanda",
+      "subtituloLongo": "Objetivos (ii) e (iii): proposta de valor, praça e estimativa de demanda",
       "capitulo": "Capítulo 6 do TMin"
     },
     {
@@ -78,19 +78,19 @@
       "n": 6,
       "grupo": "Plano",
       "titulo": "Plano operacional",
-      "subtitulo": "Salão, processos, acervo e equipe",
+      "subtitulo": "Operação e aspectos jurídicos",
       "tempo": "1min",
-      "subtituloLongo": "Espaço, capacidade, jornada do cliente, acervo e equipe",
-      "capitulo": "Capítulo 7 do TMin"
+      "subtituloLongo": "Objetivo (iv): salão, horário, equipe, tributos e obrigações legais",
+      "capitulo": "Capítulos 7 e 8 do TMin"
     },
     {
       "id": "financeiro",
       "n": 7,
       "grupo": "Plano",
       "titulo": "Plano financeiro",
-      "subtitulo": "Investimento, resultado e indicadores",
+      "subtitulo": "Investimento e indicadores",
       "tempo": "1min30",
-      "subtituloLongo": "Premissas, investimento, fluxo de caixa, indicadores e sensibilidade",
+      "subtituloLongo": "Objetivo (v): investimento, mês maduro, DRE e indicadores de viabilidade",
       "capitulo": "Capítulo 9 do TMin"
     },
     {
@@ -98,9 +98,9 @@
       "n": 8,
       "grupo": "Plano",
       "titulo": "Análise de riscos",
-      "subtitulo": "SWOT, riscos, contingência e parecer",
+      "subtitulo": "Ruptura, contingência e conclusão",
       "tempo": "1min",
-      "subtituloLongo": "Estratégia, premissas críticas, riscos e validações antes de investir",
+      "subtituloLongo": "Objetivos (vi) e (vii), objetivo geral e considerações finais",
       "capitulo": "Capítulos 10 e 11 do TMin"
     },
     {

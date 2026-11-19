@@ -36,8 +36,8 @@ na barra lateral.
   `src/conteudo/downloads.json`. Arquivo ausente na máquina vira botão desativado.
 - **Abas, títulos e tempos:** `src/conteudo/site.json`.
 
-Os números escritos à mão em `plano.json` (KPIs, gráficos de entorno, sensibilidade da matriz de bairros) vêm do
-TMin v30 e precisam ser conferidos quando o texto mudar.
+Os números escritos à mão em `plano.json` (chamadas, KPIs e cartões) seguem a apresentação final
+(`slides-vfinal.pptx`, modelo financeiro de 18/11/2026, TMin v50) e precisam ser conferidos quando o texto mudar.
 
 ## Identidade visual
 
