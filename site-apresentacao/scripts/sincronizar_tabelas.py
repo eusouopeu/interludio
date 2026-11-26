@@ -1,5 +1,5 @@
 """
-Extrai as tabelas e os quadros do TMin (textos/capitulos/*.md) para
+Extrai as tabelas e os quadros do TMin (textos-tcc/capitulos/*.md) para
 src/conteudo/tabelas.json, indexados pelo número ("Tabela 9.4", "Quadro 6.2").
 O site lê os números daqui, e não de cópias digitadas: rodar de novo depois de
 cada versão do texto (pnpm run tabelas).
@@ -12,7 +12,7 @@ from pathlib import Path
 
 # Projeto do TCC (tcc-luderia), pasta irmã do interludio.
 RAIZ = Path(__file__).resolve().parents[3] / "tcc-luderia"
-MD = RAIZ / "textos" / "capitulos"
+MD = RAIZ / "textos-tcc" / "capitulos"
 SAIDA = Path(__file__).resolve().parents[1] / "src" / "conteudo" / "tabelas.json"
 
 

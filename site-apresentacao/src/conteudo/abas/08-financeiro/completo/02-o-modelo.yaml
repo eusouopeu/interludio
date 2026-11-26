@@ -2,7 +2,7 @@
 # Em "blocos", cada item começa por "tipo" (ver LEIA-ME.md). Mudar só o texto depois dos dois-pontos.
 
 titulo: O modelo
-descricao: Modelo financeiro de 18/11/2026 (capítulo 9).
+descricao: Modelo financeiro de 26/11/2026 (capítulo 9).
 blocos:
 - tipo: abas
   itens:
@@ -15,17 +15,19 @@ blocos:
     rotulo: Mês maduro
     blocos:
     - tipo: tabela
-      id: Tabela 6
+      id: Tabela 7
   - id: dre
     rotulo: DRE e DFC
     blocos:
     - tipo: tabela
-      id: Tabela 7
+      id: Tabela 8
+    - tipo: tabela
+      id: Tabela 9
   - id: ind
     rotulo: Indicadores
     blocos:
     - tipo: tabela
-      id: Tabela 8
+      id: Tabela 11
   - id: prem
     rotulo: Premissas
     blocos:

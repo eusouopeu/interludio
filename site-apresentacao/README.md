@@ -43,7 +43,7 @@ resumo e os achados. O botão do canto superior direito alterna o tema claro e o
   `_aba.yaml` de cada pasta.
 
 Os números escritos à mão nos `.yaml` (chamadas, KPIs e cartões) seguem a apresentação final
-(`slides-vfinal.pptx`, modelo financeiro de 18/11/2026, TMin v50) e precisam ser conferidos quando o texto mudar.
+(`slides-vfinal.pptx`, TMin v50) e o modelo financeiro de 26/11/2026 e precisam ser conferidos quando o texto mudar.
 
 ## Identidade visual
 

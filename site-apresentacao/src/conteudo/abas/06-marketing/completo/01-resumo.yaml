@@ -17,5 +17,5 @@ blocos:
     valor: '834'
     detalhe: pessoas por mês, ou 39 por dia aberto
   - rotulo: Gasto por pessoa
-    valor: R$ 80,42
-    detalhe: Declarado, 21 casas (B1)
+    valor: R$ 80,67
+    detalhe: Declarado, mediana das 21 casas (B1 e B2)

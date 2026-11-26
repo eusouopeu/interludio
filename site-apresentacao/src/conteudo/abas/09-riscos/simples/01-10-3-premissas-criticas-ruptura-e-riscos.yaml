@@ -7,10 +7,10 @@ blocos:
 - tipo: kpis
   itens:
   - rotulo: Circulação no pico
-    valor: 5,05
-    detalhe: pessoas por hora na ruptura, ante 6,40 (−21%); logo abaixo da mediana das visitas (5,08)
+    valor: 5,10
+    detalhe: pessoas por hora na ruptura, ante 6,40 (−20%); logo acima da mediana das visitas (5,08)
   - rotulo: Gasto por pessoa
-    valor: R$ 61,24
-    detalhe: na ruptura, ante R$ 80,42 no provável (−24%)
+    valor: R$ 62,35
+    detalhe: na ruptura, ante R$ 80,67 no provável (−23%)
   centralizar: true
-fonte: modelo financeiro (Figura 12; Tabela 9; seções 9.5 e 10.3)
+fonte: modelo financeiro (Gráfico 6; Tabela 12; seções 9.5 e 10.3)

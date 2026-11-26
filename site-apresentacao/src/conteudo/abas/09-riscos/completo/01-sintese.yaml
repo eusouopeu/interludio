@@ -4,18 +4,18 @@
 titulo: Síntese
 blocos:
 - tipo: chamada
-  texto: Viável nas premissas prováveis, com circulação no pico acima de 5,05 pessoas por hora e gasto acima de R$ 61,24 por pessoa.
+  texto: Viável nas premissas prováveis, com circulação no pico acima de 5,10 pessoas por hora e gasto acima de R$ 62,35 por pessoa.
 - tipo: kpis
   itens:
   - rotulo: Circulação no pico
-    valor: 5,05 pessoas/h
-    detalhe: Na ruptura, ante 6,40 (−21%); logo abaixo da mediana das visitas (5,08)
+    valor: 5,10 pessoas/h
+    detalhe: Na ruptura, ante 6,40 (−20%); logo acima da mediana das visitas (5,08)
   - rotulo: Gasto por pessoa
-    valor: R$ 61,24
-    detalhe: Na ruptura, ante R$ 80,42 no provável (−24%)
+    valor: R$ 62,35
+    detalhe: Na ruptura, ante R$ 80,67 no provável (−23%)
   - rotulo: VPL positivo
-    valor: 77,3%
+    valor: 76,2%
     detalhe: dos cenários do Monte Carlo (10 mil sorteios)
   - rotulo: Faixa do VPL
-    valor: −R$ 346 mil a R$ 1,81 mi
-    detalhe: P10 e P90 (Apêndice G; Tabela G.1)
+    valor: −R$ 358 mil a R$ 1,77 mi
+    detalhe: P10 e P90 (Apêndice G; Tabela G1)

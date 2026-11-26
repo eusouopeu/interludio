@@ -8,11 +8,11 @@ blocos:
   colunas: 3
   itens:
   - rotulo: Entrada
-    titulo: R$ 18,50
-    texto: Média de terça a quinta; R$ 26,29 de sexta a domingo (21 casas).
+    titulo: R$ 15,00
+    texto: Mediana de terça a quinta; R$ 25,00 de sexta a domingo (21 casas).
   - rotulo: Cesta
-    titulo: R$ 71,26
-    texto: Taxa, bebida e hambúrguer (16 casas).
+    titulo: R$ 70,45
+    texto: Mediana de taxa, bebida e hambúrguer (16 casas).
   - rotulo: Gasto
-    titulo: R$ 80,42
-    texto: Gasto declarado por pessoa (21 casas).
+    titulo: R$ 80,67
+    texto: Gasto declarado por pessoa, mediana das 21 casas.

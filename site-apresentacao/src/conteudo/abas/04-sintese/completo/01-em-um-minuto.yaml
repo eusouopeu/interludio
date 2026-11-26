@@ -4,24 +4,24 @@
 titulo: Em um minuto
 blocos:
 - tipo: chamada
-  texto: 'Uma luderia em Salvador é viável nas premissas prováveis: VPL de R$ 703 mil e 77,3% dos cenários com VPL positivo. O risco se concentra em duas premissas, a circulação no pico e o gasto por pessoa, e cada uma está ligada a um dado, a uma fonte e a um tipo de evidência.'
+  texto: 'Uma luderia em Salvador é viável nas premissas prováveis: VPL de R$ 672 mil e 76,2% dos cenários com VPL positivo. O risco se concentra em duas premissas, a circulação no pico e o gasto por pessoa, e cada uma está ligada a um dado, a uma fonte e a um tipo de evidência.'
 - tipo: kpis
   itens:
   - rotulo: Investimento inicial
     valor: R$ 391 mil
-    detalhe: Equilíbrio em R$ 44,2 mil/mês (542 pessoas)
+    detalhe: Equilíbrio em R$ 44,7 mil/mês (547 pessoas)
   - rotulo: VPL
-    valor: R$ 703 mil
-    detalhe: R$ 188 mil sem o valor residual
+    valor: R$ 672 mil
+    detalhe: R$ 172 mil sem o valor residual
   - rotulo: TIR real
-    valor: 51,0%
-    detalhe: 30,6% sem o valor residual
+    valor: 49,7%
+    detalhe: 29,4% sem o valor residual
   - rotulo: Payback descontado
-    valor: 3,5 anos
+    valor: 3,65 anos
     detalhe: Horizonte de 5 anos
   - rotulo: VPL positivo
-    valor: 77,3%
+    valor: 76,2%
     detalhe: dos 10 mil cenários de Monte Carlo
   - rotulo: Receita madura
-    valor: R$ 68,0 mil/mês
-    detalhe: Modelo financeiro de 18/11/2026
+    valor: R$ 68,2 mil/mês
+    detalhe: Modelo financeiro de 26/11/2026

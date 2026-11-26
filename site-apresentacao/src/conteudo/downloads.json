@@ -2,17 +2,17 @@
   "trabalho": [
     {
       "rotulo": "Texto do TCC",
-      "detalhe": "Versão mais atual (v50)",
+      "detalhe": "Versão mais atual",
       "formato": "DOCX",
-      "arquivo": "downloads/TCC_luderia_v50.docx",
-      "tamanho": 2272975
+      "arquivo": null,
+      "tamanho": null
     },
     {
       "rotulo": "Slides da apresentação",
       "detalhe": "Deck da defesa",
       "formato": "PPTX",
-      "arquivo": "downloads/slides-vfinal.pptx",
-      "tamanho": 1619981
+      "arquivo": null,
+      "tamanho": null
     }
   ],
   "planilhas": [
@@ -20,36 +20,36 @@
       "rotulo": "B1 · Concorrentes",
       "detalhe": "Estabelecimentos, cardápios, acervos e redes sociais",
       "formato": "XLSX",
-      "arquivo": "downloads/B1_dados_agregados.xlsx",
-      "tamanho": 1663444
+      "arquivo": null,
+      "tamanho": null
     },
     {
       "rotulo": "B1 · Concorrentes (resumida)",
       "detalhe": "As abas principais do B1",
       "formato": "XLSX",
-      "arquivo": "downloads/B1_dados_agregados_resumido.xlsx",
-      "tamanho": 1067739
+      "arquivo": null,
+      "tamanho": null
     },
     {
       "rotulo": "B2 · Avaliações",
       "detalhe": "Análise de conteúdo das avaliações do Google Maps",
       "formato": "XLSX",
-      "arquivo": "downloads/B2_dados_agregados.xlsx",
-      "tamanho": 1443849
+      "arquivo": null,
+      "tamanho": null
     },
     {
       "rotulo": "B3 · Contagem",
       "detalhe": "Ocupação, giro e NFC-e na São Jogue",
       "formato": "XLSX",
-      "arquivo": "downloads/B3_dados_agregados.xlsx",
-      "tamanho": 99141
+      "arquivo": null,
+      "tamanho": null
     },
     {
       "rotulo": "B4 · Bases públicas",
       "detalhe": "IBGE, Novo CAGED, FipeZap, Simples Nacional e BCB",
       "formato": "XLSX",
-      "arquivo": "downloads/B4_dados_agregados.xlsx",
-      "tamanho": 762827
+      "arquivo": null,
+      "tamanho": null
     }
   ]
 }

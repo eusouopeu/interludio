@@ -6,13 +6,13 @@ blocos:
 - tipo: kpis
   itens:
   - rotulo: VPL positivo
-    valor: 77,3%
+    valor: 76,2%
     detalhe: dos cenários
   - rotulo: P10
-    valor: −R$ 346 mil
+    valor: −R$ 358 mil
     detalhe: do VPL
   - rotulo: P90
-    valor: R$ 1,81 mi
+    valor: R$ 1,77 mi
     detalhe: do VPL
   centralizar: true
-fonte: simulação de Monte Carlo, 10 mil sorteios (Apêndice G; Tabela 8; Tabela G.1)
+fonte: simulação de Monte Carlo, 10 mil sorteios (Apêndice G; Tabela 11; Tabela G1)

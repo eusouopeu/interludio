@@ -7,13 +7,13 @@ blocos:
 - tipo: kpis
   itens:
   - rotulo: VPL
-    valor: R$ 703 mil
-    detalhe: R$ 188 mil sem o valor residual
+    valor: R$ 672 mil
+    detalhe: R$ 172 mil sem o valor residual
   - rotulo: TIR real
-    valor: 51,0%
-    detalhe: 30,6% sem o valor residual
+    valor: 49,7%
+    detalhe: 29,4% sem o valor residual
   - rotulo: Payback descontado
-    valor: 3,5 anos
+    valor: 3,65 anos
     detalhe: horizonte de 5 anos
   centralizar: true
 - tipo: kpis
@@ -21,9 +21,9 @@ blocos:
   - rotulo: Investimento
     valor: R$ 391 mil
   - rotulo: Receita madura
-    valor: R$ 68,0 mil/mês
+    valor: R$ 68,2 mil/mês
   - rotulo: Equilíbrio
-    valor: R$ 44,2 mil/mês
-    detalhe: 542 pessoas
+    valor: R$ 44,7 mil/mês
+    detalhe: 547 pessoas
   centralizar: true
-fonte: modelo financeiro, 18/11/2026 (Tabela 8; capítulo 9)
+fonte: modelo financeiro, 26/11/2026 (Tabela 11; capítulo 9)

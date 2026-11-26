@@ -16,7 +16,7 @@ blocos:
     valor: 3 + 1
     detalhe: 2 atendentes e instrutores e 1 cozinheiro-chefe; o sócio na gestão, nas compras e nos imprevistos
   - rotulo: Tributos
-    valor: 7,9% e 11,6%
+    valor: 7,95% e 11,64%
     detalhe: Simples Nacional sobre A&B e sobre serviços; sociedade limitada
   centralizar: true
-fonte: capítulos 7 e 8; Figura 8; Quadro 10; Tabela 4
+fonte: capítulos 7 e 8; Figura 3; Quadro 10; Tabela 4
