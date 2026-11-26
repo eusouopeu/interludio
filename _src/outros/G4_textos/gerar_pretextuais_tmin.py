@@ -1,11 +1,11 @@
 """
-Elementos pré-textuais do TMin: listas de figuras, de quadros, de tabelas e de
+Elementos pré-textuais do TMin: listas de figuras, de gráficos, de quadros, de tabelas, de equações e de
 abreviações e siglas, e o sumário, no padrão do trabalho Dance Forrónejo
 (título centralizado em caixa alta e negrito; entradas com pontilhado até o
 número da página; siglas em duas colunas, com a sigla em negrito; sumário com
 capítulos em negrito e caixa alta, seções em caixa alta e subseções em negrito).
 
-Uso: python3 _src/outros/G4_textos/gerar_pretextuais_tmin.py textos/TCC_luderia_v<n>.docx
+Uso: python3 _src/outros/G4_textos/gerar_pretextuais_tmin.py textos-tcc/TCC_luderia_v<n>.docx
 
 Reescreve o .docx no lugar. Tudo o que vem antes do título "1 INTRODUÇÃO" é
 trocado pela capa, pela folha de rosto, pela folha de aprovação e pelos elementos novos, numa seção própria, sem número de página
@@ -86,7 +86,7 @@ SIGLAS = {
     "N1 a N6": "Códigos dos tipos de evidência das premissas",
     "NBR": "Norma Brasileira",
     "NFC-e": "Nota fiscal de consumidor eletrônica",
-    "Novo CAGED": "Novo Cadastro Geral de Empregados e Desempregados",
+    "CAGED": "Cadastro Geral de Empregados e Desempregados",
     "PAS": "Pesquisa Anual de Serviços",
     "PESTEL": "Fatores políticos, econômicos, sociais, tecnológicos, ambientais e legais",
     "PIS": "Programa de Integração Social",
@@ -227,8 +227,8 @@ def par_md(t, depois=0, antes=0):
 
 
 def resumo_e_abstract():
-    """RESUMO e ABSTRACT com as palavras-chave, de textos/capitulos/resumo_abstract.md (fonte única)."""
-    md = Path(__file__).resolve().parents[3] / "textos" / "capitulos" / "resumo_abstract.md"
+    """RESUMO e ABSTRACT com as palavras-chave, de textos-tcc/capitulos/resumo_abstract.md (fonte única)."""
+    md = Path(__file__).resolve().parents[3] / "textos-tcc" / "capitulos" / "resumo_abstract.md"
     if not md.exists():
         return ""
     out = []
@@ -315,6 +315,11 @@ def calibra_ano(docx, pasta, alvo=780.0):
     return ok
 
 
+# Nome de cada equação na LISTA DE EQUAÇÕES (24/11/2026), pelo número entre parênteses no texto.
+NOMES_EQUACOES = {1: "Pessoas por dia aberto", 2: "Receita por pessoa", 3: "Juro real", 4: "Margem por pessoa",
+                  5: "Pessoas no ponto de equilíbrio", 6: "Valor residual"}
+
+
 def localiza(entradas, pags, inicio):
     """Página de cada entrada, procurando em ordem a partir da página `inicio` (índice 0)."""
     out, p = [], inicio
@@ -339,8 +344,11 @@ def main():
     corpo_xml = x[ini:][x[ini:].find(els[i1]):]
     corpo = els[i1:]
 
-    # Duas listas (17/11/2026): ilustrações (figuras e quadros, na ordem do documento) e tabelas.
-    ilus, tabs, sumario = [], [], []
+    # Listas separadas por tipo (24/11/2026): figuras, gráficos, quadros, tabelas e equações. Cada item é
+    # (texto da entrada, texto procurado no PDF); a equação entra pelo nome em NOMES_EQUACOES e é
+    # procurada pela fórmula, que termina no número entre parênteses.
+    listas = {"FIGURAS": [], "GRÁFICOS": [], "QUADROS": [], "TABELAS": [], "EQUAÇÕES": []}
+    sumario = []
     for e in corpo:
         if e.startswith("<w:tbl"):
             continue
@@ -352,10 +360,12 @@ def main():
             sumario.append((2, s))
         elif st == "Heading2":
             sumario.append((3, s))
-        elif re.match(r"(Figura|Quadro) [\dA-G.]+ –", s):
-            ilus.append(s)
-        elif re.match(r"Tabela [\dA-G.]+ –", s):
-            tabs.append(s)
+        elif m := re.match(r"(Figura|Gráfico|Quadro|Tabela) [\dA-H.]+ –", s):
+            chave = {"Figura": "FIGURAS", "Gráfico": "GRÁFICOS", "Quadro": "QUADROS", "Tabela": "TABELAS"}[m[1]]
+            listas[chave].append((s, s))
+        elif (m := re.search(r" = .*\((\d+)\)$", s)) and len(s) < 120:
+            n = int(m[1])
+            listas["EQUAÇÕES"].append((f"Equação {n} – {NOMES_EQUACOES[n]}", s))
     i_ref = next(i for i, e in enumerate(corpo) if txt(e).upper() == "REFERÊNCIAS")
     texto = " ".join(html.unescape(" ".join(re.findall(r"<w:t[^>]*>([^<]*)</w:t>", e))) for e in corpo[:i_ref] if not re.search(r'<w:pStyle w:val="(Title|Heading\d)"', e[:300]))
     usadas, faltam = siglas_usadas(texto)
@@ -364,9 +374,13 @@ def main():
 
     imp = lambda p: p - 1 if isinstance(p, int) else p  # página impressa: a capa não conta
 
-    def monta(pi, pt, ps, ini_num=1):
-        f = [capa_e_rosto(), resumo_e_abstract(), titulo("LISTA DE ILUSTRAÇÕES")] + [entrada(s, imp(p)) for s, p in zip(ilus, pi)]
-        f += [titulo("LISTA DE TABELAS")] + [entrada(s, imp(p)) for s, p in zip(tabs, pt)]
+    nomes = [k for k in listas if listas[k]]
+
+    def monta(*res, ini_num=1):
+        *pl, ps = res
+        f = [capa_e_rosto(), resumo_e_abstract()]
+        for k, pags_k in zip(nomes, pl):
+            f += [titulo(f"LISTA DE {k}")] + [entrada(e, imp(p)) for (e, _), p in zip(listas[k], pags_k)]
         f += [titulo("LISTA DE ABREVIAÇÕES E SIGLAS"), tabela_siglas([(s, SIGLAS[s]) for s in usadas])]
         f += [titulo("SUMÁRIO")]
         for (nivel, s), p in zip(sumario, ps):
@@ -398,26 +412,28 @@ def main():
             zo.writestr("word/media/brasao_ufba.png", BRASAO.read_bytes())
 
     zeros = lambda l: ["00"] * len(l)
+    provisorio = lambda: monta(*[zeros(listas[k]) for k in nomes], zeros(sumario))
+    buscas = lambda: [[b for _, b in listas[k]] for k in nomes] + [[s for _, s in sumario]]
     with tempfile.TemporaryDirectory() as d:
         prov = Path(d) / arq.name
-        grava(monta(zeros(ilus), zeros(tabs), zeros(sumario)), prov)
+        grava(provisorio(), prov)
         # local e ano no pé da capa e da folha de rosto: repete até o ano cair na última linha
         for _ in range(5):
             if calibra_ano(prov, Path(d)):
                 break
-            grava(monta(zeros(ilus), zeros(tabs), zeros(sumario)), prov)
-        grava(monta(zeros(ilus), zeros(tabs), zeros(sumario)), prov)
+            grava(provisorio(), prov)
+        grava(provisorio(), prov)
         pags = paginas(prov)
         n_pre = next(i for i, p in enumerate(pags) if norm("1 INTRODUÇÃO") in norm(p) and "SUMÁRIO" not in p)
-        res = [localiza(l, pags, n_pre) for l in (ilus, tabs, [s for _, s in sumario])]
+        res = [localiza(l, pags, n_pre) for l in buscas()]
         doc = monta(*res, ini_num=n_pre)
         grava(doc, prov)
         pags2 = paginas(prov)
-        res2 = [localiza(l, pags2, n_pre) for l in (ilus, tabs, [s for _, s in sumario])]
+        res2 = [localiza(l, pags2, n_pre) for l in buscas()]
         if res2 != res:
             raise SystemExit("as páginas mudaram entre as duas conversões; rodar de novo")
     grava(doc, arq)
-    print(f"OK: {arq.name}; {len(ilus)} ilustrações, {len(tabs)} tabelas, {len(usadas)} siglas, "
+    print(f"OK: {arq.name}; " + ", ".join(f"{len(listas[k])} em {k.lower()}" for k in nomes) + f", {len(usadas)} siglas, "
           f"{len(sumario)} entradas no sumário; capa e pré-textuais em {n_pre} páginas (a capa não conta); texto da p. {n_pre} à {len(pags2) - 2}")
 
 

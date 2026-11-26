@@ -1,4 +1,4 @@
-// Gera o .docx de um capítulo a partir do .md (textos/capitulos/).
+// Gera o .docx de um capítulo a partir do .md (textos-tcc/capitulos/).
 //
 // Mesmo formato ABNT de gerar_docx_projeto.js (A4, margens 3/2 cm, Arial 12,
 // espaçamento 1,5, recuo de 1,00 cm). Diferenças: legenda acima de Quadro,
@@ -18,13 +18,13 @@
 // nota justificada, em Arial 10.
 //
 // Versões (_docs/_instrucoes/1c_versoes.md): o TMin é o padrão, com os .md e os
-// .docx dos capítulos em textos/capitulos/ e o trabalho inteiro em textos/; o TMax fica em
-// textos/capitulos/TMax/ (.md em TMax/_md/, só dos capítulos que diferem). A saída
+// .docx dos capítulos em textos-tcc/capitulos/ e o trabalho inteiro em textos-tcc/; o TMax fica em
+// textos-tcc/capitulos/TMax/ (.md em TMax/_md/, só dos capítulos que diferem). A saída
 // leva o texto só quando o capítulo difere entre as versões (<nome>_<TMin|TMax>_v<n>;
 // senão, <nome>_v<n>), com n = maior versão já existente + 1; a anterior vai para
 // a pasta _arquivo/ ao lado.
 //
-// Uso: node "_src/outros/G4_textos/gerar_docx_capitulo.js" textos/capitulos/6_plano_de_marketing.md
+// Uso: node "_src/outros/G4_textos/gerar_docx_capitulo.js" textos-tcc/capitulos/6_plano_de_marketing.md
 // Trabalho inteiro (cada capítulo começa em página nova), com PDF:
 //   node "_src/outros/G4_textos/gerar_docx_capitulo.js" --trabalho TMin --pdf
 //   node "_src/outros/G4_textos/gerar_docx_capitulo.js" --trabalho TMax --pdf
@@ -35,10 +35,11 @@ const path = require("path");
 const {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, ImageRun,
   AlignmentType, HeadingLevel, LevelFormat, BorderStyle, ShadingType, PageNumber, Header, VerticalAlign,
+  ExternalHyperlink,
 } = require("docx");
 
 const ROOT = path.resolve(__dirname, "..", "..", "..");
-const CAP = path.join(ROOT, "textos", "capitulos");
+const CAP = path.join(ROOT, "textos-tcc", "capitulos");
 const MD_TMIN = CAP, MD_TMAX = path.join(CAP, "TMax", "_md");
 const ARGS = process.argv.slice(2);
 const opcao = (nome) => { const i = ARGS.indexOf(nome); return i < 0 ? null : ARGS[i + 1]; };
@@ -66,7 +67,7 @@ let MDS, TEXTO, BASE;
 if (PARTES_MODO) {
   // as partes são montadas uma a uma no fim do arquivo
 } else if (TRABALHO) {
-  // TMin: todos os .md de textos/capitulos/; TMax: os mesmos, trocados pelos de TMax/_md/ quando houver.
+  // TMin: todos os .md de textos-tcc/capitulos/; TMax: os mesmos, trocados pelos de TMax/_md/ quando houver.
   MDS = fs.readdirSync(MD_TMIN).filter((f) => /^\d+_.*\.md$/.test(f)).sort((a, b) => numero(a) - numero(b))
     .map((f) => (TRABALHO === "TMax" && fs.existsSync(path.join(MD_TMAX, f)) ? path.join(MD_TMAX, f) : path.join(MD_TMIN, f)));
   TEXTO = TRABALHO === "TMin" ? "" : TRABALHO; // desde 13/11/2026 o TMin sai sem a sigla: TCC_luderia_v<n>
@@ -120,7 +121,10 @@ function runs(texto, base = {}) {
   return partes.map((p) => {
     let t = p, bold = base.bold, italics = base.italics;
     if (p.startsWith("**") && p.endsWith("**")) { t = p.slice(2, -2); bold = true; }
-    else if (p.startsWith("*") && p.endsWith("*") && p.length > 2) { t = p.slice(1, -1); italics = true; }
+    else if (p.startsWith("*") && p.endsWith("*") && p.length > 2) {
+      // nas referências, o título (*...*) sai em negrito, não em itálico (24/11/2026)
+      t = p.slice(1, -1); if (base.destaqueNegrito) bold = true; else italics = true;
+    }
     else if (p.startsWith("`") && p.endsWith("`")) { t = p.slice(1, -1); }
     return new TextRun({ text: t, bold, italics, color: base.color, font: FONTE, size: base.size || TAM });
   });
@@ -140,6 +144,19 @@ function runsCorpo(texto) {
   }
   frases.push(texto.slice(ini));
   return frases.filter(Boolean).flatMap((f) => runs(f, VERMELHO.test(f) ? { color: "FF0000" } : {}));
+}
+
+// Linha de equação numerada "x = y (n)" e as linhas de conta que a seguem ("6,40 × 7,69 = 49,22 ...").
+const EQUACAO = /^[^|#*].{0,110} = .*\(\d+\)$/;
+const CONTA = /^[\d(−-].{0,110} = /;
+// Linha em branco que fica no documento (as de branco() saem no filtro final).
+function brancoEquacao() {
+  return new Paragraph({ spacing: { line: SIMPLES, before: 0, after: 0 }, indent: { firstLine: 0 },
+    run: { size: TAM_QUADRO }, children: [new TextRun({ text: "", font: FONTE, size: TAM_QUADRO })] });
+}
+function linhaEquacao(texto) {
+  return new Paragraph({ children: runs(texto, { size: TAM_QUADRO }), alignment: AlignmentType.CENTER,
+    indent: { firstLine: 0 }, keepNext: true, spacing: { line: SIMPLES, before: 0, after: 0 } });
 }
 
 function corpo(texto) {
@@ -210,38 +227,64 @@ function quadro(linhas, tipo) {
   const palavra = (c) => /^\S+$/.test(c.replace(/\*/g, ""));
   const centrada = cab.map((_, j) => !numerica && linhas.slice(1).every((l) => !l[j] || palavra(l[j]))
     && linhas.slice(1).some((l) => l[j]));
+  // Número sempre à direita, salvo coluna discreta de inteiros de um dígito, ano ou código (25/11/2026).
+  const discreta = cab.map((h, j) => {
+    const vs = linhas.slice(1).map((l) => (l[j] || "").replace(/\*/g, "").trim()).filter((v) => NUM.test(v));
+    return vs.length > 0 && vs.every((v) => /^\d+$/.test(v)) && new Set(vs.map((v) => v.length)).size === 1
+      && (vs[0].length === 1 || /^(Ano|CBO|Código)$/.test(h.replace(/\*/g, "").trim()));
+  });
   const alinha = (celula, i, j) => {
-    if (i === 0 || centrada[j]) return AlignmentType.CENTER;
-    return numerica && NUM.test(celula) ? AlignmentType.RIGHT : AlignmentType.LEFT;
+    if (i === 0) return AlignmentType.CENTER;
+    if (NUM.test(celula.replace(/\*/g, "").trim())) return discreta[j] ? AlignmentType.CENTER : AlignmentType.RIGHT;
+    return centrada[j] ? AlignmentType.CENTER : AlignmentType.LEFT;
   };
   const larguras = largurasAuto(linhas);
+  const n = cab.length, ultima = linhas.length - 1;
   const borda = { style: BorderStyle.SINGLE, size: 6, color: "000000" }; // 0,75 pt
   const nada = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
-  const grade = { top: borda, bottom: borda, left: borda, right: borda };
-  // Quadro: grade completa sempre; tabela numérica: só bordas horizontais.
-  const bordas = (i) => (!numerica || tipo === "Quadro") ? grade : {
+  const ehQuadro = !numerica || tipo === "Quadro";
+  // Quadro (24/11/2026): só a borda externa; cabeçalho purple 700 (7E22CE) com texto branco,
+  // zebrado gray 100 (F3F4F6) só em quadro sem linha de grupo; grupo em purple 300 (D8B4FE).
+  // Tabela numérica: só bordas horizontais no cabeçalho e no fim (1d_formatacao.md).
+  const bordas = (i, j, span = 1) => ehQuadro ? {
+    top: i === 0 ? borda : nada, bottom: i === ultima ? borda : nada,
+    left: j === 0 ? borda : nada, right: j + span >= n ? borda : nada,
+  } : {
     top: i === 0 ? borda : nada, left: nada, right: nada,
-    bottom: (i === 0 || i === linhas.length - 1) ? borda : nada,
+    bottom: (i === 0 || i === ultima) ? borda : nada,
   };
+  // linha de grupo: só a primeira célula preenchida, em negrito (ex.: "**Impacto alto**")
+  const grupo = (l) => /^\*\*.+\*\*$/.test(l[0]) && l.slice(1).every((c) => !c);
+  let zebra = 0;
+  const temGrupo = linhas.slice(1).some(grupo); // quadro com linha de grupo não tem zebrado
+  const PAD = 57, PAD_CAB = 113; // 0,1 cm nas células; 0,2 cm em cima e embaixo no cabeçalho do quadro
+  const celula = (texto, i, j, fill, cor, span = 1) => new TableCell({
+    width: { size: larguras.slice(j, j + span).reduce((x, y) => x + y, 0), type: WidthType.DXA },
+    columnSpan: span > 1 ? span : undefined,
+    borders: bordas(i, j, span),
+    margins: (ehQuadro && i === 0) ? { top: PAD_CAB, bottom: PAD_CAB, left: PAD, right: PAD }
+      : { top: PAD, bottom: PAD, left: PAD, right: PAD },
+    verticalAlign: VerticalAlign.CENTER,
+    shading: { type: ShadingType.CLEAR, fill, color: "auto" },
+    children: texto.split("<br>").map((trecho) => new Paragraph({
+      children: runs(trecho.trim(), { bold: i === 0, size: TAM_QUADRO, color: cor }),
+      alignment: span > 1 ? AlignmentType.CENTER : alinha(texto, i, j),
+      spacing: { line: SIMPLES, after: 0 },
+    })),
+  });
   return new Table({
     width: { size: LARGURA, type: WidthType.DXA },
     columnWidths: larguras,
-    rows: linhas.map((linha, i) => new TableRow({
-      tableHeader: i === 0,
-      cantSplit: true,
-      children: linha.map((celula, j) => new TableCell({
-        width: { size: larguras[j], type: WidthType.DXA },
-        borders: bordas(i),
-        margins: { top: 40, bottom: 40, left: 80, right: 80 },
-        verticalAlign: VerticalAlign.CENTER,
-        shading: { type: ShadingType.CLEAR, fill: "FFFFFF", color: "auto" },
-        children: celula.split("<br>").map((trecho) => new Paragraph({
-          children: runs(trecho.trim(), { bold: i === 0, size: TAM_QUADRO }),
-          alignment: alinha(celula, i, j),
-          spacing: { line: SIMPLES, after: 0 },
-        })),
-      })),
-    })),
+    rows: linhas.map((linha, i) => {
+      let fill = "FFFFFF", cor;
+      if (ehQuadro && i === 0) { fill = "7E22CE"; cor = "FFFFFF"; }
+      else if (ehQuadro && grupo(linha)) {
+        zebra = 0;
+        return new TableRow({ cantSplit: true, children: [celula(linha[0], i, 0, "D8B4FE", undefined, n)] });
+      } else if (ehQuadro && i > 0 && !temGrupo) { if (zebra++ % 2 === 1) fill = "F3F4F6"; }
+      return new TableRow({ tableHeader: i === 0, cantSplit: true,
+        children: linha.map((c, j) => celula(c, i, j, fill, cor)) });
+    }),
   });
 }
 
@@ -255,8 +298,14 @@ function titulo1(texto, quebra, centro = false) {
 
 // Referências: só à margem esquerda, espaço simples, sem recuo, e uma linha em branco de 12 pt
 // entre uma e outra (NBR 6023 e manual da UFBA; _docs/_instrucoes/1d_formatacao.md).
+// Título em negrito e endereço eletrônico como link azul (0563C1) e sublinhado (24/11/2026).
 function referencia(texto) {
-  return [new Paragraph({ children: runs(texto), alignment: AlignmentType.LEFT,
+  const filhos = texto.split(/(https?:\/\/[^\s,;]+?)(?=[.,;]?(?:\s|$))/g).filter(Boolean).flatMap((t) =>
+    /^https?:\/\//.test(t)
+      ? [new ExternalHyperlink({ link: t, children: [new TextRun({ text: t, font: FONTE, size: TAM,
+          color: "0563C1", underline: { type: "single", color: "0563C1" } })] })]
+      : runs(t, { destaqueNegrito: true }));
+  return [new Paragraph({ children: filhos, alignment: AlignmentType.LEFT,
     indent: { firstLine: 0 }, spacing: { line: SIMPLES, before: 0, after: 120 } })];
 }
 
@@ -276,7 +325,7 @@ function brancoAposTitulo(linhas, i, blocos) {
     break;
   }
   const prox = j < linhas.length ? linhas[j] : "";
-  if (prox && !/^#{1,3} /.test(prox) && !/^\*\*(Quadro|Tabela|Figura) [\d.]+/.test(prox)) blocos.push(branco(12, true));
+  if (prox && !/^#{1,3} /.test(prox) && !/^\*\*(Quadro|Tabela|Figura|Gráfico) [\d.]+/.test(prox)) blocos.push(branco(12, true));
 }
 
 function converte(md, MD, blocos = []) {
@@ -310,11 +359,11 @@ function converte(md, MD, blocos = []) {
       // "Referências citadas neste capítulo": como o título 1, sem número (só no capítulo avulso).
       referencias = true;
       if (!REFERENCIAS_NO_FIM) blocos.push(titulo1(l.trim().replace(/\*\*/g, "").toUpperCase(), true, true), branco(12));
-    } else if (/^\*\*(Quadro|Tabela|Figura) [\d.]+/.test(l)) {
-      tipoLegenda = l.match(/^\*\*(Quadro|Tabela|Figura)/)[1];
-      // uma só linha em branco entre o texto e a legenda: troca a que fecha o parágrafo anterior
-      if (blocos.length && blocos[blocos.length - 1]._branco) blocos.pop();
-      blocos.push(branco(12, true), legenda(l));
+    } else if (/^\*\*(Quadro|Tabela|Figura|Gráfico) [\d.]+/.test(l)) {
+      tipoLegenda = l.match(/^\*\*(Quadro|Tabela|Figura|Gráfico)/)[1];
+      // sem linha em branco entre o texto e a legenda (24/11/2026): o intervalo é o de 6 pt da legenda
+      while (blocos.length && blocos[blocos.length - 1]._branco) blocos.pop();
+      blocos.push(legenda(l));
     } else if (/^!\[[^\]]*\]\([^)]+\)/.test(l.trim())) {
       const arq = path.resolve(path.dirname(MD), l.trim().match(/\(([^)]+)\)/)[1]);
       const buf = fs.readFileSync(arq);
@@ -353,6 +402,21 @@ function converte(md, MD, blocos = []) {
       blocos.push(new Paragraph({ children: runsCorpo(l.replace(/^\d+\. /, "")),
         alignment: AlignmentType.JUSTIFIED,
         numbering: { reference: "numerada", level: 0, instance: instancia }, spacing: { line: ENTRELINHA, after: 120 } }));
+    } else if (EQUACAO.test(l.trim())) {
+      // Equação (24/11/2026): duas linhas em branco de espaçamento simples, sem espaço antes e
+      // depois, entre o texto e as linhas da fórmula, em cima e embaixo; fórmula e contas
+      // centralizadas, Arial 10, espaçamento simples.
+      while (blocos.length && blocos[blocos.length - 1]._branco) blocos.pop();
+      blocos.push(brancoEquacao(), brancoEquacao(), linhaEquacao(l.trim()));
+      let j = i + 1;
+      for (;;) {
+        let k = j;
+        while (k < linhas.length && !linhas[k].trim()) k++;
+        if (k < linhas.length && CONTA.test(linhas[k].trim())) { blocos.push(linhaEquacao(linhas[k].trim())); j = k + 1; }
+        else break;
+      }
+      i = j - 1;
+      blocos.push(brancoEquacao(), brancoEquacao());
     } else if (referencias) {
       if (REFERENCIAS_NO_FIM) REFS.add(l.trim()); else blocos.push(...referencia(l));
     } else {

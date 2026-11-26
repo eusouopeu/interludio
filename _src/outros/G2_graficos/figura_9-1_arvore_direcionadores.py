@@ -4,7 +4,7 @@ Figura 9.1 - Árvore de direcionadores do modelo financeiro.
 Desenha como árvore o antigo Quadro 9.1: o fluxo de caixa se desdobra em
 receita, custos e investimento, e cada folha traz o cálculo resumido e os
 códigos do registro de premissas (seção 9.1). Diagrama sem dados.
-Saída: textos/figuras/9-1_arvore_direcionadores.png.
+Saída: textos-tcc/figuras/9-1_arvore_direcionadores.png.
 """
 
 import sys
@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import diagramas_comum as dc  # noqa: E402
 import graficos_comum as gc  # noqa: E402
 
-SAIDA = ROOT / "textos" / "figuras" / "9-1_arvore_direcionadores.png"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "9-1_arvore_direcionadores.png"
 TAM = dc.FONTE_PT - 0.6
 
 # (ramo, título da folha, cálculo e premissas)

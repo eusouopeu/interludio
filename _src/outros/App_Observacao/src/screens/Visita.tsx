@@ -72,7 +72,7 @@ export function PaginaVisita({ unidade }: { unidade: Unidade }) {
       {visitas.length > 1 && (
         <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4">
           {visitas.map((x) => (
-            <button key={x.id} onClick={() => setSel(x.id)} className={`shrink-0 rounded-full px-3 py-1 text-sm ${x.id === v.id ? 'bg-caneta-600 text-sobre' : 'bg-neutro-200'}`}>
+            <button key={x.id} onClick={() => setSel(x.id)} className={`shrink-0 rounded-full px-3 py-1 text-sm ${x.id === v.id ? 'bg-caneta-700 text-sobre' : 'bg-neutro-200'}`}>
               {dataBr(x.inicio.slice(0, 10)).slice(0, 5)} {x.inicio.slice(11, 16)}
               {!x.fim && ' ●'}
             </button>
@@ -281,7 +281,7 @@ function LeitorNfce({ onFechar, onLido }: { onFechar: () => void; onLido: (url: 
       {(erro || aviso) && <p className="bg-erro-600 p-3 text-sm">{erro || aviso}</p>}
       <div className="flex gap-2 p-3">
         <input value={link} onChange={(e) => setLink(e.target.value)} placeholder="ou cole o link do QR" className="h-11 flex-1 rounded-lg px-3 text-neutro-900" />
-        <button onClick={() => pareceQrNfce(link) && onLido(link.trim())} className="rounded-lg bg-caneta-600 px-4 font-bold">
+        <button onClick={() => pareceQrNfce(link) && onLido(link.trim())} className="rounded-lg bg-caneta-700 px-4 font-bold">
           OK
         </button>
       </div>

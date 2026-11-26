@@ -237,7 +237,7 @@ def resumo_visitas() -> pd.DataFrame:
             "unidade": chave[0],
             "visita_inicio": chave[1],
             "fim_estimado": "sim" if fim_estimado else "nao",
-            "horas_observadas": round(horas, 2),
+            "horas_observadas": round(horas, 4),
             "grupos_porta": len(ent) if not f.empty else float("nan"),
             "pessoas_entraram": entraram,
             "pessoas_ja_dentro": num(inic["pessoas"]).sum() if not f.empty else float("nan"),
@@ -270,6 +270,7 @@ def resumo_visitas() -> pd.DataFrame:
     medias = []
     for visita_id, rv in r.groupby("visita_id", sort=False):
         m = rv.mean(numeric_only=True).round(2).to_dict()
+        m["horas_observadas"] = round(rv["horas_observadas"].mean(), 4)  # horas exatas: a planilha divide por elas
         m.update({"visita_id": visita_id, "observador": "media", "unidade": rv["unidade"].iloc[0],
                   "visita_inicio": rv["visita_inicio"].min(),
                   "fim_estimado": "sim" if (rv["fim_estimado"] == "sim").any() else "nao",

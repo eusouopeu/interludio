@@ -10,7 +10,7 @@ do usado no texto e no modelo (D115).
 
 Entradas: dados-agregados/B2_avaliacoes/B2_avaliacoes_periodo.csv;
           dados-agregados/B2_avaliacoes/gasto_por_pessoa/B2_gasto_cesta_por_casa.csv
-Saída: textos/graficos/6-2_gasto_declarado_por_pessoa.png
+Saída: textos-tcc/graficos/6-2_gasto_declarado_por_pessoa.png
 
 Uso:
     python3 "_src/pyScripts/B2_Avaliacoes/3_analise/B2a_figura_gasto_declarado.py"
@@ -50,7 +50,7 @@ def main():
     vc = d.preco_por_pessoa.map(rotulo).value_counts().reindex(ROT).fillna(0).astype(int)
     assert vc.sum() == len(d)
     acum = vc.cumsum() / vc.sum()
-    est.GRAF = ROOT / "textos" / "graficos"
+    est.GRAF = ROOT / "textos-tcc" / "graficos"
     caminho = est.barras_h("6-2_gasto_declarado_por_pessoa", ROT, {"% das declarações": (vc / vc.sum()).tolist()},
                            lambda v: est.br(v * 100, 1, suf="%"), eixo_pct=True)
     print(f"{len(d)} declarações em {d.place_id.nunique()} casas; faixa mediana {acum[acum >= .5].index[0]}")

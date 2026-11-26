@@ -60,6 +60,10 @@ JANELA_DE, JANELA_ATE = "2025-10-01", "2026-09-30"
 MESES = 12
 MIN_POSTS_JANELA = 12
 MIN_POSTS_RAZAO = 3
+if ic.modo_recorte():  # versão resumida: um post por mês na janela, como os 12 em 12 meses
+    JANELA_DE, JANELA_ATE, MESES = ic.RECORTE_DE, ic.RECORTE_ATE, ic.RECORTE_MESES
+    MIN_POSTS_JANELA = ic.RECORTE_MESES
+    SAIDA = SAIDA / ic.PASTA_RECORTE
 DIAS = {
     "segunda": r"\bsegunda", "terça": r"\bterca", "quarta": r"\bquarta", "quinta": r"\bquinta",
     "sexta": r"\bsexta", "sábado": r"\bsabado|\bsabadou", "domingo": r"\bdomingo",

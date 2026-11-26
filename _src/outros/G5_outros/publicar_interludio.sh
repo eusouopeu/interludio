@@ -4,9 +4,9 @@
 # Copia só arquivos versionados aqui (respeita o .gitignore):
 #   dados-agregados/ -> dados-agregados/
 #   _src/            -> _src/
-#   textos/{figuras,graficos,planilhas,quadros}/ -> texto/...
-#   textos/TCC_luderia_v<N>.pdf de maior N -> texto/
-#   slides-video-apresentacao/: só deck-apresentacao.pdf, slides-vfinal.pptx (versionado), deck-canva.pptx e as
+#   textos-tcc/{figuras,graficos,planilhas,quadros}/ -> texto/...
+#   textos-tcc/TCC_luderia_v<N>.pdf de maior N -> texto/
+#   textos-tcc/slides-video/: só deck-apresentacao.pdf, slides-vfinal.pptx (versionado), deck-canva.pptx e as
 #   notas-do-apresentador (.pdf e .docx; exportações, fora do git) -> apresentacao/
 # O que sumiu daqui some de lá. README.md e .gitignore do interludio ficam.
 #
@@ -21,8 +21,8 @@ PUSH=1
 
 [[ -d "$DESTINO/.git" ]] || { echo "Repositório interludio não encontrado em $DESTINO" >&2; exit 1; }
 
-PDF="$(cd "$ORIGEM/textos" && ls TCC_luderia_v*.pdf 2>/dev/null | sort -t v -k2 -n | tail -1)"
-[[ -n "$PDF" ]] || { echo "Nenhum textos/TCC_luderia_v*.pdf encontrado" >&2; exit 1; }
+PDF="$(cd "$ORIGEM/textos-tcc" && ls TCC_luderia_v*.pdf 2>/dev/null | sort -t v -k2 -n | tail -1)"
+[[ -n "$PDF" ]] || { echo "Nenhum textos-tcc/TCC_luderia_v*.pdf encontrado" >&2; exit 1; }
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
@@ -34,11 +34,11 @@ copiar() {  # copiar <pasta de origem> <pasta no destino>
 
 copiar dados-agregados dados-agregados
 copiar _src _src
-for p in figuras graficos planilhas quadros; do copiar "textos/$p" "texto/$p"; done
-cp "$ORIGEM/textos/$PDF" "$TMP/texto/"
+for p in figuras graficos planilhas quadros; do copiar "textos-tcc/$p" "texto/$p"; done
+cp "$ORIGEM/textos-tcc/$PDF" "$TMP/texto/"
 mkdir -p "$TMP/apresentacao"
 for f in deck-apresentacao.pdf slides-vfinal.pptx deck-canva.pptx notas-do-apresentador.pdf notas-do-apresentador.docx; do
-  [[ -f "$ORIGEM/slides-video-apresentacao/$f" ]] && cp "$ORIGEM/slides-video-apresentacao/$f" "$TMP/apresentacao/"
+  [[ -f "$ORIGEM/textos-tcc/slides-video/$f" ]] && cp "$ORIGEM/textos-tcc/slides-video/$f" "$TMP/apresentacao/"
 done
 
 for p in dados-agregados _src texto apresentacao; do

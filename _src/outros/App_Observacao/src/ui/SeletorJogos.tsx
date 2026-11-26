@@ -58,12 +58,12 @@ export function SeletorJogos({
           return (
             <li key={j.n} className="flex items-center">
               <button onClick={() => alternar(j.n)} className="flex flex-1 items-center gap-3 py-2.5 text-left">
-                <span className={`grid size-6 shrink-0 place-items-center rounded border ${on ? 'border-caneta-600 bg-caneta-600 text-sobre' : 'border-neutro-300'}`}>
+                <span className={`grid size-6 shrink-0 place-items-center rounded border ${on ? 'border-caneta-700 bg-caneta-700 text-sobre' : 'border-neutro-300'}`}>
                   {on && <CheckIcon className="size-4 stroke-[3]" />}
                 </span>
                 <span className="flex-1">
                   {j.n}
-                  {destaque.includes(j.n) && <span className="ml-2 text-xs font-bold text-caneta-600">ACERVO</span>}
+                  {destaque.includes(j.n) && <span className="ml-2 text-xs font-bold text-caneta-700">ACERVO</span>}
                 </span>
                 {j.min && (
                   <span className="text-xs text-neutro-400">

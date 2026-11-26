@@ -5,7 +5,7 @@ Esquema sem escala da seção 7.1: salão com as estantes do acervo à vista das
 mesas, balcão com caixa junto à entrada, cozinha, depósito de A&B, quatro
 sanitários e rota acessível. As 8 mesas entram na abertura (decisão do autor,
     16/11/2026). O croqui definitivo
-sai do projeto do imóvel. Saída: textos/figuras/7-1_planta_salao.png.
+sai do projeto do imóvel. Saída: textos-tcc/figuras/7-1_planta_salao.png.
 """
 
 import sys
@@ -19,7 +19,7 @@ import graficos_comum as gc  # noqa: E402
 from matplotlib.lines import Line2D  # noqa: E402
 from matplotlib.patches import Circle, FancyBboxPatch, Rectangle  # noqa: E402
 
-SAIDA = ROOT / "textos" / "figuras" / "7-1_planta_salao.png"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "7-1_planta_salao.png"
 LARG, PROF = 16.0, 12.0  # unidades do esquema, sem escala
 ROXO_CLARO = "#f3e8ff"
 

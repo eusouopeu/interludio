@@ -4,8 +4,8 @@ Planilha separada com os dados agregados dos comentários do B2, com gráficos.
 Lê a base final do banco "2 - Comentários" do Notion, com a grade 2 de temas
 (`2026-11-03_2_comentarios_grade2.csv`, montada por
 `_src/pyScripts/B2_Avaliacoes/2_build/B2b_comentarios_grade2.py`;
-codificação concluída em 03/11/2026), e grava `textos/planilhas/B2_dados_agregados.xlsx`, uma aba por
-tabela com o gráfico ao lado, e os PNGs em `textos/graficos/comentarios/`.
+codificação concluída em 03/11/2026), e grava `textos-tcc/planilhas/B2_dados_agregados.xlsx`, uma aba por
+tabela com o gráfico ao lado, e os PNGs em `textos-tcc/graficos/comentarios/`.
 
 A aba "Dados B2" traz uma linha por comentário, sem o texto (texto integral não
 é publicado; `_docs/_instrucoes/4_metodologia.md` §3.4): casa, metrópole, notas,
@@ -46,8 +46,8 @@ DADOS_AGREGADOS = ROOT / "dados-agregados"
 DADOS_BRUTOS = ROOT / "dados-brutos"
 NOME_CSV = "2026-11-03_2_comentarios_grade2.csv"
 CANDIDATOS = [DADOS_BRUTOS / "B2_avaliacoes" / "analise_conteudo" / NOME_CSV]
-SAIDA = ROOT / "textos" / "planilhas"
-GRAF = ROOT / "textos" / "graficos" / "comentarios"
+SAIDA = ROOT / "textos-tcc" / "planilhas"
+GRAF = ROOT / "textos-tcc" / "graficos" / "comentarios"
 
 registrar_execucao(__file__)
 est.GRAF = GRAF
@@ -114,6 +114,7 @@ base = pd.DataFrame({
     "estabelecimento": d.Estabelecimento, "metropole": d.metropole, "regiao": d.metropole.map(REGIAO),
     "nota": d["Nota geral"], "comida": d.Comida, "servico": d["Serviço"], "ambiente": d.Ambiente,
     "preco_faixa": d.preco_faixa, "espera": d.espera, "barulho": d.barulho,
+    "voltara": d["Voltará"],
     "analise_temas": d["Análise de temas"].fillna("anterior a 30/10/2026"), "com_tema": d.com_tema,
 })
 for c in CONTEXTOS:
@@ -128,11 +129,11 @@ N = len(base)
 ROTULO = {"estabelecimento": "casa", "metropole": "metrópole", "regiao": "região", "nota": "nota geral",
           "comida": "nota de comida", "servico": "nota de serviço", "ambiente": "nota de ambiente",
           "preco_faixa": "preço por pessoa", "espera": "tempo de espera", "barulho": "nível de barulho",
-          "analise_temas": "análise de temas", "com_tema": "com tema"}
+          "voltara": "voltará", "analise_temas": "análise de temas", "com_tema": "com tema"}
 ROTULO.update({f"ctx_{c}": f"contexto: {c}" for c in CONTEXTOS})
 ROTULO.update({f"pos_{i:02d}": f"+ {t}" for i, t in enumerate(TEMAS)})
 ROTULO.update({f"neg_{i:02d}": f"− {t}" for i, t in enumerate(TEMAS)})
-TIPO_TXT = {"estabelecimento", "metropole", "regiao", "preco_faixa", "espera", "barulho", "analise_temas"}
+TIPO_TXT = {"estabelecimento", "metropole", "regiao", "preco_faixa", "espera", "barulho", "voltara", "analise_temas"}
 LETRA = {c: get_column_letter(i) for i, c in enumerate(base.columns, 1)}
 ABA_BASE = "Dados B2"
 
@@ -144,7 +145,7 @@ def R(col):
 NT = f'COUNTA({R("estabelecimento")})'
 FONTE = ("B2, avaliações do Google Maps até \"3 meses atrás\" (coletas de 09 a 30/10/2026), banco \"2 - Comentários\" "
          "do Notion, base final de 03/11/2026")
-FONTE_TEMAS = FONTE + "; temas pela grade 2 de 02/11/2026 (textos/_planejamento/_instrumentos/dicionario_temas_B2.md)"
+FONTE_TEMAS = FONTE + "; temas pela grade 2 de 02/11/2026 (textos-tcc/_planejamento/_instrumentos/dicionario_temas_B2.md)"
 N_CASAS = base.estabelecimento.nunique()
 
 # Tab 1: comentários por metrópole
@@ -169,8 +170,8 @@ g1 = barras_h("01_comentarios_por_metropole", m1.metropole.tolist(), {"comentár
               lambda v: br(v, 0), destaque="Salvador")
 nova_aba("Tab 1", f"Tabela 1 – Comentários por metrópole: {br(N, 0)} comentários de {N_CASAS} casas, mais da metade de São Paulo",
          ["Região", "Metrópole", "Casas", "Comentários", "% dos comentários", "Nota média", "% com nota 1 a 3"],
-         lin1, ["txt", "txt", "int", "int", "pct", "dec", "pct"], FONTE, [16, 18, 9, 12, 12, 11, 12], g1,
-         ["Nota: cada comentário conta uma vez, na metrópole do endereço da casa."])
+         lin1, ["cen", "txt", "int", "int", "pct", "dec", "pct"], FONTE, [16, 18, 9, 12, 12, 11, 12], g1,
+         ["Nota: cada comentário conta uma vez, na metrópole do endereço da casa."], nome="Comentários por metrópole")
 
 # Tab 2: nota geral
 lin2 = [[f"{n} estrela" + ("s" if n > 1 else ""), f'=COUNTIF({R("nota")},{n})', f"=B{k}/B$8"]
@@ -181,7 +182,8 @@ g2 = barras_v("02_nota_geral", ["5 estrelas", "4 estrelas", "3 estrelas", "2 est
               {"% dos comentários": [vc.get(n, 0) / N for n in (5, 4, 3, 2, 1)]}, lambda v: br(v * 100, 1, suf="%"),
               eixo_pct=True)
 nova_aba("Tab 2", f"Tabela 2 – Nota geral: {vc.get(5, 0) / N:.0%} dos comentários dão 5 estrelas".replace(".", ","),
-         ["Nota geral", "Comentários", "% dos comentários"], lin2, ["txt", "int", "pct"], FONTE, [26, 12, 14], g2)
+         ["Nota geral", "Comentários", "% dos comentários"], lin2, ["txt", "int", "pct"], FONTE, [26, 12, 14], g2,
+         nome="Nota geral")
 
 # Tab 3: notas por aspecto
 ASP = [("comida", "Comida"), ("servico", "Serviço"), ("ambiente", "Ambiente")]
@@ -194,7 +196,8 @@ g3 = empilhado_100("03_notas_por_aspecto", [r for _, r in ASP],
 nova_aba("Tab 3", "Tabela 3 – Notas por aspecto: serviço e ambiente com mais 5 estrelas que a comida",
          ["Aspecto", "Comentários com nota", "Nota média", "5 estrelas", "4 estrelas", "3 estrelas", "2 estrelas",
           "1 estrela"], lin3, ["txt", "int", "dec", "pct", "pct", "pct", "pct", "pct"], FONTE, [14, 13, 11, 11, 11, 11, 11, 11],
-         g3, ["Nota: só comentários com nota do aspecto; inclui as notas digitadas à mão pela convenção \"5 (comida 3)\" (aspecto não citado = nota geral)."])
+         g3, ["Nota: só comentários com nota do aspecto; inclui as notas digitadas à mão pela convenção \"5 (comida 3)\" (aspecto não citado = nota geral)."],
+         nome="Notas por aspecto")
 
 # Tab 4: temas positivos e negativos
 LT = f'SUM({R("com_tema")})'
@@ -212,7 +215,8 @@ nova_aba("Tab 4", "Tabela 4 – Temas dos comentários: atendimento, comida, amb
           "% dos comentários com tema (crítica)", "% de críticas nas menções"], lin4,
          ["txt", "int", "int", "int", "pct", "pct", "pct"], FONTE_TEMAS, [26, 12, 12, 10, 14, 14, 13], g4,
          [f"Nota: temas não exclusivos; base = {nt} comentários com pelo menos um tema (de {N}).",
-          "Codificação concluída em 03/11/2026 (grade 2, 22 temas): recodificação cega do autor em 199 comentários, kappa agrupado de 0,83 e 0,84 nas rodadas 1 e 2."])
+          "Codificação concluída em 03/11/2026 (grade 2, 22 temas): recodificação cega do autor em 199 comentários, kappa agrupado de 0,83 e 0,84 nas rodadas 1 e 2."],
+         nome="Temas dos comentários")
 
 # Tab 5: críticas nos comentários de nota 1 a 3
 ruins = d["Nota geral"] <= 3  # mesma ordem de pos/neg (a base é reordenada)
@@ -227,7 +231,7 @@ g5 = barras_h("05_criticas_notas_baixas", [TEMAS[i] for i in ordem5],
 nova_aba("Tab 5", f"Tabela 5 – O que derruba a nota: atendimento, comida, preço e rapidez lideram as críticas nos {int(ruins.sum())} comentários de nota 1 a 3",
          ["Tema criticado", "Comentários de nota 1 a 3", "% dos comentários de nota 1 a 3", "Críticas em comentários de nota 4 ou 5"],
          lin5, ["txt", "int", "pct", "int"], FONTE_TEMAS, [26, 14, 16, 16], g5,
-         ["Nota: temas não exclusivos; um comentário pode criticar vários temas."])
+         ["Nota: temas não exclusivos; um comentário pode criticar vários temas."], nome="O que derruba a nota")
 
 # Tab 6: contexto
 lin6 = [[c.capitalize(), f'=SUM({R(f"ctx_{c}")})', f"=B{k}/{NT}"] for k, c in enumerate(CONTEXTOS, 3)]
@@ -235,7 +239,8 @@ cs = ctx.sum().sort_values(ascending=False)
 g6 = barras_h("06_contexto", [c.capitalize() for c in cs.index], {"comentários": cs.tolist()}, lambda v: br(v, 0))
 nova_aba("Tab 6", "Tabela 6 – Contexto citado (exploratório): ocasião e compra aparecem em poucos comentários",
          ["Contexto", "Comentários", "% dos comentários"], lin6, ["txt", "int", "pct"], FONTE_TEMAS, [18, 12, 14], g6,
-         ["Nota: contextos não exclusivos e sem polaridade (ocasião, aluguel e loja); variável exploratória (kappa 0,52 na recodificação cega)."])
+         ["Nota: contextos não exclusivos e sem polaridade (ocasião, aluguel e loja); variável exploratória (kappa 0,52 na recodificação cega)."],
+         nome="Contexto citado")
 
 # Tab 7: preço por pessoa
 lin7 = [[r, f'=COUNTIF({R("preco_faixa")},A{k})', f"=B{k}/B${3 + len(ROT_PRECO)}"] for k, r in enumerate(ROT_PRECO, 3)]
@@ -250,7 +255,8 @@ acum = (pc.reindex(ROT_PRECO).fillna(0).cumsum() / pc.sum())
 faixa_med = acum[acum >= 0.5].index[0]
 nova_aba("Tab 7", f"Tabela 7 – Gasto por pessoa informado no Maps: a faixa mediana é {faixa_med}",
          ["Faixa de gasto por pessoa", "Comentários", "% dos com preço"], lin7, ["txt", "int", "pct"], FONTE,
-         [26, 12, 14], g7, ["Nota: valores únicos digitados à mão entram na faixa que os contém (ex.: 50 em R$ 40 a 60)."])
+         [26, 12, 14], g7, ["Nota: valores únicos digitados à mão entram na faixa que os contém (ex.: 50 em R$ 40 a 60)."],
+         nome="Gasto por pessoa no Maps")
 
 # Tab 8 e 9: espera e barulho
 lin8 = [[r, f'=COUNTIF({R("espera")},A{k})', f"=B{k}/B$8"] for k, r in enumerate(ESPERA, 3)]
@@ -259,15 +265,17 @@ ec = base.espera.value_counts()
 lin9 = [[r, f'=COUNTIF({R("barulho")},A{k})', f"=B{k}/B$7"] for k, r in enumerate(BARULHO, 3)]
 lin9 += [["Total com barulho informado", "=SUM(B3:B6)", "=SUM(C3:C6)"], ["Sem barulho informado", f"={NT}-B7", ""]]
 bc = base.barulho.value_counts()
-g8 = barras_v("08_tempo_de_espera", ESPERA, {"% dos que informam": [ec.get(e, 0) / ec.sum() for e in ESPERA]},
-              lambda v: br(v * 100, 1, suf="%"), eixo_pct=True)
+# barras horizontais, como gasto por pessoa e barulho (pedido do autor, 25/11/2026)
+g8 = barras_h("08_tempo_de_espera", ESPERA, {"% dos que informam": [ec.get(e, 0) / ec.sum() for e in ESPERA]},
+              lambda v: br(v * 100, 1, suf="%"), eixo_pct=True, larg_rotulo=20)
 nova_aba("Tab 8", "Tabela 8 – Tempo de espera: a maioria dos que informam não esperou",
          ["Tempo de espera", "Comentários", "% dos que informam"], lin8, ["txt", "int", "pct"], FONTE, [28, 12, 14], g8,
-         ["Nota: campo opcional do Maps."])
+         ["Nota: campo opcional do Maps."], nome="Tempo de espera")
 g9 = barras_h("09_barulho", BARULHO, {"% dos que informam": [bc.get(b, 0) / bc.sum() for b in BARULHO]},
               lambda v: br(v * 100, 1, suf="%"), eixo_pct=True, larg_rotulo=20)
 nova_aba("Tab 9", "Tabela 9 – Nível de barulho: moderado na maioria das menções; muito alto é raro",
-         ["Nível de barulho", "Comentários", "% dos que informam"], lin9, ["txt", "int", "pct"], FONTE, [28, 12, 14], g9)
+         ["Nível de barulho", "Comentários", "% dos que informam"], lin9, ["txt", "int", "pct"], FONTE, [28, 12, 14], g9,
+         nome="Nível de barulho")
 # Tab 10: situação da codificação
 AN = ["anterior a 30/10/2026", "Claude 30/10/2026", "Claude 02/11/2026"]
 d["Análise de temas"] = d["Análise de temas"].fillna(AN[0])
@@ -279,7 +287,25 @@ g10 = empilhado_100("10_codificacao", ["Autor (antes de 30/10)", "Claude (30/10)
                      "Sem tema": [int(((d["Análise de temas"] == a) & (d.com_tema == 0)).sum()) for a in AN]})
 nova_aba("Tab 10", "Tabela 10 – Codificação dos temas: quem codificou e quantos comentários ficaram sem tema",
          ["Análise de temas", "Com tema", "Sem tema", "Comentários"], lin10, ["txt", "int", "int", "int"], FONTE_TEMAS,
-         [30, 12, 12, 12], g10, ["Nota: sem tema = comentário que não cita atributo (ex.: \"Excelente\"); não é o mesmo que não analisado. Última marca de cada comentário; a grade 2 (02/11) regravou 652. Codificação concluída em 03/11/2026, depois da recodificação cega do autor (199 comentários, duas rodadas)."])
+         [30, 12, 12, 12], g10, ["Nota: sem tema = comentário que não cita atributo (ex.: \"Excelente\"); não é o mesmo que não analisado. Última marca de cada comentário; a grade 2 (02/11) regravou 652. Codificação concluída em 03/11/2026, depois da recodificação cega do autor (199 comentários, duas rodadas)."],
+         nome="Codificação dos temas")
+
+# Tab 11: intenção de voltar (pedido do autor, 25/11/2026), campo "Voltará" (kappa 0,75 na recodificação cega)
+VOLTA = [("sim", "Voltaria"), ("não", "Não voltaria")]
+lin11 = [[rot, f'=COUNTIF({R("voltara")},"{v}")', f"=B{k}/B$5", f'=IFERROR(AVERAGEIFS({R("nota")},{R("voltara")},"{v}"),"")']
+         for k, (v, rot) in enumerate(VOLTA, 3)]
+lin11 += [["Total com intenção citada", "=SUM(B3:B4)", "=SUM(C3:C4)",
+           f'=IFERROR((B3*D3+B4*D4)/B5,"")'],
+          ["Sem intenção citada", f"={NT}-B5", "", ""],
+          ["Conferência (total + sem intenção − comentários; deve ser 0)", f"=B5+B6-{NT}", "", ""]]
+vv = base.voltara.value_counts()
+g11 = barras_h("11_voltaria", [r for _, r in VOLTA], {"% dos que citam": [vv.get(v, 0) / vv.sum() for v, _ in VOLTA]},
+               lambda v: br(v * 100, 1, suf="%"), eixo_pct=True, larg_rotulo=20)
+nova_aba("Tab 11", "Tabela 11 – Intenção de voltar",
+         ["Intenção de voltar", "Comentários", "% dos que citam", "Nota média"], lin11, ["txt", "int", "pct", "dec"],
+         FONTE_TEMAS, [28, 12, 14, 12], g11,
+         ["Nota: só comentários que dizem se voltariam ou não (campo \"Voltará\"); kappa de 0,75 na recodificação cega do autor."],
+         nome="Intenção de voltar")
 
 # ---------------------------------------------------------------- base e índice
 ws = est.wb.create_sheet(ABA_BASE)
@@ -303,47 +329,29 @@ for rr in range(1, ult + 1):
             cel.border = Border(top=FINA, bottom=FINA, left=SEM, right=SEM)
         else:
             cel.font = ARIAL
-            cel.alignment = Alignment(horizontal="left" if c in TIPO_TXT else "right")
+            cel.alignment = Alignment(horizontal="left" if c in TIPO_TXT else "right", vertical="center")
             if c not in TIPO_TXT:
                 cel.number_format = FMT["int"]
             if rr == ult:
                 cel.border = Border(bottom=FINA, top=SEM, left=SEM, right=SEM)
-ws.row_dimensions[2].height = 54
 ws.freeze_panes = "B3"
-for j, c in enumerate(base.columns, 1):
-    ws.column_dimensions[get_column_letter(j)].width = 30 if c == "estabelecimento" else 12
+acabamento(ws, [30 if c == "estabelecimento" else 12 for c in base.columns], corpo=range(3, ult + 1), larg_titulo=60)
 ws.cell(ult + 1, 1, f"Fonte: {FONTE_TEMAS}.").font = ARIAL
 ws.cell(ult + 2, 1, "Nota: colunas + e − marcam 1 quando o comentário elogia (+) ou critica (−) o tema; vazio nas notas = não informado.").font = ARIAL
-
-ind = est.wb.create_sheet("Índice", 0)
-ind.sheet_view.showGridLines = False
-ind.cell(1, 1, "Dados agregados dos comentários (B2) – TCC Luderia")
-ind.merge_cells("A1:B1")
-for j, c in enumerate(["Aba", "Tabela"], 1):
-    ind.cell(2, j, c)
-for i, (a, t, _) in enumerate(INDICE + [(ABA_BASE, "Base dos comentários, sem o texto", "")], 3):
-    ind.cell(i, 1, a).hyperlink = f"#'{a}'!A1"
-    ind.cell(i, 2, t)
-ult = 2 + len(INDICE) + 1
-for rr in range(1, ult + 1):
-    for j in (1, 2):
-        cel = ind.cell(rr, j)
-        cel.fill = BRANCO
-        cel.font = ARIAL_N if rr <= 2 else ARIAL
-        cel.alignment = Alignment(horizontal="center" if rr <= 2 else "left", vertical="center", wrap_text=rr > 2)
-        if rr == 2:
-            cel.border = Border(top=FINA, bottom=FINA, left=SEM, right=SEM)
-        elif rr == ult:
-            cel.border = Border(bottom=FINA, top=SEM, left=SEM, right=SEM)
-ind.column_dimensions["A"].width = 10
-ind.column_dimensions["B"].width = 110
-ind.cell(ult + 2, 1, f"Fonte: {FONTE_TEMAS}.").font = ARIAL
-ind.cell(ult + 3, 1, "Gráficos em PNG de 300 dpi em textos/graficos/comentarios/. Gerado por _src/outros/G1_planilhas/gerar_planilha_comentarios.py.").font = ARIAL
 
 SAIDA.mkdir(parents=True, exist_ok=True)
 (SAIDA / "dados_agregados_comentarios.xlsx").unlink(missing_ok=True)  # nome de antes da divisão por bloco
 saida = SAIDA / "B2_dados_agregados.xlsx"
-est.wb.save(saida)
+tmp = SAIDA / "_b2.tmp.xlsx"
+est.wb.save(tmp)
+# Ordem pedida pelo autor (25/11/2026): perfil da amostra, notas, campos do Maps, temas, voltaria, contexto, codificação.
+ORDEM_B2 = ["Tab 1", "Tab 2", "Tab 3", "Tab 7", "Tab 8", "Tab 9", "Tab 4", "Tab 5", "Tab 11", "Tab 6", "Tab 10"]
+assert sorted(ORDEM_B2) == sorted(a for a, _, _ in INDICE)
+dividir(tmp, INDICE, [(saida, "Dados agregados dos comentários (B2) – TCC Luderia", ORDEM_B2,
+                       [(ABA_BASE, f"Base dos {N} comentários, sem o texto", FONTE_TEMAS)],
+                       ["Gráficos em PNG de 300 dpi em textos-tcc/graficos/comentarios/. "
+                        "Gerado por _src/outros/G1_planilhas/gerar_planilha_comentarios.py."])])
+tmp.unlink()
 print(f"{saida.relative_to(ROOT)}: {len(INDICE)} tabelas + base; {len(list(GRAF.glob('*.png')))} gráficos")
 print(f"Conferência: {N} comentários; soma por metrópole = {int(mt.n.sum())} (diferença {N - int(mt.n.sum())}); "
       f"{nt} com tema; {N_CASAS} casas")

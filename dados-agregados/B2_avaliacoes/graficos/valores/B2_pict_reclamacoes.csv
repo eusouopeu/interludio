@@ -1,14 +1,22 @@
-﻿categoria;avaliacoes;pct_simples;pct_ponderado_estabelecimento;n_avaliacoes
-Atendimento e hospitalidade;80;5.04;8.85;1588
-Alimentos e bebidas;66;4.16;6.28;1588
-Preço e valor percebido;75;4.72;4.99;1588
-Tempo de serviço e erros de pedido;52;3.27;4.44;1588
-Capacidade, reserva e fila;54;3.4;4.16;1588
-Ambiente físico e conforto;32;2.02;3.46;1588
-Diz que não volta;34;2.14;2.91;1588
-Varejo e pós-venda;13;0.82;2.52;1588
-Mediação lúdica (monitoria);23;1.45;1.9;1588
-Programação e atrações;5;0.31;1.81;1588
-Acervo de jogos;20;1.26;1.17;1588
-Ruído;19;1.2;0.63;1588
-Segurança, inclusão e respeito;9;0.57;0.63;1588
+﻿categoria;avaliacoes;pct_avaliacoes;n_avaliacoes
+Atendimento presencial;92;5.7;1628
+Comida;67;4.1;1628
+Regras da casa;53;3.3;1628
+Preço do cardápio;48;2.9;1628
+Rapidez do serviço;42;2.6;1628
+Conforto e barulho;38;2.3;1628
+Espaço e lotação;35;2.1;1628
+Variedade do cardápio;24;1.5;1628
+Preço da entrada;25;1.5;1628
+Explicação de jogos;21;1.3;1628
+Preço de outros itens;17;1.0;1628
+Porções;15;0.9;1628
+Limpeza;14;0.9;1628
+Curadoria e conservação do acervo;13;0.8;1628
+Variedade do acervo;13;0.8;1628
+Atendimento online;13;0.8;1628
+Bebidas;9;0.6;1628
+Localização e acesso;8;0.5;1628
+Ambiente e decoração;6;0.4;1628
+Comemorações e grupos;6;0.4;1628
+Eventos e comunidade;5;0.3;1628

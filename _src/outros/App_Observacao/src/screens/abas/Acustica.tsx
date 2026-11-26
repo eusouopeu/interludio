@@ -33,7 +33,7 @@ export function AbaAcustica({ unidade, semVisita }: { unidade: Unidade; semVisit
     navigator.vibrate?.(60)
   }
 
-  const arco = (i: number) => (acesos >= i ? 'stroke-caneta-600' : 'stroke-caneta-300')
+  const arco = (i: number) => (acesos >= i ? 'stroke-caneta-700' : 'stroke-caneta-300')
   return (
     <div className="px-2">
       {erro && <p className="mt-4 rounded-lg bg-erro-50 p-3 text-sm text-erro-700">{erro}</p>}
@@ -41,7 +41,7 @@ export function AbaAcustica({ unidade, semVisita }: { unidade: Unidade; semVisit
         <path d="M14 58 Q100 -16 186 58" fill="none" strokeWidth="12" strokeLinecap="round" className={`${arco(3)} transition-colors`} />
         <path d="M40 84 Q100 30 160 84" fill="none" strokeWidth="12" strokeLinecap="round" className={`${arco(2)} transition-colors`} />
         <path d="M67 109 Q100 78 133 109" fill="none" strokeWidth="12" strokeLinecap="round" className={`${arco(1)} transition-colors`} />
-        <circle cx="100" cy="133" r="10" className="fill-caneta-600" />
+        <circle cx="100" cy="133" r="10" className="fill-caneta-700" />
       </svg>
 
       <div className="mt-6 grid grid-cols-3 gap-x-2 gap-y-4">
@@ -56,7 +56,7 @@ export function AbaAcustica({ unidade, semVisita }: { unidade: Unidade; semVisit
   )
 }
 
-function Dado({ icone, rotulo, valor, cor = 'text-caneta-600', largo, ajuda }: { icone: React.ReactNode; rotulo: string; valor: string; cor?: string; largo?: boolean; ajuda?: string }) {
+function Dado({ icone, rotulo, valor, cor = 'text-caneta-700', largo, ajuda }: { icone: React.ReactNode; rotulo: string; valor: string; cor?: string; largo?: boolean; ajuda?: string }) {
   return (
     <div className={largo ? 'col-span-2' : ''}>
       <div className="flex items-center gap-1 text-sm font-bold uppercase text-neutro-800">

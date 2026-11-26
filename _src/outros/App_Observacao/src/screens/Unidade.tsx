@@ -78,7 +78,7 @@ export function Unidade({
               title={rot}
               aria-selected={aba === id}
               role="tab"
-              className={`flex flex-1 flex-col items-center justify-center gap-0.5 rounded-lg ${aba === id ? 'bg-caneta-600 text-sobre' : 'text-neutro-900'}`}
+              className={`flex flex-1 flex-col items-center justify-center gap-0.5 rounded-lg ${aba === id ? 'bg-caneta-700 text-sobre' : 'text-neutro-900'}`}
             >
               <I className="size-5" />
               <span className="text-[12px] font-bold">{rot}</span>

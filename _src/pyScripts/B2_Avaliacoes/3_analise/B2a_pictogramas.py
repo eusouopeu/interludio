@@ -1,34 +1,34 @@
 """
 Bloco B2 - pictogramas do que o público escreve nas avaliações do Google
-(análise de conteúdo de Bardin, avaliações com texto até "3 meses atrás").
+(análise de conteúdo de Bardin na grade de 22 temas, avaliações com texto até
+"3 meses atrás").
 
 Três figuras, todas em "de cada N avaliações com texto":
-- temas: quantas falam de cada categoria, qualquer polaridade (1 ícone = 5 em 100);
-- reclamações: quantas trazem a categoria com polaridade negativa (1 ícone = 1 em 100);
-- ocasião e perfil: com quem e para que o público vai (amigos, família,
-  aniversário...) e funcionário citado pelo nome
-  (grade de 100 ícones, 1 ícone = 1 avaliação em 100).
+- temas: quantas falam de cada tema, em qualquer tom (1 ícone = 5 em 100);
+- reclamações: quantas trazem o tema como crítica (1 ícone = 1 em 100);
+- ocasião: com quem e para que o público vai (amigos, família, aniversário,
+  casal), em grade de 100 ícones (1 ícone = 1 avaliação em 100).
 
-Entradas (saídas do B2a_conteudo_bardin.py, em dados-agregados/B2_avaliacoes/analise_conteudo/):
-  B2_codificacao_bardin.csv          uma linha por avaliação; o total (n) é o das "analisada"
-  B2_bardin_frequencia_categorias.csv  contagem por categoria e polaridade
-  B2_bardin_contexto.csv             ocasião e outros códigos de contexto
+Entradas (saídas do B2a_temas_grade2.py, em dados-agregados/B2_avaliacoes/analise_conteudo/):
+  B2_temas_frequencia.csv      comentários e % por tema, com elogio e crítica
+  B2_temas_contexto.csv        ocasião e outros contextos declarados
+  B2_temas_estabelecimentos.csv  comentários por casa (n e número de casas)
 
 Estilo editorial (`graficos_comum`): temas e ocasiões em cinza, reclamações
-em vermelho; o título diz a categoria que lidera.
+em vermelho; o título diz o tema que lidera.
 
 Regras:
-- o percentual desenhado é o ponderado por estabelecimento (média entre as
-  casas do % de cada casa), leitura principal do B2 desde 15/10/2026 pela
-  concentração de Bodogami e Shelf; o simples (contagem ÷ avaliações) vai
-  na tabela de valores. Os dois são refeitos aqui a partir da codificação e
-  conferidos contra o publicado pelo script de Bardin (até 0,05 p.p.);
-- uma avaliação pode cair em várias categorias (contagem não exclusiva por
+- o percentual desenhado é o simples (comentários com o tema ÷ avaliações com
+  texto), o mesmo do texto (Gráfico 4 e Apêndice F); grade de 22 temas desde
+  16/11/2026 (o livro de 15/10, das tabelas B2_bardin_*, saiu de uso);
+- um comentário pode cair em vários temas (contagem não exclusiva por
   desenho), então as linhas não somam 100%; por isso não há total como soma.
+- o total de avaliações é a soma da tabela por estabelecimento (cada
+  avaliação em uma só casa) e é conferido contra o B2 (1.628).
 
 Saídas (dados-agregados/B2_avaliacoes/graficos/): png/ (300 dpi), svg/ (texto
 editável) e valores/ (B2_pict_*). Para atualizar depois de refazer a
-codificação, rodar o B2a_conteudo_bardin.py e depois este script.
+codificação, rodar o B2a_temas_grade2.py e depois este script.
 
 Uso:
     python3 "_src/pyScripts/B2_Avaliacoes/3_analise/B2a_pictogramas.py"
@@ -42,8 +42,6 @@ from log_execucao import registrar_execucao  # noqa: E402
 if __name__ == "__main__":
     registrar_execucao(__file__)
 
-import re  # noqa: E402
-
 import pandas as pd  # noqa: E402
 
 from graficos_comum import (APAGADO, BASE, HALO, TINTA, TINTA2, VERMELHO, br, figura, margens,  # noqa: E402
@@ -54,53 +52,38 @@ B2 = ROOT / "dados-agregados" / "B2_avaliacoes"
 AC = B2 / "analise_conteudo"
 PASTA = B2 / "graficos"
 FONTE = ("Fonte: elaboração própria com avaliações com texto do Google Maps até \"3 meses atrás\" "
-         "(coleta de 13 a 15/10/2026), codificadas por análise de conteúdo (Bardin) (B2).")
+         "(coletadas de 9 a 30/10/2026), codificadas por análise de conteúdo (Bardin) em 22 temas (B2).")
+TOTAL_B2 = 1628
 
 
 def milhar(v):
     return f"{v:,}".replace(",", ".")
 
 
-# Rótulo da categoria quando só a polaridade negativa entra.
-NEGATIVA = {"Retorno declarado": "Diz que não volta", "Avaliação genérica": "Crítica genérica"}
-
-
-RE_CODIGO = re.compile(r"^(?P<cat>[A-Z]+(?::[a-z]+)?)(?P<pol>[+\-±~]?)$")
+OCASIOES = {"amigos": "Ocasião: amigos", "família": "Ocasião: família", "aniversário": "Ocasião: aniversário",
+            "casal": "Ocasião: casal"}
 
 
 def ler():
-    """Refaz, a partir da codificação, o percentual simples e o ponderado por
-    estabelecimento (média entre as casas do % de cada casa, leitura principal
-    do B2 por causa da concentração de Bodogami e Shelf) e confere os dois
-    contra as tabelas publicadas pelo B2a_conteudo_bardin.py."""
-    cod = pd.read_csv(AC / "B2_codificacao_bardin.csv", sep=";", dtype=str).fillna("")
-    cod = cod[cod.situacao == "analisada"].copy()
-    n, casas = len(cod), cod.sigla.nunique()
-    cod["pares"] = cod.codigos.map(lambda t: [(m["cat"], m["pol"]) for m in map(RE_CODIGO.match, t.split())])
-
-    def mede(codigo, pol=""):
-        tem = cod.pares.map(lambda ps: any(c == codigo and (pol == "" or p == pol) for c, p in ps))
-        return int(tem.sum()), 100 * tem.mean(), 100 * tem.groupby(cod.sigla).mean().mean()
-
-    freq = pd.read_csv(AC / "B2_bardin_frequencia_categorias.csv", sep=";")
-    freq = freq[freq.polaridade.isin(["qualquer", "negativa"])].copy()
-    ctx = pd.read_csv(AC / "B2_bardin_contexto.csv", sep=";")
-    for t, pol in ((freq, None), (ctx, "")):
-        med = [mede(r.código, "" if pol == "" or r.polaridade == "qualquer" else "-") for r in t.itertuples()]
-        t["avaliacoes"] = [m[0] for m in med]
-        t["pct_simples"] = [round(m[1], 2) for m in med]
-        t["pct"] = [round(m[2], 2) for m in med]  # ponderado por estabelecimento
-        assert (t.avaliacoes == t["total: comentários"]).all(), "contagem difere da tabela de Bardin"
-        assert (t.pct_simples - t["total: % dos comentários"]).abs().max() <= 0.051
-        if "total: % ponderado por estabelecimento" in t:
-            assert (t.pct - t["total: % ponderado por estabelecimento"]).abs().max() <= 0.051
-    print(f"  {n} avaliações analisadas de {casas} casas; contagens e percentuais conferem com o script de Bardin")
-    return n, casas, freq, ctx
+    """Lê as tabelas da grade de 22 temas e confere o total de avaliações."""
+    est = pd.read_csv(AC / "B2_temas_estabelecimentos.csv", sep=";", encoding="utf-8-sig")
+    n, casas = int(est.comentarios.sum()), len(est)
+    assert n == TOTAL_B2, f"tabela por estabelecimento soma {n}, não {TOTAL_B2}"
+    f = pd.read_csv(AC / "B2_temas_frequencia.csv", sep=";", encoding="utf-8-sig")
+    rot = f.tema.str[0].str.upper() + f.tema.str[1:]
+    q = pd.DataFrame({"categoria": rot, "avaliacoes": f.comentarios_com_tema, "pct": f.pct_com_tema})
+    neg = pd.DataFrame({"categoria": rot, "avaliacoes": f.comentarios_critica, "pct": f.pct_critica})
+    for t in (q, neg):  # o % publicado confere com a contagem
+        assert ((100 * t.avaliacoes / n - t.pct).abs() <= 0.051).all(), "percentual difere da contagem"
+    c = pd.read_csv(AC / "B2_temas_contexto.csv", sep=";", encoding="utf-8-sig")
+    c = c[c.contexto.isin(OCASIOES)]
+    ctx = pd.DataFrame({"categoria": c.contexto.map(OCASIOES), "avaliacoes": c.comentarios, "pct": c.pct_comentarios})
+    print(f"  {n} avaliações de {casas} casas; percentuais conferem com as contagens")
+    return n, casas, q, neg, ctx
 
 
 def tabela_valores(tab, n):
-    return tab[["categoria", "avaliacoes", "pct_simples", "pct"]].rename(
-        columns={"pct": "pct_ponderado_estabelecimento"}).assign(n_avaliacoes=n)
+    return tab[["categoria", "avaliacoes", "pct"]].rename(columns={"pct": "pct_avaliacoes"}).assign(n_avaliacoes=n)
 
 
 def proporcao(pct):
@@ -150,30 +133,26 @@ def grade_100(tab, titulo, subtitulo, nome, n, casas, nota):
 
 
 def main():
-    n, casas, freq, ctx = ler()
-    q = freq[freq.polaridade == "qualquer"].copy()
+    n, casas, q, neg, ctx = ler()
     top = q.sort_values("pct", ascending=False).iloc[0]
-    linhas_icones(q, f"{top.categoria.split(' e ')[0]} aparece em {proporcao(top.pct)} das avaliações com texto",
-                  "Temas citados, em qualquer tom, de cada 20 avaliações da casa típica (média do percentual "
-                  f"das {casas} casas).", 5, 20, BASE, "B2_pict_temas", n, casas,
+    linhas_icones(q, f"{top.categoria} aparece em {proporcao(top.pct)} das avaliações com texto",
+                  "Temas citados, em qualquer tom, de cada 20 avaliações com texto.", 5, 20, BASE,
+                  "B2_pict_temas", n, casas,
                   "Cada pessoa = 5% das avaliações. Uma avaliação pode tratar de vários temas: as linhas não "
                   "somam 100%.")
-    neg = freq[freq.polaridade == "negativa"].copy()
     neg = neg[neg.avaliacoes >= 5]
-    neg["categoria"] = neg.categoria.replace(NEGATIVA)
     pior = neg.sort_values("pct", ascending=False).iloc[0]
-    linhas_icones(neg, f"A reclamação mais comum é sobre {pior.categoria.split(' e ')[0].lower()}: "
+    linhas_icones(neg, f"A reclamação mais comum é sobre {pior.categoria.lower()}: "
                        f"{br(pior.pct, 0)} de cada 100 avaliações",
-                  "Avaliações que citam o tema em tom negativo, de cada 100 da casa típica (média do percentual "
-                  f"das {casas} casas).", 1, 10, VERMELHO, "B2_pict_reclamacoes", n, casas,
-                  "Cada pessoa = 1% das avaliações. Só a polaridade negativa; categorias com menos de 5 "
-                  "reclamações ficam de fora.")
-    ctx = ctx[~ctx.código.isin(["DESC", "GEEK"])].sort_values("pct", ascending=False)
-    primeira = ctx[ctx.categoria.str.startswith("Ocasião")].iloc[0]
+                  "Avaliações que citam o tema como crítica, de cada 100 avaliações com texto.", 1, 10,
+                  VERMELHO, "B2_pict_reclamacoes", n, casas,
+                  "Cada pessoa = 1% das avaliações. Só as críticas; temas com menos de 5 reclamações ficam de fora.")
+    ctx = ctx.sort_values("pct", ascending=False)
+    primeira = ctx.iloc[0]
     grade_100(ctx, f"Ir com {primeira.categoria.split(': ')[1]} é a ocasião mais declarada: "
                    f"{br(primeira.pct, 0)} de cada 100 avaliações",
-              f"Com quem e por que o público vai, de cada 100 avaliações da casa típica (média do percentual "
-              f"das {casas} casas).", "B2_pict_ocasiao_perfil", n, casas,
+              "Com quem e por que o público vai, de cada 100 avaliações com texto.", "B2_pict_ocasiao_perfil",
+              n, casas,
               "Cada pessoa = 1 avaliação em 100. A ocasião só conta quando a avaliação a declara; "
               f"o resto não é \"não\", é \"não dito\". n = {milhar(n)} avaliações de {casas} casas.")
 

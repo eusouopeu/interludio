@@ -13,7 +13,7 @@ Saídas em dados-agregados/B2_avaliacoes/analise_conteudo/:
   B2_temas_estabelecimentos.csv comentários e comentários com tema por estabelecimento
   B2_recodificacao_kappa.csv   kappa de Cohen por rodada e variável
 Figura: graficos/<png|svg|valores>/B2_temas_polaridade, copiada para
-textos/graficos/6-1_temas_avaliacoes.png.
+textos-tcc/graficos/6-1_temas_avaliacoes.png.
 
 Regras de contagem:
   - unidade = comentário; um tema conta uma vez por comentário e polaridade;
@@ -54,7 +54,7 @@ B2 = ROOT / "dados-agregados" / "B2_avaliacoes"
 PASTA = B2 / "analise_conteudo"
 BASE = ROOT / "dados-brutos" / "B2_avaliacoes" / "analise_conteudo" / "2026-11-03_2_comentarios_grade2.csv"
 GRAF = B2 / "graficos"
-FIG_CAP = ROOT / "textos" / "graficos" / "6-1_temas_avaliacoes.png"
+FIG_CAP = ROOT / "textos-tcc" / "graficos" / "6-1_temas_avaliacoes.png"
 N_ESPERADO = 1628  # base de 03/11; com --base, o total é o do arquivo dado
 
 TEMAS = ["ambiente e decoração", "atendimento online", "atendimento presencial", "bebidas", "comemorações e grupos",

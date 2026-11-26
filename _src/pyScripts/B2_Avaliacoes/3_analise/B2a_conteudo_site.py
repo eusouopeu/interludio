@@ -3,7 +3,7 @@ Bloco B2 - resumo da análise de conteúdo (Bardin) para a aba 11 do site de
 apresentação.
 
 Lê as tabelas de B2a_conteudo_bardin.py e os achados do §3 de
-textos/_planejamento/_instrumentos/_arquivo/analise_conteudo_bardin_B2.md e grava um JSON com:
+textos-tcc/_planejamento/_instrumentos/_arquivo/analise_conteudo_bardin_B2.md e grava um JSON com:
   - números do corpus (comentários analisados, estabelecimentos, tipos, notas);
   - menções por categoria e polaridade, por tipo de estabelecimento, em % dos
     comentários e em % ponderado por estabelecimento;
@@ -17,7 +17,7 @@ Cada comentário pertence a um único estabelecimento e cada estabelecimento a
 um único tipo; a soma dos comentários por tipo fecha com o total analisado.
 
 Entradas: dados-agregados/B2_avaliacoes/analise_conteudo/B2_*.csv
-          textos/_planejamento/_instrumentos/_arquivo/analise_conteudo_bardin_B2.md
+          textos-tcc/_planejamento/_instrumentos/_arquivo/analise_conteudo_bardin_B2.md
 Saída:    _src/site-apresentacao/src/conteudo/b2-conteudo.json
 
 Uso:
@@ -39,7 +39,7 @@ import pandas as pd
 
 ROOT = _AQUI.parents[4]
 PASTA = ROOT / "dados-agregados" / "B2_avaliacoes" / "analise_conteudo"
-DOC = ROOT / "textos" / "_planejamento" / "_instrumentos" / "_arquivo" / "analise_conteudo_bardin_B2.md"
+DOC = ROOT / "textos-tcc" / "_planejamento" / "_instrumentos" / "_arquivo" / "analise_conteudo_bardin_B2.md"
 SAIDA = ROOT.parent / "interludio" / "site-apresentacao" / "src" / "conteudo" / "b2-conteudo.json"
 TIPOS = {"total": "total", "casa de jogos": "casas", "loja com espaço de jogo": "lojas"}
 

@@ -24,6 +24,7 @@ Regras de atribuição (uma unidade, um grupo):
 """
 import importlib.util
 import re
+import sys
 import unicodedata
 from pathlib import Path
 
@@ -32,6 +33,15 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[4]
 PASTA_REDES = ROOT / "dados-agregados" / "B1_redes_sociais"
 SAIDA = PASTA_REDES / "analise_legendas"
+# Recorte da versão resumida da planilha do B1 (pedido do autor, 25/11/2026): os mesmos quatro meses
+# dos "posts de 01/07 a 01/11/2026" da estatística descritiva. Com --recorte, eventos, preços e temas
+# rodam só nessa janela e gravam em <tema>/recorte_2026-07_2026-11/, sem mexer nas saídas completas.
+RECORTE_DE, RECORTE_ATE, RECORTE_MESES = "2026-07-01", "2026-11-01", 4
+PASTA_RECORTE = "recorte_2026-07_2026-11"
+
+
+def modo_recorte():
+    return "--recorte" in sys.argv
 APROVADAS = ROOT / "dados-agregados" / "B1_estabelecimentos" / "3_triagem" / "B1_instagram_aprovadas.csv"
 SCRIPT_B2 = ROOT / "_src" / "pyScripts" / "B2_Avaliacoes" / "3_analise" / "B2a_conteudo_bardin.py"
 B2_FREQUENCIA = (ROOT / "dados-agregados" / "B2_avaliacoes" / "analise_conteudo" / "B2_bardin_frequencia_categorias.csv")

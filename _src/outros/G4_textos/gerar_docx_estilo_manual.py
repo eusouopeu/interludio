@@ -1,4 +1,4 @@
-"""Gera o .docx da variante de estilo dos caps. 1 e 2 (textos/capitulos/estilo outros planos 1-2/).
+"""Gera o .docx da variante de estilo dos caps. 1 e 2 (textos-tcc/capitulos/estilo outros planos 1-2/).
 
 Converte o .md (títulos #/##, parágrafos, citações longas em linhas "> ",
 quadro em tabela markdown, legenda e fonte; fórmula centralizada em linha "$$ … $$") em .docx no padrão ABNT/UFBA:
@@ -17,7 +17,7 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Pt
 
 ROOT = Path(__file__).resolve().parents[3]
-PASTA = ROOT / "textos" / "capitulos" / "estilo outros planos 1-2"
+PASTA = ROOT / "textos-tcc" / "capitulos" / "estilo outros planos 1-2"
 MD = PASTA / "1-2_introducao_referencial_estilo_manual.md"
 VERSAO = sys.argv[1] if len(sys.argv) > 1 else "1"
 SAIDA = PASTA / f"1-2_introducao_referencial_estilo_manual_v{VERSAO}.docx"

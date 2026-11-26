@@ -66,7 +66,7 @@ export function AbaMesas({
             <span className="text-[13px] font-bold uppercase">Mesa</span>
           </button>
         </div>
-        <button onClick={onAcervo} className="sticky top-[150px] flex max-h-[calc(100dvh-240px)] min-h-64 w-11 shrink-0 items-center justify-center self-start rounded-lg bg-caneta-400">
+        <button onClick={onAcervo} className="sticky top-[150px] flex max-h-[calc(100dvh-240px)] min-h-64 w-11 shrink-0 items-center justify-center self-start rounded-lg bg-caneta-200">
           <span className="rotate-180 whitespace-nowrap text-[15px] font-bold tracking-wide text-neutro-900 [writing-mode:vertical-rl]">
             ACERVO DE JOGOS{unidade.acervo.jogos.length ? ` · ${unidade.acervo.jogos.length}` : ''}
           </span>

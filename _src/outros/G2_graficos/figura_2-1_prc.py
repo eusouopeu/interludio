@@ -4,7 +4,7 @@ Figura 2.1 - Leitura da penalidade e da recompensa na análise PRC.
 Diagrama conceitual (sem dados): para um atributo obrigatório e um atrativo,
 mostra quanto a satisfação geral cai quando o desempenho fica abaixo do
 esperado (penalidade) e quanto sobe quando fica acima (recompensa), conforme
-Picolo e Tontini (2008). Saída: textos/graficos/2-1_prc_penalidade_recompensa.png.
+Picolo e Tontini (2008). Saída: textos-tcc/graficos/2-1_prc_penalidade_recompensa.png.
 """
 
 import sys
@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import graficos_comum as gc  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
 
-SAIDA = ROOT / "textos" / "graficos" / "2-1_prc_penalidade_recompensa.png"
+SAIDA = ROOT / "textos-tcc" / "graficos" / "2-1_prc_penalidade_recompensa.png"
 
 # (título do painel, queda abaixo do esperado, alta acima do esperado), escala ilustrativa
 PAINEIS = [

@@ -22,7 +22,7 @@ export function PaginaResumo({ unidade }: { unidade: Unidade }) {
       {visitas.length > 1 && (
         <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4">
           {visitas.map((x) => (
-            <button key={x.id} onClick={() => setSel(x.id)} className={`shrink-0 rounded-full px-3 py-1 text-sm ${x.id === v.id ? 'bg-caneta-600 text-sobre' : 'bg-neutro-100'}`}>
+            <button key={x.id} onClick={() => setSel(x.id)} className={`shrink-0 rounded-full px-3 py-1 text-sm ${x.id === v.id ? 'bg-caneta-700 text-sobre' : 'bg-neutro-100'}`}>
               {dataBr(x.inicio.slice(0, 10)).slice(0, 5)} {x.inicio.slice(11, 16)}
             </button>
           ))}
@@ -99,7 +99,7 @@ function Bloco({ titulo, destaque, unidadeDestaque, badge, children }: { titulo:
       <button onClick={() => setAberto((x) => !x)} aria-expanded={aberto} className="flex w-full items-center gap-3 text-left">
         <span className="flex-1">
           <span className="block text-xs font-bold uppercase text-neutro-500">{titulo}</span>
-          <span className="text-2xl font-extrabold text-caneta-600">{destaque}</span> <span className="text-sm text-neutro-500">{unidadeDestaque}</span>
+          <span className="text-2xl font-extrabold text-caneta-700">{destaque}</span> <span className="text-sm text-neutro-500">{unidadeDestaque}</span>
         </span>
         {!!badge && <span className="rounded-full bg-alerta-100 px-2 text-xs font-bold text-alerta-700" title="pendentes">{badge}</span>}
         <ChevronDownIcon className={`size-5 text-neutro-400 transition-transform duration-200 ${aberto ? 'rotate-180' : ''}`} />

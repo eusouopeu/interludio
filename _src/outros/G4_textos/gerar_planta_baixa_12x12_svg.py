@@ -1,6 +1,6 @@
 """Gera a planta baixa da alternativa de 12,00 x 12,00 m em SVG editável (1 px = 1 cm).
 
-Saída: textos/figuras/planta-baixa-12x12.svg. Mesmo estilo e mesmos componentes de
+Saída: textos-tcc/figuras/planta-baixa-12x12.svg. Mesmo estilo e mesmos componentes de
 gerar_planta_baixa_svg.py (texturas, cores, rótulos com área, setas de circulação), lidos
 de lá para não duplicar código.
 
@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[3]
 _BASE = Path(__file__).with_name("gerar_planta_baixa_svg.py").read_text(encoding="utf-8")
 exec(_BASE.split("# ---------------------------------------------------------------- desenho")[0])
 
-SAIDA = ROOT / "textos" / "figuras" / "planta-baixa-12x12.svg"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "planta-baixa-12x12.svg"
 W, D = 1170, 1170          # medidas internas (cm): 12,00 x 12,00 m externos
 NX, NY = 752, 770          # canto interno do recorte (fora do imóvel) no canto inferior direito
 EXT, INT = 15, 15

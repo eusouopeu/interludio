@@ -5,6 +5,9 @@ Saídas em dados-agregados/B4_<uso>/, no padrão "[B4] {dado} {período} ({fonte
   uma saída por consulta, em formato longo (uma linha por valor), com uso e nome definidos em SAIDAS
   "[B4] Resumo de População e Renda por Capital ... (IBGE).csv": uma linha por capital, com
   população, faixa de 20 a 39 anos e renda
+  "[B4] Resumo de População e Renda por Região Metropolitana ... (IBGE).csv": uma linha por metrópole
+  do B1, com a soma dos municípios da região metropolitana (composição do IBGE) e a renda média
+  ponderada pelas pessoas de 14 anos ou mais; a mediana não se soma entre municípios e fica de fora
 """
 
 # Caminhos: _src/outros/ (log comum) e outros/ do objeto (auxiliares); log em ../logs/
@@ -40,6 +43,9 @@ SAIDAS = {
     "renda_pnadc_trabalho_capitais": ("marketing", "Renda do Trabalho por Capital", "IBGE PNADC"),
     "populacao_estimada_municipios": ("marketing", "População Estimada por Município", "IBGE"),
     "renda_pnadc_trabalho_rm": ("marketing", "Renda do Trabalho por Região Metropolitana", "IBGE PNADC"),
+    "populacao_censo_2022_rm": ("marketing", "População Residente dos Municípios das RMs", "IBGE Censo"),
+    "populacao_idade_censo_2022_rm": ("marketing", "População por Idade dos Municípios das RMs", "IBGE Censo"),
+    "renda_censo_2022_rm": ("marketing", "Renda dos Municípios das RMs", "IBGE Censo"),
 }
 FAIXAS_20_39 = ["20 a 24 anos", "25 a 29 anos", "30 a 34 anos", "35 a 39 anos"]
 PADRAO_PNADC = "habitualmente recebido no trabalho principal"  # variável de referência da tabela 5436
@@ -78,6 +84,36 @@ def resumo_capitais(t: dict[str, pd.DataFrame]) -> pd.DataFrame:
     return out.reset_index()
 
 
+def resumo_rms(t: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Soma dos municípios de cada região metropolitana das metrópoles do B1."""
+    sys.path.insert(0, str(_AQUI.parents[2] / "B1_Estabelecimentos" / "5_outros"))
+    import recorte_rm as rr
+    from openpyxl import load_workbook
+    ws = load_workbook(rr.RM_PATH, read_only=True).worksheets[0]
+    linhas = list(ws.iter_rows(values_only=True))
+    comp = pd.DataFrame(linhas[1:], columns=linhas[0])
+    soma = lambda df, cods: df.loc[df["localidade_id"].astype(int).isin(cods), "valor"].sum()
+    est = t["populacao_estimada_municipios"]
+    ano = est["periodo"].max()
+    renda = t["renda_censo_2022_rm"]
+    pessoas14 = renda[renda["variavel_id"] == 1641].set_index("localidade_id")["valor"]
+    media = renda[renda["variavel_id"] == 13502].set_index("localidade_id")["valor"]
+    saida = []
+    for metropole, (nome_rm, _) in rr.rms().items():
+        if nome_rm == "sem recorte":
+            continue
+        cods = set(comp.loc[comp["NOME_CATMETROPOL"] == nome_rm, "COD_MUN"].astype(int))
+        ids = [i for i in pessoas14.index if int(i) in cods]
+        assert len(ids) == len(cods), (metropole, len(ids), len(cods))
+        pop22 = soma(t["populacao_censo_2022_rm"], cods)
+        p2039 = soma(t["populacao_idade_censo_2022_rm"], cods)
+        saida.append({"metropole": metropole, "recorte_ibge": nome_rm, "municipios": len(cods),
+                      "pop_censo_2022_rm": int(pop22), f"pop_estimada_{ano}_rm": int(soma(est[est["periodo"] == ano], cods)),
+                      "pop_20_39_censo_2022_rm": int(p2039), "pct_pop_20_39_rm": round(p2039 / pop22 * 100, 1),
+                      "renda_media_14mais_censo_2022_rm": round((pessoas14[ids] * media[ids]).sum() / pessoas14[ids].sum(), 2)})
+    return pd.DataFrame(saida).sort_values("metropole")
+
+
 def main() -> None:
     tabelas = {}
     for arq in sorted(IN_DIR.glob("*.json")):
@@ -93,6 +129,9 @@ def main() -> None:
     periodo = f"{tabelas['populacao_censo_2022']['periodo'].max()}-{tabelas['populacao_estimada']['periodo'].max()}"
     resumo.to_csv(caminho_saida("marketing", "Resumo de População e Renda por Capital", periodo, "IBGE"), index=False)
     print(resumo.to_string(index=False))
+    rm = resumo_rms(tabelas)
+    rm.to_csv(caminho_saida("marketing", "Resumo de População e Renda por Região Metropolitana", periodo, "IBGE"), index=False)
+    print(rm.to_string(index=False))
 
 
 if __name__ == "__main__":

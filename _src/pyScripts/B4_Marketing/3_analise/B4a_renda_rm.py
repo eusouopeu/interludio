@@ -10,7 +10,7 @@ Distrito Federal (a PNAD Contínua não publica a RIDE).
 Entradas: dados-agregados/B4_marketing/[B4] Renda do Trabalho por
           Região Metropolitana 2024-2026 (IBGE PNADC).csv;
           dados-agregados/B1_estabelecimentos/B1_resumo_estabelecimentos.xlsx (metrópoles com luderia)
-Saída: textos/graficos/5-2_renda_trabalho_rm.png; imprime a posição de Salvador.
+Saída: textos-tcc/graficos/5-2_renda_trabalho_rm.png; imprime a posição de Salvador.
 
 Uso:
     python3 "_src/pyScripts/B4_Marketing/3_analise/B4a_renda_rm.py"
@@ -31,7 +31,7 @@ import planilha_estilo as est
 ROOT = _AQUI.parents[4]
 ENTRADA = ROOT / "dados-agregados" / "B4_marketing" / "[B4] Renda do Trabalho por Região Metropolitana 2024-2026 (IBGE PNADC).csv"
 B1 = ROOT / "dados-agregados" / "B1_estabelecimentos" / "B1_resumo_estabelecimentos.xlsx"
-FIG = ROOT / "textos" / "graficos"
+FIG = ROOT / "textos-tcc" / "graficos"
 VARIAVEL = 5932  # rendimento médio real habitual do trabalho principal
 
 

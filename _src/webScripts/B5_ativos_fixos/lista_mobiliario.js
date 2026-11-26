@@ -9,7 +9,6 @@
 var LISTA_MOBILIARIO = [
   ['OB40', 'obra_reforma', 'Ar-condicionado split', 'ar condicionado split 30000 btus inverter', 'split|inverter', 'janela|portatil|on off|controle remoto|suporte|capa'],
   ['OB41', 'obra_reforma', 'Instalação do split', 'kit instalacao ar condicionado split 30000 btus 5 metros', 'kit|instala', 'suporte avulso|dreno|bomba|capa|controle'],
-  ['OB42', 'obra_reforma', 'Letreiro de fachada', 'fachada acm letra caixa iluminada led', 'fachada/letreiro|acm', 'adesivo|neon|mini|mesa|placa de sinalizacao|letra avulsa'],
   ['MO01', 'mobiliario', 'Mesa de jogo para 6 lugares', 'mesa industrial 160x80 tampo pinus pe metal preto', 'mesa|industrial/metal/ferro/aco/metalon', 'cadeira|conjunto|jogo de jantar|banco|dobravel|infantil|escritorio|centro|bistro|vidro|marmore|laca|quadrada|redonda|apoio|aparador|bancada'],
   ['MO02', 'mobiliario', 'Mesa de jogo para 4 lugares', 'mesa industrial quadrada 80x80 tampo pinus pe metal preto', 'mesa|quadrada|industrial/metal/ferro/aco/metalon', 'cadeira|conjunto|jogo de jantar|banco|dobravel|infantil|centro|lateral|bistro|alta|vidro|marmore|laca'],
   ['MO03', 'mobiliario', 'Cadeira', 'cadeira industrial metal preta assento madeira', 'cadeira|metal/ferro/aco/industrial', 'gamer|escritorio|giratoria|rodizio|infantil|praia|capa|almofada|poltrona|banqueta|bistro|alta|estofada|veludo|plastico|estofado|banco|bancos|alto|mesa|polipropileno|courino'],

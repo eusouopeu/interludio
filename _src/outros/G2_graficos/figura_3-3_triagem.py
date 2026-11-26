@@ -8,7 +8,7 @@ em uso bastam para a inclusão. Sem a foto da estante, o nome do
 estabelecimento precisa remeter a jogos de mesa (sem termo de videogame); quando
 falta uma das provas, a política ou a declaração explícita do estabelecimento
 decide. Servir alimentos e bebidas não foi critério.
-Saída: textos/figuras/3-3_triagem_populacao.png.
+Saída: textos-tcc/figuras/3-3_triagem_populacao.png.
 """
 
 import sys
@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import diagramas_comum as dc  # noqa: E402
 
-SAIDA = ROOT / "textos" / "figuras" / "3-3_triagem_populacao.png"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "3-3_triagem_populacao.png"
 
 
 def main():

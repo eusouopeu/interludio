@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Figura 7 do TCC: planta compacta (área mínima), em cinco figuras separadas.
 
-Lê o desenho-base exportado do Figma (textos/figuras/planta-baixa-basica-area-minima/,
-8,00 x 13,69 m, 1 m = 100 unidades) e gera, em textos/figuras/:
+Lê o desenho-base exportado do Figma (textos-tcc/figuras/planta-baixa-basica-area-minima/,
+8,00 x 13,69 m, 1 m = 100 unidades) e gera, em textos-tcc/figuras/:
   7-1_planta_salao_48_lugares.(svg|png)            planta na horizontal (a do texto)
   7-1_planta_salao_48_lugares_vertical.(svg|png)   a mesma planta girada 90°, com todos os
                                                    textos de pé (cada rótulo é contragirado)
@@ -19,8 +19,8 @@ import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[3]
-BASE = ROOT / "textos/figuras/planta-baixa-basica-area-minima/Luderia — planta baixa minimalista · figura para TCC.svg"
-FIG = ROOT / "textos/figuras"
+BASE = ROOT / "textos-tcc/figuras/planta-baixa-basica-area-minima/Luderia — planta baixa minimalista · figura para TCC.svg"
+FIG = ROOT / "textos-tcc/figuras"
 NOME = "7-1_planta_salao_48_lugares"
 
 # Medidas lidas do desenho (unidades = cm; paredes de 15 cm)

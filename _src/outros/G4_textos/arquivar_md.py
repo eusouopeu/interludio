@@ -1,13 +1,13 @@
 """Arquiva a versão atual de capítulos .md antes de uma nova versão (_docs/_instrucoes/1c_versoes.md).
 
 Quando um dado do trabalho muda, os capítulos afetados ganham versão nova no
-próprio .md de textos/capitulos/ (o .docx só é regerado no fechamento de uma
+próprio .md de textos-tcc/capitulos/ (o .docx só é regerado no fechamento de uma
 versão para a orientação). Antes de editar, este script copia cada .md para
-textos/capitulos/_arquivo/<nome>_AAAA-MM-DD_HHmm.md, com a data e a hora da
+textos-tcc/capitulos/_arquivo/<nome>_AAAA-MM-DD_HHmm.md, com a data e a hora da
 cópia; o .md da pasta continua com o mesmo nome e passa a ser a versão nova.
 
 Uso:
-    python3 _src/outros/G4_textos/arquivar_md.py textos/capitulos/6_plano_de_marketing.md [outros .md]
+    python3 _src/outros/G4_textos/arquivar_md.py textos-tcc/capitulos/6_plano_de_marketing.md [outros .md]
 """
 import shutil
 import sys
@@ -15,7 +15,7 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-CAP = ROOT / "textos" / "capitulos"
+CAP = ROOT / "textos-tcc" / "capitulos"
 ARQ = CAP / "_arquivo"
 
 
@@ -23,7 +23,7 @@ def arquivar(md: Path, carimbo: str) -> Path:
     md = md if md.is_absolute() else (Path.cwd() / md)
     md = md.resolve()
     if md.parent != CAP or md.suffix != ".md":
-        raise SystemExit(f"Não é um capítulo de textos/capitulos/: {md}")
+        raise SystemExit(f"Não é um capítulo de textos-tcc/capitulos/: {md}")
     ARQ.mkdir(exist_ok=True)
     destino = ARQ / f"{md.stem}_{carimbo}.md"
     if destino.exists():  # duas cópias no mesmo minuto: a primeira vale

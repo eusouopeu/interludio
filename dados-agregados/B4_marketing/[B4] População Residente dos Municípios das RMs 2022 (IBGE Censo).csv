@@ -1,0 +1,449 @@
+tabela,variavel_id,variavel,unidade,nivel,localidade_id,localidade,periodo,valor_original,valor
+4709,93,População residente,Pessoas,Município,1100205,Porto Velho (RO),2022,460434,460434.0
+4709,93,População residente,Pessoas,Município,1100809,Candeias do Jamari (RO),2022,22310,22310.0
+4709,93,População residente,Pessoas,Município,1300300,Autazes (AM),2022,41564,41564.0
+4709,93,População residente,Pessoas,Município,1301100,Careiro (AM),2022,30792,30792.0
+4709,93,População residente,Pessoas,Município,1301159,Careiro da Várzea (AM),2022,19637,19637.0
+4709,93,População residente,Pessoas,Município,1301852,Iranduba (AM),2022,61163,61163.0
+4709,93,População residente,Pessoas,Município,1301902,Itacoatiara (AM),2022,103598,103598.0
+4709,93,População residente,Pessoas,Município,1302009,Itapiranga (AM),2022,10162,10162.0
+4709,93,População residente,Pessoas,Município,1302504,Manacapuru (AM),2022,101883,101883.0
+4709,93,População residente,Pessoas,Município,1302553,Manaquiri (AM),2022,17107,17107.0
+4709,93,População residente,Pessoas,Município,1302603,Manaus (AM),2022,2063689,2063689.0
+4709,93,População residente,Pessoas,Município,1303205,Novo Airão (AM),2022,15761,15761.0
+4709,93,População residente,Pessoas,Município,1303536,Presidente Figueiredo (AM),2022,30668,30668.0
+4709,93,População residente,Pessoas,Município,1303569,Rio Preto da Eva (AM),2022,24936,24936.0
+4709,93,População residente,Pessoas,Município,1304005,Silves (AM),2022,11559,11559.0
+4709,93,População residente,Pessoas,Município,1400050,Alto Alegre (RR),2022,21096,21096.0
+4709,93,População residente,Pessoas,Município,1400100,Boa Vista (RR),2022,413486,413486.0
+4709,93,População residente,Pessoas,Município,1400159,Bonfim (RR),2022,13923,13923.0
+4709,93,População residente,Pessoas,Município,1400175,Cantá (RR),2022,18682,18682.0
+4709,93,População residente,Pessoas,Município,1400308,Mucajaí (RR),2022,18095,18095.0
+4709,93,População residente,Pessoas,Município,1500800,Ananindeua (PA),2022,478778,478778.0
+4709,93,População residente,Pessoas,Município,1501303,Barcarena (PA),2022,126650,126650.0
+4709,93,População residente,Pessoas,Município,1501402,Belém (PA),2022,1303403,1303403.0
+4709,93,População residente,Pessoas,Município,1501501,Benevides (PA),2022,63567,63567.0
+4709,93,População residente,Pessoas,Município,1502400,Castanhal (PA),2022,192256,192256.0
+4709,93,População residente,Pessoas,Município,1504422,Marituba (PA),2022,111785,111785.0
+4709,93,População residente,Pessoas,Município,1506351,Santa Bárbara do Pará (PA),2022,21087,21087.0
+4709,93,População residente,Pessoas,Município,1506500,Santa Izabel do Pará (PA),2022,73019,73019.0
+4709,93,População residente,Pessoas,Município,1600303,Macapá (AP),2022,442933,442933.0
+4709,93,População residente,Pessoas,Município,1600402,Mazagão (AP),2022,21924,21924.0
+4709,93,População residente,Pessoas,Município,1600600,Santana (AP),2022,107618,107618.0
+4709,93,População residente,Pessoas,Município,1701101,Aparecida do Rio Negro (TO),2022,4856,4856.0
+4709,93,População residente,Pessoas,Município,1703107,Barrolândia (TO),2022,4846,4846.0
+4709,93,População residente,Pessoas,Município,1703701,Brejinho de Nazaré (TO),2022,4725,4725.0
+4709,93,População residente,Pessoas,Município,1704600,Chapada de Areia (TO),2022,1501,1501.0
+4709,93,População residente,Pessoas,Município,1706100,Cristalândia (TO),2022,6371,6371.0
+4709,93,População residente,Pessoas,Município,1707108,Divinópolis do Tocantins (TO),2022,7024,7024.0
+4709,93,População residente,Pessoas,Município,1707553,Fátima (TO),2022,3467,3467.0
+4709,93,População residente,Pessoas,Município,1709807,Ipueiras (TO),2022,1590,1590.0
+4709,93,População residente,Pessoas,Município,1711902,Lagoa da Confusão (TO),2022,15288,15288.0
+4709,93,População residente,Pessoas,Município,1711951,Lagoa do Tocantins (TO),2022,3516,3516.0
+4709,93,População residente,Pessoas,Município,1712009,Lajeado (TO),2022,3357,3357.0
+4709,93,População residente,Pessoas,Município,1712405,Lizarda (TO),2022,2999,2999.0
+4709,93,População residente,Pessoas,Município,1712702,Mateiros (TO),2022,2748,2748.0
+4709,93,População residente,Pessoas,Município,1713205,Miracema do Tocantins (TO),2022,18566,18566.0
+4709,93,População residente,Pessoas,Município,1713304,Miranorte (TO),2022,12701,12701.0
+4709,93,População residente,Pessoas,Município,1713601,Monte do Carmo (TO),2022,5694,5694.0
+4709,93,População residente,Pessoas,Município,1713700,Monte Santo do Tocantins (TO),2022,2396,2396.0
+4709,93,População residente,Pessoas,Município,1715002,Nova Rosalândia (TO),2022,3362,3362.0
+4709,93,População residente,Pessoas,Município,1715101,Novo Acordo (TO),2022,3969,3969.0
+4709,93,População residente,Pessoas,Município,1715507,Oliveira de Fátima (TO),2022,1164,1164.0
+4709,93,População residente,Pessoas,Município,1716109,Paraíso do Tocantins (TO),2022,52360,52360.0
+4709,93,População residente,Pessoas,Município,1717909,Ponte Alta do Tocantins (TO),2022,7586,7586.0
+4709,93,População residente,Pessoas,Município,1718204,Porto Nacional (TO),2022,64418,64418.0
+4709,93,População residente,Pessoas,Município,1718451,Pugmil (TO),2022,2193,2193.0
+4709,93,População residente,Pessoas,Município,1718709,Rio dos Bois (TO),2022,2738,2738.0
+4709,93,População residente,Pessoas,Município,1718758,Rio Sono (TO),2022,4841,4841.0
+4709,93,População residente,Pessoas,Município,1719004,Santa Tereza do Tocantins (TO),2022,2781,2781.0
+4709,93,População residente,Pessoas,Município,1720150,São Félix do Tocantins (TO),2022,1783,1783.0
+4709,93,População residente,Pessoas,Município,1720655,Silvanópolis (TO),2022,5108,5108.0
+4709,93,População residente,Pessoas,Município,1721000,Palmas (TO),2022,302692,302692.0
+4709,93,População residente,Pessoas,Município,1721109,Tocantínia (TO),2022,7459,7459.0
+4709,93,População residente,Pessoas,Município,2100204,Alcântara (MA),2022,18467,18467.0
+4709,93,População residente,Pessoas,Município,2101103,Axixá (MA),2022,11790,11790.0
+4709,93,População residente,Pessoas,Município,2101251,Bacabeira (MA),2022,16966,16966.0
+4709,93,População residente,Pessoas,Município,2102374,Cachoeira Grande (MA),2022,9732,9732.0
+4709,93,População residente,Pessoas,Município,2105104,Icatu (MA),2022,24794,24794.0
+4709,93,População residente,Pessoas,Município,2107100,Morros (MA),2022,18554,18554.0
+4709,93,População residente,Pessoas,Município,2107506,Paço do Lumiar (MA),2022,145643,145643.0
+4709,93,População residente,Pessoas,Município,2109205,Presidente Juscelino (MA),2022,11356,11356.0
+4709,93,População residente,Pessoas,Município,2109452,Raposa (MA),2022,30839,30839.0
+4709,93,População residente,Pessoas,Município,2109601,Rosário (MA),2022,38475,38475.0
+4709,93,População residente,Pessoas,Município,2110203,Santa Rita (MA),2022,37035,37035.0
+4709,93,População residente,Pessoas,Município,2111201,São José de Ribamar (MA),2022,244579,244579.0
+4709,93,População residente,Pessoas,Município,2111300,São Luís (MA),2022,1037775,1037775.0
+4709,93,População residente,Pessoas,Município,2112209,Timon (MA),2022,174465,174465.0
+4709,93,População residente,Pessoas,Município,2200400,Altos (PI),2022,47453,47453.0
+4709,93,População residente,Pessoas,Município,2201606,Beneditinos (PI),2022,9929,9929.0
+4709,93,População residente,Pessoas,Município,2202737,Coivaras (PI),2022,4117,4117.0
+4709,93,População residente,Pessoas,Município,2203255,Curralinhos (PI),2022,4413,4413.0
+4709,93,População residente,Pessoas,Município,2203305,Demerval Lobão (PI),2022,16352,16352.0
+4709,93,População residente,Pessoas,Município,2205508,José de Freitas (PI),2022,42559,42559.0
+4709,93,População residente,Pessoas,Município,2205557,Lagoa Alegre (PI),2022,8256,8256.0
+4709,93,População residente,Pessoas,Município,2205581,Lagoa do Piauí (PI),2022,4810,4810.0
+4709,93,População residente,Pessoas,Município,2206308,Miguel Leão (PI),2022,1318,1318.0
+4709,93,População residente,Pessoas,Município,2206407,Monsenhor Gil (PI),2022,10255,10255.0
+4709,93,População residente,Pessoas,Município,2206720,Nazária (PI),2022,10262,10262.0
+4709,93,População residente,Pessoas,Município,2211001,Teresina (PI),2022,866300,866300.0
+4709,93,População residente,Pessoas,Município,2211100,União (PI),2022,46119,46119.0
+4709,93,População residente,Pessoas,Município,2301000,Aquiraz (CE),2022,80645,80645.0
+4709,93,População residente,Pessoas,Município,2303501,Cascavel (CE),2022,72720,72720.0
+4709,93,População residente,Pessoas,Município,2303709,Caucaia (CE),2022,355679,355679.0
+4709,93,População residente,Pessoas,Município,2303956,Chorozinho (CE),2022,20163,20163.0
+4709,93,População residente,Pessoas,Município,2304285,Eusébio (CE),2022,74170,74170.0
+4709,93,População residente,Pessoas,Município,2304400,Fortaleza (CE),2022,2428708,2428708.0
+4709,93,População residente,Pessoas,Município,2304954,Guaiúba (CE),2022,24325,24325.0
+4709,93,População residente,Pessoas,Município,2305233,Horizonte (CE),2022,74755,74755.0
+4709,93,População residente,Pessoas,Município,2306256,Itaitinga (CE),2022,64650,64650.0
+4709,93,População residente,Pessoas,Município,2307650,Maracanaú (CE),2022,234509,234509.0
+4709,93,População residente,Pessoas,Município,2307700,Maranguape (CE),2022,105093,105093.0
+4709,93,População residente,Pessoas,Município,2309607,Pacajus (CE),2022,70983,70983.0
+4709,93,População residente,Pessoas,Município,2309706,Pacatuba (CE),2022,81524,81524.0
+4709,93,População residente,Pessoas,Município,2310209,Paracuru (CE),2022,38980,38980.0
+4709,93,População residente,Pessoas,Município,2310258,Paraipaba (CE),2022,32216,32216.0
+4709,93,População residente,Pessoas,Município,2310852,Pindoretama (CE),2022,23391,23391.0
+4709,93,População residente,Pessoas,Município,2312403,São Gonçalo do Amarante (CE),2022,54143,54143.0
+4709,93,População residente,Pessoas,Município,2312601,São Luís do Curu (CE),2022,10822,10822.0
+4709,93,População residente,Pessoas,Município,2313500,Trairi (CE),2022,58415,58415.0
+4709,93,População residente,Pessoas,Município,2401206,Arez (RN),2022,13251,13251.0
+4709,93,População residente,Pessoas,Município,2401701,Bom Jesus (RN),2022,9952,9952.0
+4709,93,População residente,Pessoas,Município,2402600,Ceará-Mirim (RN),2022,79115,79115.0
+4709,93,População residente,Pessoas,Município,2403251,Parnamirim (RN),2022,252716,252716.0
+4709,93,População residente,Pessoas,Município,2403608,Extremoz (RN),2022,61635,61635.0
+4709,93,População residente,Pessoas,Município,2404200,Goianinha (RN),2022,26741,26741.0
+4709,93,População residente,Pessoas,Município,2404606,Ielmo Marinho (RN),2022,11615,11615.0
+4709,93,População residente,Pessoas,Município,2407104,Macaíba (RN),2022,82249,82249.0
+4709,93,População residente,Pessoas,Município,2407500,Maxaranguape (RN),2022,10255,10255.0
+4709,93,População residente,Pessoas,Município,2407807,Monte Alegre (RN),2022,23031,23031.0
+4709,93,População residente,Pessoas,Município,2408102,Natal (RN),2022,751300,751300.0
+4709,93,População residente,Pessoas,Município,2408201,Nísia Floresta (RN),2022,31942,31942.0
+4709,93,População residente,Pessoas,Município,2412005,São Gonçalo do Amarante (RN),2022,115838,115838.0
+4709,93,População residente,Pessoas,Município,2412203,São José de Mipibu (RN),2022,47286,47286.0
+4709,93,População residente,Pessoas,Município,2414803,Vera Cruz (RN),2022,10735,10735.0
+4709,93,População residente,Pessoas,Município,2500601,Alhandra (PB),2022,21730,21730.0
+4709,93,População residente,Pessoas,Município,2501807,Bayeux (PB),2022,82742,82742.0
+4709,93,População residente,Pessoas,Município,2503001,Caaporã (PB),2022,21193,21193.0
+4709,93,População residente,Pessoas,Município,2503209,Cabedelo (PB),2022,66519,66519.0
+4709,93,População residente,Pessoas,Município,2504603,Conde (PB),2022,27605,27605.0
+4709,93,População residente,Pessoas,Município,2504900,Cruz do Espírito Santo (PB),2022,17095,17095.0
+4709,93,População residente,Pessoas,Município,2507507,João Pessoa (PB),2022,833932,833932.0
+4709,93,População residente,Pessoas,Município,2508604,Lucena (PB),2022,12560,12560.0
+4709,93,População residente,Pessoas,Município,2511202,Pedras de Fogo (PB),2022,29662,29662.0
+4709,93,População residente,Pessoas,Município,2511905,Pitimbu (PB),2022,16751,16751.0
+4709,93,População residente,Pessoas,Município,2512903,Rio Tinto (PB),2022,24581,24581.0
+4709,93,População residente,Pessoas,Município,2513703,Santa Rita (PB),2022,149910,149910.0
+4709,93,População residente,Pessoas,Município,2600054,Abreu e Lima (PE),2022,98462,98462.0
+4709,93,População residente,Pessoas,Município,2601052,Araçoiaba (PE),2022,19243,19243.0
+4709,93,População residente,Pessoas,Município,2602902,Cabo de Santo Agostinho (PE),2022,203440,203440.0
+4709,93,População residente,Pessoas,Município,2603454,Camaragibe (PE),2022,147771,147771.0
+4709,93,População residente,Pessoas,Município,2606804,Igarassu (PE),2022,115196,115196.0
+4709,93,População residente,Pessoas,Município,2607208,Ipojuca (PE),2022,98932,98932.0
+4709,93,População residente,Pessoas,Município,2607604,Ilha de Itamaracá (PE),2022,24540,24540.0
+4709,93,População residente,Pessoas,Município,2607752,Itapissuma (PE),2022,27749,27749.0
+4709,93,População residente,Pessoas,Município,2607901,Jaboatão dos Guararapes (PE),2022,644037,644037.0
+4709,93,População residente,Pessoas,Município,2609402,Moreno (PE),2022,55292,55292.0
+4709,93,População residente,Pessoas,Município,2609600,Olinda (PE),2022,349976,349976.0
+4709,93,População residente,Pessoas,Município,2610707,Paulista (PE),2022,342167,342167.0
+4709,93,População residente,Pessoas,Município,2611606,Recife (PE),2022,1488920,1488920.0
+4709,93,População residente,Pessoas,Município,2613701,São Lourenço da Mata (PE),2022,111249,111249.0
+4709,93,População residente,Pessoas,Município,2700409,Atalaia (AL),2022,37512,37512.0
+4709,93,População residente,Pessoas,Município,2700508,Barra de Santo Antônio (AL),2022,16365,16365.0
+4709,93,População residente,Pessoas,Município,2700607,Barra de São Miguel (AL),2022,7944,7944.0
+4709,93,População residente,Pessoas,Município,2702207,Coqueiro Seco (AL),2022,5581,5581.0
+4709,93,População residente,Pessoas,Município,2704302,Maceió (AL),2022,957916,957916.0
+4709,93,População residente,Pessoas,Município,2704708,Marechal Deodoro (AL),2022,60370,60370.0
+4709,93,População residente,Pessoas,Município,2705200,Messias (AL),2022,15405,15405.0
+4709,93,População residente,Pessoas,Município,2705507,Murici (AL),2022,25187,25187.0
+4709,93,População residente,Pessoas,Município,2706448,Paripueira (AL),2022,13835,13835.0
+4709,93,População residente,Pessoas,Município,2706901,Pilar (AL),2022,35370,35370.0
+4709,93,População residente,Pessoas,Município,2707701,Rio Largo (AL),2022,93927,93927.0
+4709,93,População residente,Pessoas,Município,2707909,Santa Luzia do Norte (AL),2022,6919,6919.0
+4709,93,População residente,Pessoas,Município,2708907,Satuba (AL),2022,24278,24278.0
+4709,93,População residente,Pessoas,Município,2800308,Aracaju (SE),2022,602757,602757.0
+4709,93,População residente,Pessoas,Município,2800605,Barra dos Coqueiros (SE),2022,41511,41511.0
+4709,93,População residente,Pessoas,Município,2804805,Nossa Senhora do Socorro (SE),2022,192330,192330.0
+4709,93,População residente,Pessoas,Município,2806701,São Cristóvão (SE),2022,95612,95612.0
+4709,93,População residente,Pessoas,Município,2905701,Camaçari (BA),2022,300372,300372.0
+4709,93,População residente,Pessoas,Município,2906501,Candeias (BA),2022,72382,72382.0
+4709,93,População residente,Pessoas,Município,2910057,Dias d'Ávila (BA),2022,71485,71485.0
+4709,93,População residente,Pessoas,Município,2916104,Itaparica (BA),2022,19789,19789.0
+4709,93,População residente,Pessoas,Município,2919207,Lauro de Freitas (BA),2022,203331,203331.0
+4709,93,População residente,Pessoas,Município,2919926,Madre de Deus (BA),2022,18504,18504.0
+4709,93,População residente,Pessoas,Município,2921005,Mata de São João (BA),2022,42566,42566.0
+4709,93,População residente,Pessoas,Município,2925204,Pojuca (BA),2022,32136,32136.0
+4709,93,População residente,Pessoas,Município,2927408,Salvador (BA),2022,2417678,2417678.0
+4709,93,População residente,Pessoas,Município,2929206,São Francisco do Conde (BA),2022,38733,38733.0
+4709,93,População residente,Pessoas,Município,2929503,São Sebastião do Passé (BA),2022,40958,40958.0
+4709,93,População residente,Pessoas,Município,2930709,Simões Filho (BA),2022,114559,114559.0
+4709,93,População residente,Pessoas,Município,2933208,Vera Cruz (BA),2022,42529,42529.0
+4709,93,População residente,Pessoas,Município,3104502,Arinos (MG),2022,17272,17272.0
+4709,93,População residente,Pessoas,Município,3105004,Baldim (MG),2022,7492,7492.0
+4709,93,População residente,Pessoas,Município,3106200,Belo Horizonte (MG),2022,2315560,2315560.0
+4709,93,População residente,Pessoas,Município,3106705,Betim (MG),2022,411846,411846.0
+4709,93,População residente,Pessoas,Município,3109006,Brumadinho (MG),2022,38915,38915.0
+4709,93,População residente,Pessoas,Município,3109303,Buritis (MG),2022,24030,24030.0
+4709,93,População residente,Pessoas,Município,3109451,Cabeceira Grande (MG),2022,6627,6627.0
+4709,93,População residente,Pessoas,Município,3110004,Caeté (MG),2022,38776,38776.0
+4709,93,População residente,Pessoas,Município,3112505,Capim Branco (MG),2022,10663,10663.0
+4709,93,População residente,Pessoas,Município,3117876,Confins (MG),2022,7350,7350.0
+4709,93,População residente,Pessoas,Município,3118601,Contagem (MG),2022,621863,621863.0
+4709,93,População residente,Pessoas,Município,3124104,Esmeraldas (MG),2022,85598,85598.0
+4709,93,População residente,Pessoas,Município,3126000,Florestal (MG),2022,8045,8045.0
+4709,93,População residente,Pessoas,Município,3129806,Ibirité (MG),2022,170537,170537.0
+4709,93,População residente,Pessoas,Município,3130101,Igarapé (MG),2022,45847,45847.0
+4709,93,População residente,Pessoas,Município,3132206,Itaguara (MG),2022,13846,13846.0
+4709,93,População residente,Pessoas,Município,3133709,Itatiaiuçu (MG),2022,12966,12966.0
+4709,93,População residente,Pessoas,Município,3134608,Jaboticatubas (MG),2022,20406,20406.0
+4709,93,População residente,Pessoas,Município,3136603,Nova União (MG),2022,5909,5909.0
+4709,93,População residente,Pessoas,Município,3136652,Juatuba (MG),2022,30716,30716.0
+4709,93,População residente,Pessoas,Município,3137601,Lagoa Santa (MG),2022,75145,75145.0
+4709,93,População residente,Pessoas,Município,3140159,Mário Campos (MG),2022,15900,15900.0
+4709,93,População residente,Pessoas,Município,3140704,Mateus Leme (MG),2022,37841,37841.0
+4709,93,População residente,Pessoas,Município,3141108,Matozinhos (MG),2022,37618,37618.0
+4709,93,População residente,Pessoas,Município,3144805,Nova Lima (MG),2022,111697,111697.0
+4709,93,População residente,Pessoas,Município,3149309,Pedro Leopoldo (MG),2022,62580,62580.0
+4709,93,População residente,Pessoas,Município,3153905,Raposos (MG),2022,16279,16279.0
+4709,93,População residente,Pessoas,Município,3154606,Ribeirão das Neves (MG),2022,329794,329794.0
+4709,93,População residente,Pessoas,Município,3154804,Rio Acima (MG),2022,10261,10261.0
+4709,93,População residente,Pessoas,Município,3155306,Rio Manso (MG),2022,5568,5568.0
+4709,93,População residente,Pessoas,Município,3156700,Sabará (MG),2022,129380,129380.0
+4709,93,População residente,Pessoas,Município,3157807,Santa Luzia (MG),2022,219132,219132.0
+4709,93,População residente,Pessoas,Município,3162922,São Joaquim de Bicas (MG),2022,34348,34348.0
+4709,93,População residente,Pessoas,Município,3162955,São José da Lapa (MG),2022,26090,26090.0
+4709,93,População residente,Pessoas,Município,3165537,Sarzedo (MG),2022,36844,36844.0
+4709,93,População residente,Pessoas,Município,3168309,Taquaraçu de Minas (MG),2022,4224,4224.0
+4709,93,População residente,Pessoas,Município,3170404,Unaí (MG),2022,86619,86619.0
+4709,93,População residente,Pessoas,Município,3171204,Vespasiano (MG),2022,129246,129246.0
+4709,93,População residente,Pessoas,Município,3201308,Cariacica (ES),2022,353491,353491.0
+4709,93,População residente,Pessoas,Município,3202207,Fundão (ES),2022,18014,18014.0
+4709,93,População residente,Pessoas,Município,3202405,Guarapari (ES),2022,124656,124656.0
+4709,93,População residente,Pessoas,Município,3205002,Serra (ES),2022,520653,520653.0
+4709,93,População residente,Pessoas,Município,3205101,Viana (ES),2022,73423,73423.0
+4709,93,População residente,Pessoas,Município,3205200,Vila Velha (ES),2022,467722,467722.0
+4709,93,População residente,Pessoas,Município,3205309,Vitória (ES),2022,322869,322869.0
+4709,93,População residente,Pessoas,Município,3300456,Belford Roxo (RJ),2022,483087,483087.0
+4709,93,População residente,Pessoas,Município,3300803,Cachoeiras de Macacu (RJ),2022,56943,56943.0
+4709,93,População residente,Pessoas,Município,3301702,Duque de Caxias (RJ),2022,808161,808161.0
+4709,93,População residente,Pessoas,Município,3301850,Guapimirim (RJ),2022,51696,51696.0
+4709,93,População residente,Pessoas,Município,3301900,Itaboraí (RJ),2022,224267,224267.0
+4709,93,População residente,Pessoas,Município,3302007,Itaguaí (RJ),2022,116841,116841.0
+4709,93,População residente,Pessoas,Município,3302270,Japeri (RJ),2022,96289,96289.0
+4709,93,População residente,Pessoas,Município,3302502,Magé (RJ),2022,228127,228127.0
+4709,93,População residente,Pessoas,Município,3302700,Maricá (RJ),2022,197277,197277.0
+4709,93,População residente,Pessoas,Município,3302858,Mesquita (RJ),2022,167127,167127.0
+4709,93,População residente,Pessoas,Município,3303203,Nilópolis (RJ),2022,146774,146774.0
+4709,93,População residente,Pessoas,Município,3303302,Niterói (RJ),2022,481749,481749.0
+4709,93,População residente,Pessoas,Município,3303500,Nova Iguaçu (RJ),2022,785867,785867.0
+4709,93,População residente,Pessoas,Município,3303609,Paracambi (RJ),2022,41375,41375.0
+4709,93,População residente,Pessoas,Município,3303906,Petrópolis (RJ),2022,278881,278881.0
+4709,93,População residente,Pessoas,Município,3304144,Queimados (RJ),2022,140523,140523.0
+4709,93,População residente,Pessoas,Município,3304300,Rio Bonito (RJ),2022,56276,56276.0
+4709,93,População residente,Pessoas,Município,3304557,Rio de Janeiro (RJ),2022,6211223,6211223.0
+4709,93,População residente,Pessoas,Município,3304904,São Gonçalo (RJ),2022,896744,896744.0
+4709,93,População residente,Pessoas,Município,3305109,São João de Meriti (RJ),2022,440962,440962.0
+4709,93,População residente,Pessoas,Município,3305554,Seropédica (RJ),2022,80596,80596.0
+4709,93,População residente,Pessoas,Município,3305752,Tanguá (RJ),2022,31086,31086.0
+4709,93,População residente,Pessoas,Município,3501608,Americana (SP),2022,237240,237240.0
+4709,93,População residente,Pessoas,Município,3503802,Artur Nogueira (SP),2022,51456,51456.0
+4709,93,População residente,Pessoas,Município,3503901,Arujá (SP),2022,86678,86678.0
+4709,93,População residente,Pessoas,Município,3505708,Barueri (SP),2022,316473,316473.0
+4709,93,População residente,Pessoas,Município,3506607,Biritiba Mirim (SP),2022,29683,29683.0
+4709,93,População residente,Pessoas,Município,3509007,Caieiras (SP),2022,95032,95032.0
+4709,93,População residente,Pessoas,Município,3509205,Cajamar (SP),2022,92689,92689.0
+4709,93,População residente,Pessoas,Município,3509502,Campinas (SP),2022,1139047,1139047.0
+4709,93,População residente,Pessoas,Município,3510609,Carapicuíba (SP),2022,386984,386984.0
+4709,93,População residente,Pessoas,Município,3512803,Cosmópolis (SP),2022,59773,59773.0
+4709,93,População residente,Pessoas,Município,3513009,Cotia (SP),2022,274413,274413.0
+4709,93,População residente,Pessoas,Município,3513801,Diadema (SP),2022,393237,393237.0
+4709,93,População residente,Pessoas,Município,3515004,Embu das Artes (SP),2022,250691,250691.0
+4709,93,População residente,Pessoas,Município,3515103,Embu-Guaçu (SP),2022,66970,66970.0
+4709,93,População residente,Pessoas,Município,3515152,Engenheiro Coelho (SP),2022,19566,19566.0
+4709,93,População residente,Pessoas,Município,3515707,Ferraz de Vasconcelos (SP),2022,179198,179198.0
+4709,93,População residente,Pessoas,Município,3516309,Francisco Morato (SP),2022,165139,165139.0
+4709,93,População residente,Pessoas,Município,3516408,Franco da Rocha (SP),2022,144849,144849.0
+4709,93,População residente,Pessoas,Município,3518305,Guararema (SP),2022,31236,31236.0
+4709,93,População residente,Pessoas,Município,3518800,Guarulhos (SP),2022,1291771,1291771.0
+4709,93,População residente,Pessoas,Município,3519055,Holambra (SP),2022,15094,15094.0
+4709,93,População residente,Pessoas,Município,3519071,Hortolândia (SP),2022,236641,236641.0
+4709,93,População residente,Pessoas,Município,3520509,Indaiatuba (SP),2022,255748,255748.0
+4709,93,População residente,Pessoas,Município,3522208,Itapecerica da Serra (SP),2022,158522,158522.0
+4709,93,População residente,Pessoas,Município,3522505,Itapevi (SP),2022,232297,232297.0
+4709,93,População residente,Pessoas,Município,3523107,Itaquaquecetuba (SP),2022,369275,369275.0
+4709,93,População residente,Pessoas,Município,3523404,Itatiba (SP),2022,121590,121590.0
+4709,93,População residente,Pessoas,Município,3524709,Jaguariúna (SP),2022,59347,59347.0
+4709,93,População residente,Pessoas,Município,3525003,Jandira (SP),2022,118045,118045.0
+4709,93,População residente,Pessoas,Município,3526209,Juquitiba (SP),2022,27404,27404.0
+4709,93,População residente,Pessoas,Município,3528502,Mairiporã (SP),2022,93853,93853.0
+4709,93,População residente,Pessoas,Município,3529401,Mauá (SP),2022,418261,418261.0
+4709,93,População residente,Pessoas,Município,3530607,Mogi das Cruzes (SP),2022,451505,451505.0
+4709,93,População residente,Pessoas,Município,3531803,Monte Mor (SP),2022,64662,64662.0
+4709,93,População residente,Pessoas,Município,3532009,Morungaba (SP),2022,13720,13720.0
+4709,93,População residente,Pessoas,Município,3533403,Nova Odessa (SP),2022,62019,62019.0
+4709,93,População residente,Pessoas,Município,3534401,Osasco (SP),2022,728615,728615.0
+4709,93,População residente,Pessoas,Município,3536505,Paulínia (SP),2022,110537,110537.0
+4709,93,População residente,Pessoas,Município,3537107,Pedreira (SP),2022,43112,43112.0
+4709,93,População residente,Pessoas,Município,3539103,Pirapora do Bom Jesus (SP),2022,18370,18370.0
+4709,93,População residente,Pessoas,Município,3539806,Poá (SP),2022,103765,103765.0
+4709,93,População residente,Pessoas,Município,3543303,Ribeirão Pires (SP),2022,115559,115559.0
+4709,93,População residente,Pessoas,Município,3544103,Rio Grande da Serra (SP),2022,44170,44170.0
+4709,93,População residente,Pessoas,Município,3545001,Salesópolis (SP),2022,15202,15202.0
+4709,93,População residente,Pessoas,Município,3545803,Santa Bárbara d'Oeste (SP),2022,183347,183347.0
+4709,93,População residente,Pessoas,Município,3546801,Santa Isabel (SP),2022,53174,53174.0
+4709,93,População residente,Pessoas,Município,3547304,Santana de Parnaíba (SP),2022,154105,154105.0
+4709,93,População residente,Pessoas,Município,3547809,Santo André (SP),2022,748919,748919.0
+4709,93,População residente,Pessoas,Município,3548005,Santo Antônio de Posse (SP),2022,23244,23244.0
+4709,93,População residente,Pessoas,Município,3548708,São Bernardo do Campo (SP),2022,810729,810729.0
+4709,93,População residente,Pessoas,Município,3548807,São Caetano do Sul (SP),2022,165655,165655.0
+4709,93,População residente,Pessoas,Município,3549953,São Lourenço da Serra (SP),2022,16067,16067.0
+4709,93,População residente,Pessoas,Município,3550308,São Paulo (SP),2022,11451999,11451999.0
+4709,93,População residente,Pessoas,Município,3552403,Sumaré (SP),2022,279545,279545.0
+4709,93,População residente,Pessoas,Município,3552502,Suzano (SP),2022,307429,307429.0
+4709,93,População residente,Pessoas,Município,3552809,Taboão da Serra (SP),2022,273542,273542.0
+4709,93,População residente,Pessoas,Município,3556206,Valinhos (SP),2022,126373,126373.0
+4709,93,População residente,Pessoas,Município,3556453,Vargem Grande Paulista (SP),2022,50415,50415.0
+4709,93,População residente,Pessoas,Município,3556701,Vinhedo (SP),2022,76540,76540.0
+4709,93,População residente,Pessoas,Município,4100202,Adrianópolis (PR),2022,6256,6256.0
+4709,93,População residente,Pessoas,Município,4100301,Agudos do Sul (PR),2022,10233,10233.0
+4709,93,População residente,Pessoas,Município,4100400,Almirante Tamandaré (PR),2022,119825,119825.0
+4709,93,População residente,Pessoas,Município,4101804,Araucária (PR),2022,151666,151666.0
+4709,93,População residente,Pessoas,Município,4102307,Balsa Nova (PR),2022,13395,13395.0
+4709,93,População residente,Pessoas,Município,4103107,Bocaiúva do Sul (PR),2022,13299,13299.0
+4709,93,População residente,Pessoas,Município,4104006,Campina Grande do Sul (PR),2022,47825,47825.0
+4709,93,População residente,Pessoas,Município,4104105,Campo do Tenente (PR),2022,7508,7508.0
+4709,93,População residente,Pessoas,Município,4104204,Campo Largo (PR),2022,136327,136327.0
+4709,93,População residente,Pessoas,Município,4104253,Campo Magro (PR),2022,30160,30160.0
+4709,93,População residente,Pessoas,Município,4105201,Cerro Azul (PR),2022,16134,16134.0
+4709,93,População residente,Pessoas,Município,4105805,Colombo (PR),2022,232212,232212.0
+4709,93,População residente,Pessoas,Município,4106209,Contenda (PR),2022,19128,19128.0
+4709,93,População residente,Pessoas,Município,4106902,Curitiba (PR),2022,1773718,1773718.0
+4709,93,População residente,Pessoas,Município,4107652,Fazenda Rio Grande (PR),2022,148873,148873.0
+4709,93,População residente,Pessoas,Município,4111258,Itaperuçu (PR),2022,31217,31217.0
+4709,93,População residente,Pessoas,Município,4113205,Lapa (PR),2022,45003,45003.0
+4709,93,População residente,Pessoas,Município,4114302,Mandirituba (PR),2022,27439,27439.0
+4709,93,População residente,Pessoas,Município,4119103,Piên (PR),2022,13655,13655.0
+4709,93,População residente,Pessoas,Município,4119152,Pinhais (PR),2022,127019,127019.0
+4709,93,População residente,Pessoas,Município,4119509,Piraquara (PR),2022,118730,118730.0
+4709,93,População residente,Pessoas,Município,4120804,Quatro Barras (PR),2022,24191,24191.0
+4709,93,População residente,Pessoas,Município,4121208,Quitandinha (PR),2022,18398,18398.0
+4709,93,População residente,Pessoas,Município,4122206,Rio Branco do Sul (PR),2022,37558,37558.0
+4709,93,População residente,Pessoas,Município,4122305,Rio Negro (PR),2022,31324,31324.0
+4709,93,População residente,Pessoas,Município,4125506,São José dos Pinhais (PR),2022,329628,329628.0
+4709,93,População residente,Pessoas,Município,4127601,Tijucas do Sul (PR),2022,17621,17621.0
+4709,93,População residente,Pessoas,Município,4127882,Tunas do Paraná (PR),2022,6219,6219.0
+4709,93,População residente,Pessoas,Município,4128633,Doutor Ulysses (PR),2022,5697,5697.0
+4709,93,População residente,Pessoas,Município,4200606,Águas Mornas (SC),2022,6743,6743.0
+4709,93,População residente,Pessoas,Município,4200705,Alfredo Wagner (SC),2022,10481,10481.0
+4709,93,População residente,Pessoas,Município,4200903,Angelina (SC),2022,5358,5358.0
+4709,93,População residente,Pessoas,Município,4201109,Anitápolis (SC),2022,3593,3593.0
+4709,93,População residente,Pessoas,Município,4201208,Antônio Carlos (SC),2022,11224,11224.0
+4709,93,População residente,Pessoas,Município,4202305,Biguaçu (SC),2022,76773,76773.0
+4709,93,População residente,Pessoas,Município,4203709,Canelinha (SC),2022,12821,12821.0
+4709,93,População residente,Pessoas,Município,4205407,Florianópolis (SC),2022,537211,537211.0
+4709,93,População residente,Pessoas,Município,4205704,Garopaba (SC),2022,29959,29959.0
+4709,93,População residente,Pessoas,Município,4206009,Governador Celso Ramos (SC),2022,16915,16915.0
+4709,93,População residente,Pessoas,Município,4209805,Leoberto Leal (SC),2022,3330,3330.0
+4709,93,População residente,Pessoas,Município,4210209,Major Gercino (SC),2022,3214,3214.0
+4709,93,População residente,Pessoas,Município,4211504,Nova Trento (SC),2022,13727,13727.0
+4709,93,População residente,Pessoas,Município,4211900,Palhoça (SC),2022,222598,222598.0
+4709,93,População residente,Pessoas,Município,4212304,Paulo Lopes (SC),2022,9063,9063.0
+4709,93,População residente,Pessoas,Município,4214300,Rancho Queimado (SC),2022,3279,3279.0
+4709,93,População residente,Pessoas,Município,4215703,Santo Amaro da Imperatriz (SC),2022,27272,27272.0
+4709,93,População residente,Pessoas,Município,4215901,São Bonifácio (SC),2022,2946,2946.0
+4709,93,População residente,Pessoas,Município,4216305,São João Batista (SC),2022,32687,32687.0
+4709,93,População residente,Pessoas,Município,4216602,São José (SC),2022,270299,270299.0
+4709,93,População residente,Pessoas,Município,4217253,São Pedro de Alcântara (SC),2022,5776,5776.0
+4709,93,População residente,Pessoas,Município,4218004,Tijucas (SC),2022,51592,51592.0
+4709,93,População residente,Pessoas,Município,4300604,Alvorada (RS),2022,187315,187315.0
+4709,93,População residente,Pessoas,Município,4300877,Araricá (RS),2022,8525,8525.0
+4709,93,População residente,Pessoas,Município,4301107,Arroio dos Ratos (RS),2022,14601,14601.0
+4709,93,População residente,Pessoas,Município,4303103,Cachoeirinha (RS),2022,136258,136258.0
+4709,93,População residente,Pessoas,Município,4303905,Campo Bom (RS),2022,62886,62886.0
+4709,93,População residente,Pessoas,Município,4304606,Canoas (RS),2022,347657,347657.0
+4709,93,População residente,Pessoas,Município,4304689,Capela de Santana (RS),2022,11159,11159.0
+4709,93,População residente,Pessoas,Município,4305355,Charqueadas (RS),2022,35012,35012.0
+4709,93,População residente,Pessoas,Município,4306403,Dois Irmãos (RS),2022,30709,30709.0
+4709,93,População residente,Pessoas,Município,4306767,Eldorado do Sul (RS),2022,39559,39559.0
+4709,93,População residente,Pessoas,Município,4307609,Estância Velha (RS),2022,47924,47924.0
+4709,93,População residente,Pessoas,Município,4307708,Esteio (RS),2022,76137,76137.0
+4709,93,População residente,Pessoas,Município,4309050,Glorinha (RS),2022,7658,7658.0
+4709,93,População residente,Pessoas,Município,4309209,Gravataí (RS),2022,265074,265074.0
+4709,93,População residente,Pessoas,Município,4309308,Guaíba (RS),2022,92924,92924.0
+4709,93,População residente,Pessoas,Município,4310108,Igrejinha (RS),2022,32808,32808.0
+4709,93,População residente,Pessoas,Município,4310801,Ivoti (RS),2022,22983,22983.0
+4709,93,População residente,Pessoas,Município,4312401,Montenegro (RS),2022,64322,64322.0
+4709,93,População residente,Pessoas,Município,4313060,Nova Hartz (RS),2022,20088,20088.0
+4709,93,População residente,Pessoas,Município,4313375,Nova Santa Rita (RS),2022,29024,29024.0
+4709,93,População residente,Pessoas,Município,4313409,Novo Hamburgo (RS),2022,227646,227646.0
+4709,93,População residente,Pessoas,Município,4314050,Parobé (RS),2022,52058,52058.0
+4709,93,População residente,Pessoas,Município,4314803,Portão (RS),2022,34071,34071.0
+4709,93,População residente,Pessoas,Município,4314902,Porto Alegre (RS),2022,1332845,1332845.0
+4709,93,População residente,Pessoas,Município,4316006,Rolante (RS),2022,21253,21253.0
+4709,93,População residente,Pessoas,Município,4317608,Santo Antônio da Patrulha (RS),2022,42947,42947.0
+4709,93,População residente,Pessoas,Município,4318408,São Jerônimo (RS),2022,21028,21028.0
+4709,93,População residente,Pessoas,Município,4318705,São Leopoldo (RS),2022,217409,217409.0
+4709,93,População residente,Pessoas,Município,4319505,São Sebastião do Caí (RS),2022,24428,24428.0
+4709,93,População residente,Pessoas,Município,4319901,Sapiranga (RS),2022,75648,75648.0
+4709,93,População residente,Pessoas,Município,4320008,Sapucaia do Sul (RS),2022,132107,132107.0
+4709,93,População residente,Pessoas,Município,4321204,Taquara (RS),2022,53242,53242.0
+4709,93,População residente,Pessoas,Município,4322004,Triunfo (RS),2022,27498,27498.0
+4709,93,População residente,Pessoas,Município,4323002,Viamão (RS),2022,224112,224112.0
+4709,93,População residente,Pessoas,Município,5100102,Acorizal (MT),2022,5014,5014.0
+4709,93,População residente,Pessoas,Município,5102678,Campo Verde (MT),2022,44585,44585.0
+4709,93,População residente,Pessoas,Município,5103007,Chapada dos Guimarães (MT),2022,18990,18990.0
+4709,93,População residente,Pessoas,Município,5103403,Cuiabá (MT),2022,650877,650877.0
+4709,93,População residente,Pessoas,Município,5106109,Nossa Senhora do Livramento (MT),2022,12940,12940.0
+4709,93,População residente,Pessoas,Município,5107800,Santo Antônio de Leverger (MT),2022,15246,15246.0
+4709,93,População residente,Pessoas,Município,5108402,Várzea Grande (MT),2022,300078,300078.0
+4709,93,População residente,Pessoas,Município,5200050,Abadia de Goiás (GO),2022,19128,19128.0
+4709,93,População residente,Pessoas,Município,5200100,Abadiânia (GO),2022,17232,17232.0
+4709,93,População residente,Pessoas,Município,5200175,Água Fria de Goiás (GO),2022,4954,4954.0
+4709,93,População residente,Pessoas,Município,5200258,Águas Lindas de Goiás (GO),2022,225693,225693.0
+4709,93,População residente,Pessoas,Município,5200308,Alexânia (GO),2022,27008,27008.0
+4709,93,População residente,Pessoas,Município,5200605,Alto Paraíso de Goiás (GO),2022,10306,10306.0
+4709,93,População residente,Pessoas,Município,5200803,Alvorada do Norte (GO),2022,8446,8446.0
+4709,93,População residente,Pessoas,Município,5201405,Aparecida de Goiânia (GO),2022,527796,527796.0
+4709,93,População residente,Pessoas,Município,5201801,Aragoiânia (GO),2022,11890,11890.0
+4709,93,População residente,Pessoas,Município,5203203,Barro Alto (GO),2022,10371,10371.0
+4709,93,População residente,Pessoas,Município,5203302,Bela Vista de Goiás (GO),2022,34445,34445.0
+4709,93,População residente,Pessoas,Município,5203559,Bonfinópolis (GO),2022,10296,10296.0
+4709,93,População residente,Pessoas,Município,5203609,Brazabrantes (GO),2022,3992,3992.0
+4709,93,População residente,Pessoas,Município,5204003,Cabeceiras (GO),2022,7560,7560.0
+4709,93,População residente,Pessoas,Município,5204557,Caldazinha (GO),2022,4507,4507.0
+4709,93,População residente,Pessoas,Município,5205208,Caturaí (GO),2022,5184,5184.0
+4709,93,População residente,Pessoas,Município,5205307,Cavalcante (GO),2022,9583,9583.0
+4709,93,População residente,Pessoas,Município,5205497,Cidade Ocidental (GO),2022,91767,91767.0
+4709,93,População residente,Pessoas,Município,5205513,Cocalzinho de Goiás (GO),2022,25016,25016.0
+4709,93,População residente,Pessoas,Município,5205802,Corumbá de Goiás (GO),2022,10562,10562.0
+4709,93,População residente,Pessoas,Município,5206206,Cristalina (GO),2022,62337,62337.0
+4709,93,População residente,Pessoas,Município,5207907,Flores de Goiás (GO),2022,13744,13744.0
+4709,93,População residente,Pessoas,Município,5208004,Formosa (GO),2022,115901,115901.0
+4709,93,População residente,Pessoas,Município,5208400,Goianápolis (GO),2022,13967,13967.0
+4709,93,População residente,Pessoas,Município,5208608,Goianésia (GO),2022,73707,73707.0
+4709,93,População residente,Pessoas,Município,5208707,Goiânia (GO),2022,1437366,1437366.0
+4709,93,População residente,Pessoas,Município,5208806,Goianira (GO),2022,71916,71916.0
+4709,93,População residente,Pessoas,Município,5209200,Guapó (GO),2022,19545,19545.0
+4709,93,População residente,Pessoas,Município,5209705,Hidrolândia (GO),2022,27742,27742.0
+4709,93,População residente,Pessoas,Município,5210000,Inhumas (GO),2022,52204,52204.0
+4709,93,População residente,Pessoas,Município,5212501,Luziânia (GO),2022,209129,209129.0
+4709,93,População residente,Pessoas,Município,5213053,Mimoso de Goiás (GO),2022,2614,2614.0
+4709,93,População residente,Pessoas,Município,5214507,Nerópolis (GO),2022,31932,31932.0
+4709,93,População residente,Pessoas,Município,5214606,Niquelândia (GO),2022,34964,34964.0
+4709,93,População residente,Pessoas,Município,5215009,Nova Veneza (GO),2022,9481,9481.0
+4709,93,População residente,Pessoas,Município,5215231,Novo Gama (GO),2022,103804,103804.0
+4709,93,População residente,Pessoas,Município,5215603,Padre Bernardo (GO),2022,34967,34967.0
+4709,93,População residente,Pessoas,Município,5217302,Pirenópolis (GO),2022,26690,26690.0
+4709,93,População residente,Pessoas,Município,5217609,Planaltina (GO),2022,105031,105031.0
+4709,93,População residente,Pessoas,Município,5219100,Santa Bárbara de Goiás (GO),2022,6149,6149.0
+4709,93,População residente,Pessoas,Município,5219738,Santo Antônio de Goiás (GO),2022,7386,7386.0
+4709,93,População residente,Pessoas,Município,5219753,Santo Antônio do Descoberto (GO),2022,72127,72127.0
+4709,93,População residente,Pessoas,Município,5220009,São João d'Aliança (GO),2022,14041,14041.0
+4709,93,População residente,Pessoas,Município,5220454,Senador Canedo (GO),2022,155635,155635.0
+4709,93,População residente,Pessoas,Município,5220686,Simolândia (GO),2022,5742,5742.0
+4709,93,População residente,Pessoas,Município,5221197,Terezópolis de Goiás (GO),2022,7944,7944.0
+4709,93,População residente,Pessoas,Município,5221403,Trindade (GO),2022,142431,142431.0
+4709,93,População residente,Pessoas,Município,5221858,Valparaíso de Goiás (GO),2022,198861,198861.0
+4709,93,População residente,Pessoas,Município,5222203,Vila Boa (GO),2022,4215,4215.0
+4709,93,População residente,Pessoas,Município,5222302,Vila Propício (GO),2022,5815,5815.0
+4709,93,População residente,Pessoas,Município,5300108,Brasília (DF),2022,2817381,2817381.0

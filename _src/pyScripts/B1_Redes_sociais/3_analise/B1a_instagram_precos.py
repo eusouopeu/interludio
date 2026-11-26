@@ -56,7 +56,7 @@ import pandas as pd
 
 import instagram_comum as ic
 
-SAIDA = ic.SAIDA / "precos"
+SAIDA = ic.SAIDA / "precos" / (ic.PASTA_RECORTE if ic.modo_recorte() else "")
 
 VIGENTE_DESDE = "2024-10-01"
 ANTES, DEPOIS = 70, 45  # caracteres de contexto para classificar cada valor
@@ -201,6 +201,9 @@ def modelos(posts):
 def main():
     SAIDA.mkdir(parents=True, exist_ok=True)
     posts = ic.carrega_posts()
+    if ic.modo_recorte():
+        posts = ic.janela(posts, ic.RECORTE_DE, ic.RECORTE_ATE)
+        print(f"recorte {ic.RECORTE_DE} a {ic.RECORTE_ATE}: {len(posts)} posts de {posts['estabelecimento'].nunique()} casas")
     men = mencoes(posts)
     men.to_csv(SAIDA / "B1_instagram_precos_mencoes.csv", sep=";", index=False)
     print(f"\nmenções de valor: {len(men)} em {men['shortcode'].nunique()} posts de {men['estabelecimento'].nunique()} casas")

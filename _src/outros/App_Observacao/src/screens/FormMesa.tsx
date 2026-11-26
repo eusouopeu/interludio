@@ -97,12 +97,12 @@ export function FormMesa({
     <div className="fixed inset-0 z-20 overflow-y-auto bg-papel safe-top safe-bottom">
       <div className="relative mx-auto my-12 w-full max-w-[440px] px-8">
         {/* cadeiras em volta do formulário */}
-        <span className="absolute left-1/2 top-[-40px] size-20 -translate-x-1/2 rounded-full bg-caneta-800" />
-        <span className="absolute bottom-[-44px] left-1/2 size-20 -translate-x-1/2 rounded-full bg-caneta-800" />
-        <span className="absolute left-0 top-[25%] size-16 rounded-full bg-caneta-800" />
-        <span className="absolute left-0 top-[62%] size-16 rounded-full bg-caneta-800" />
-        <span className="absolute right-0 top-[25%] size-16 rounded-full bg-caneta-800" />
-        <span className="absolute right-0 top-[62%] size-16 rounded-full bg-caneta-800" />
+        <span className="absolute left-1/2 top-[-40px] size-20 -translate-x-1/2 rounded-full bg-caneta-300" />
+        <span className="absolute bottom-[-44px] left-1/2 size-20 -translate-x-1/2 rounded-full bg-caneta-300" />
+        <span className="absolute left-0 top-[25%] size-16 rounded-full bg-caneta-300" />
+        <span className="absolute left-0 top-[62%] size-16 rounded-full bg-caneta-300" />
+        <span className="absolute right-0 top-[25%] size-16 rounded-full bg-caneta-300" />
+        <span className="absolute right-0 top-[62%] size-16 rounded-full bg-caneta-300" />
 
         <div className="relative rounded-2xl bg-caneta-200 px-4 pb-5 pt-3 text-neutro-800">
           <div className="mb-4 flex items-center">
@@ -140,7 +140,7 @@ export function FormMesa({
                           key={f.id}
                           onClick={() => alternarPorta(f)}
                           aria-pressed={ligada}
-                          className={`rounded-full px-3 py-1 text-sm font-semibold ${ligada ? 'bg-caneta-600 text-sobre' : 'bg-papel text-neutro-700'}`}
+                          className={`rounded-full px-3 py-1 text-sm font-semibold ${ligada ? 'bg-caneta-700 text-sobre' : 'bg-papel text-neutro-700'}`}
                         >
                           {f.codigo} · {f.hora} · {f.estimado && '≈'}
                           {f.pessoas}
@@ -184,7 +184,7 @@ export function FormMesa({
             <button onClick={onDesfazer} className="h-11 rounded bg-caneta-300 font-bold text-caneta-700">
               Desfazer
             </button>
-            <button onClick={fechar} className="h-11 rounded bg-caneta-600 font-bold text-sobre">
+            <button onClick={fechar} className="h-11 rounded bg-caneta-700 font-bold text-sobre">
               Pronto
             </button>
           </div>
@@ -221,7 +221,7 @@ function Edicao({ r, muda, onSaida }: { r: Rascunho; muda: (p: Partial<Rascunho>
           onClick={() => muda({ aniversario: !r.aniversario })}
           aria-pressed={r.aniversario}
           aria-label="Aniversário"
-          className={`grid size-11 shrink-0 place-items-center rounded-lg ${r.aniversario ? 'bg-caneta-400 text-caneta-800' : 'text-neutro-700'}`}
+          className={`grid size-11 shrink-0 place-items-center rounded-lg ${r.aniversario ? 'bg-caneta-200 text-caneta-800' : 'text-neutro-700'}`}
         >
           <BoloIcon className="size-7" />
         </button>
@@ -301,7 +301,7 @@ function Resumo({ r }: { r: Rascunho }) {
           {r.dataTexto.replace(/\//g, ' / ') || '—'}
         </Valor>
         {r.aniversario && (
-          <span className="mt-2 flex items-center gap-2 rounded-lg bg-caneta-400 px-3 py-2 text-base text-caneta-800">
+          <span className="mt-2 flex items-center gap-2 rounded-lg bg-caneta-200 px-3 py-2 text-base text-caneta-800">
             <BoloIcon className="size-6" />
             Aniversário
           </span>

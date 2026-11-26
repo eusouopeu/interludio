@@ -21,6 +21,19 @@ OUT_DIR = pasta_bruta("ibge_sidra")
 CAP = f"N6[{IDS_CAPITAIS}]"
 
 
+def ids_municipios_rm() -> str:
+    """Códigos dos municípios das regiões metropolitanas do B1 (composição do IBGE, via recorte_rm.py)."""
+    sys.path.insert(0, str(_AQUI.parents[2] / "B1_Estabelecimentos" / "5_outros"))
+    import recorte_rm as rr
+    from openpyxl import load_workbook
+    ws = load_workbook(rr.RM_PATH, read_only=True).worksheets[0]
+    linhas = list(ws.iter_rows(values_only=True))
+    idx = {c: i for i, c in enumerate(linhas[0])}
+    nomes = {v[0] for v in rr.rms().values() if v[0] != "sem recorte"}
+    cods = sorted({int(r[idx["COD_MUN"]]) for r in linhas[1:] if r[idx["NOME_CATMETROPOL"]] in nomes})
+    return ",".join(map(str, cods))
+
+
 def consultas() -> list[dict]:
     return [
         # População
@@ -37,6 +50,18 @@ def consultas() -> list[dict]:
          "localidades": CAP,
          "classificacao": f"2[6794]|286[113635]|287[{categorias(9514, 287, r'^(Total|\d+ a \d+ anos|100 anos ou mais)$')}]",
          "uso": "Público-alvo por faixa etária (5.2, 6.6)"},
+        # Municípios das regiões metropolitanas do B1 (pedido do autor, 25/11/2026: comparar RMs, não só capitais)
+        {"nome": "populacao_censo_2022_rm", "tabela": 4709, "variaveis": [93], "periodos": "2022",
+         "localidades": f"N6[{ids_municipios_rm()}]",
+         "uso": "População das regiões metropolitanas do B1 no Censo 2022 (soma dos municípios; B4, Tabela 1)"},
+        {"nome": "populacao_idade_censo_2022_rm", "tabela": 9514, "variaveis": [93], "periodos": "2022",
+         "localidades": f"N6[{ids_municipios_rm()}]",
+         "classificacao": f"2[6794]|286[113635]|287[{categorias(9514, 287, r'^(20 a 24|25 a 29|30 a 34|35 a 39) anos$')}]",
+         "uso": "Faixa de 20 a 39 anos nas regiões metropolitanas do B1 (B4, Tabela 1)"},
+        {"nome": "renda_censo_2022_rm", "tabela": 10299, "variaveis": [1641, 13502, 13503], "periodos": "2022",
+         "localidades": f"N6[{ids_municipios_rm()}]",
+         "classificacao": f"2[{categorias(10299, 2, '^Total$')}]|629[{categorias(10299, 629, '^Total$')}]|58[{categorias(10299, 58, '^Total$')}]",
+         "uso": "Renda média das regiões metropolitanas do B1, ponderada pelas pessoas de 14 anos ou mais (B4, Tabela 1)"},
         # Renda
         {"nome": "renda_censo_2022_idade", "tabela": 10299, "variaveis": [1641, 13502, 13503], "periodos": "2022",
          "localidades": f"N1[all]|{CAP}",

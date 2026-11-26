@@ -45,7 +45,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 AQUI = Path(__file__).resolve().parent
-CAP = ROOT / "textos" / "capitulos"
+CAP = ROOT / "textos-tcc" / "capitulos"
 BIB = ROOT / "bibliografia"
 CACHE = AQUI / "_cache"
 ESCOLHAS = CACHE / "escolhas.json"
@@ -497,7 +497,7 @@ def relatorio(fila: list[dict]) -> list[dict]:
 
 
 def versao_tmin() -> str:
-    nums = [int(m.group(1)) for p in (ROOT / "textos").glob("TCC_luderia_v*.docx")
+    nums = [int(m.group(1)) for p in (ROOT / "textos-tcc").glob("TCC_luderia_v*.docx")
             if (m := re.search(r"_v(\d+)", p.name))]
     return f"v{max(nums)}" if nums else "?"
 

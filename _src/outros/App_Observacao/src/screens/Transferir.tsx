@@ -99,7 +99,7 @@ export function Transferir() {
                     mudar((e) => juntar(e, recebido).estado)
                     fechar()
                   }}
-                  className="h-11 rounded-lg bg-caneta-600 font-bold text-sobre"
+                  className="h-11 rounded-lg bg-caneta-700 font-bold text-sobre"
                 >
                   Juntar
                 </button>

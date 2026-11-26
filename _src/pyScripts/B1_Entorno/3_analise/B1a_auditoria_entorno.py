@@ -25,7 +25,7 @@ Saídas em dados-agregados/B1_entorno/_auditoria/:
       a distância a pé, para medir o quanto a linha reta subestima o trajeto)
   auditoria_registro.csv  uma linha por sorteio
 
-Passo a passo da conferência: textos/_planejamento/_instrumentos/roteiro_auditoria_entorno_B1.md.
+Passo a passo da conferência: textos-tcc/_planejamento/_instrumentos/roteiro_auditoria_entorno_B1.md.
 
 Uso:
     python3 "_src/pyScripts/B1_Estabelecimentos/3_analise/B1a_auditoria_entorno.py"

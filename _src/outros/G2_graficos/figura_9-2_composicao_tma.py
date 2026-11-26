@@ -5,7 +5,7 @@ Mostra a equação (3) do capítulo 9 (juro real pela Selic meta e pelo IPCA
 esperado) e o prêmio de risco somado em três parcelas, na ordem pedida pelo
 autor: risco do setor, risco-país e liquidez. O prêmio total (5,7 pp) é N6 e
 não é repartido entre as parcelas. Diagrama sem dados novos.
-Saída: textos/figuras/9-2_composicao_tma.png.
+Saída: textos-tcc/figuras/9-2_composicao_tma.png.
 """
 
 import sys
@@ -18,7 +18,7 @@ import diagramas_comum as dc  # noqa: E402
 import graficos_comum as gc  # noqa: E402
 from matplotlib.patches import FancyBboxPatch  # noqa: E402
 
-SAIDA = ROOT / "textos" / "figuras" / "9-2_composicao_tma.png"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "9-2_composicao_tma.png"
 
 
 def main():

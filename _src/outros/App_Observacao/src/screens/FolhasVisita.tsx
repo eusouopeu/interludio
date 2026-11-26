@@ -89,7 +89,7 @@ export function FolhaComecar({
       <button
         disabled={!ok}
         onClick={() => onComecar({ observador, papel })}
-        className="mt-6 h-12 w-full rounded-lg bg-caneta-600 font-bold text-sobre disabled:opacity-40"
+        className="mt-6 h-12 w-full rounded-lg bg-caneta-700 font-bold text-sobre disabled:opacity-40"
       >
         Começar em {unidade.nome}
       </button>
@@ -130,7 +130,7 @@ export function FolhaEncerrar({
   const naPorta = gruposDentro(estado, visita.id).length
   const linha = (id: typeof opcao, rotulo: string, detalhe: string) => (
     <label className={`flex items-center gap-3 rounded-lg px-3 py-3 ${opcao === id ? 'bg-caneta-100' : 'bg-neutro-100'}`}>
-      <input type="radio" name="fim" checked={opcao === id} onChange={() => setOpcao(id)} className="size-5 accent-caneta-600" />
+      <input type="radio" name="fim" checked={opcao === id} onChange={() => setOpcao(id)} className="size-5 accent-caneta-700" />
       <span className="flex-1 font-semibold">{rotulo}</span>
       <span className="text-sm text-neutro-600">{detalhe}</span>
     </label>
@@ -142,7 +142,7 @@ export function FolhaEncerrar({
         {ult && linha('ultimo', `${ult.iso.slice(11, 16)} · último registro`, ult.origem)}
         {linha('agora', `${agora.slice(11, 16)} · agora`, '')}
         <label className={`flex items-center gap-3 rounded-lg px-3 py-2 ${opcao === 'outra' ? 'bg-caneta-100' : 'bg-neutro-100'}`}>
-          <input type="radio" name="fim" checked={opcao === 'outra'} onChange={() => setOpcao('outra')} className="size-5 accent-caneta-600" />
+          <input type="radio" name="fim" checked={opcao === 'outra'} onChange={() => setOpcao('outra')} className="size-5 accent-caneta-700" />
           <span className="flex-1 font-semibold">Outra hora</span>
           <input
             type="time"
@@ -209,7 +209,7 @@ export function FolhaNovaUnidade({ onCriar, onFechar }: { onCriar: (u: { nome: s
       </div>
       <input value={cnpj} onChange={(e) => setCnpj(e.target.value)} inputMode="numeric" placeholder="CNPJ (opcional: a 1ª NFC-e grava)" aria-label="CNPJ" className={`${campo} mt-2`} />
       {digitos && digitos.length !== 14 && <p className="mt-1 text-sm text-erro-600">O CNPJ tem 14 dígitos.</p>}
-      <button disabled={!ok} onClick={() => onCriar({ nome: nome.trim(), sigla: sigla.trim(), cnpj: digitos })} className="mt-4 h-12 w-full rounded-lg bg-caneta-600 font-bold text-sobre disabled:opacity-40">
+      <button disabled={!ok} onClick={() => onCriar({ nome: nome.trim(), sigla: sigla.trim(), cnpj: digitos })} className="mt-4 h-12 w-full rounded-lg bg-caneta-700 font-bold text-sobre disabled:opacity-40">
         Criar unidade
       </button>
     </Folha>

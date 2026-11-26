@@ -42,7 +42,7 @@ export function FolhaRegistros({
                         {r.fluxos.length > 0 && ` · ${r.fluxos.join(', ')}`}
                         {r.aniversario && ' · 🎂'}
                       </span>
-                      <span className={`text-sm font-semibold ${p === null ? 'text-caneta-600' : 'text-neutro-500'}`}>
+                      <span className={`text-sm font-semibold ${p === null ? 'text-caneta-700' : 'text-neutro-500'}`}>
                         {p === null ? 'na mesa' : `${p} min`}
                       </span>
                     </button>
@@ -132,7 +132,7 @@ export function FolhaEditar({
           <PlusIcon className="size-5" /> 5 mesas
         </button>
       </div>
-      <button onClick={fechar} className="mt-4 h-12 w-full rounded-lg bg-caneta-600 font-bold text-sobre">
+      <button onClick={fechar} className="mt-4 h-12 w-full rounded-lg bg-caneta-700 font-bold text-sobre">
         Pronto
       </button>
       <p className="mt-2 text-center text-xs text-neutro-500">Salvo automaticamente</p>
@@ -167,7 +167,7 @@ export function FolhaAcoes({
           <button onClick={onEncerrar} className={`${b} bg-neutro-800 text-neutro-50`}>Encerrar visita</button>
         </>
       ) : (
-        <button onClick={onComecar} className={`${b} bg-caneta-600 text-sobre`}>Começar visita</button>
+        <button onClick={onComecar} className={`${b} bg-caneta-700 text-sobre`}>Começar visita</button>
       )}
       <button onClick={onRegistros} className={`${b} bg-neutro-200`}>Registros das mesas</button>
       <button onClick={onEditar} className={`${b} bg-neutro-200`}>Editar mesas</button>

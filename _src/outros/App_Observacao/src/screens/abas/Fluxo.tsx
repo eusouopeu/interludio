@@ -148,7 +148,7 @@ export function AbaFluxo({ unidade, semVisita }: { unidade: Unidade; semVisita: 
             {en.inicial && <span className="block text-[11px] font-bold uppercase text-alerta-700">já dentro</span>}
           </span>
           <div className="flex h-9 flex-1 overflow-hidden rounded-md bg-neutro-300 text-[13px] font-bold">
-            <button onClick={() => sa && sair(en, false)} aria-pressed={!sa} className={`flex-1 ${!sa ? 'bg-caneta-600 text-sobre' : 'text-neutro-700'}`}>
+            <button onClick={() => sa && sair(en, false)} aria-pressed={!sa} className={`flex-1 ${!sa ? 'bg-caneta-700 text-sobre' : 'text-neutro-700'}`}>
               ENTRADA
             </button>
             <button onClick={() => !sa && sair(en, true)} aria-pressed={!!sa} className={`flex-1 ${sa ? 'bg-neutro-700 text-neutro-50' : 'text-neutro-700'}`}>
@@ -220,7 +220,7 @@ export function AbaFluxo({ unidade, semVisita }: { unidade: Unidade; semVisita: 
                   key={m.id}
                   onClick={() => destinar(en, d)}
                   aria-pressed={en.destino === d}
-                  className={`rounded-full px-2.5 py-1 text-[13px] font-semibold ${en.destino === d ? 'bg-caneta-600 text-sobre' : ocupada ? 'bg-neutro-300 text-neutro-500' : 'bg-papel'}`}
+                  className={`rounded-full px-2.5 py-1 text-[13px] font-semibold ${en.destino === d ? 'bg-caneta-700 text-sobre' : ocupada ? 'bg-neutro-300 text-neutro-500' : 'bg-papel'}`}
                 >
                   {m.nome.replace(/^Mesa\s*/i, 'M')}
                 </button>
@@ -231,7 +231,7 @@ export function AbaFluxo({ unidade, semVisita }: { unidade: Unidade; semVisita: 
                 key={d}
                 onClick={() => destinar(en, d)}
                 aria-pressed={en.destino === d}
-                className={`rounded-full px-2.5 py-1 text-[13px] font-semibold ${en.destino === d ? 'bg-caneta-600 text-sobre' : 'bg-papel'}`}
+                className={`rounded-full px-2.5 py-1 text-[13px] font-semibold ${en.destino === d ? 'bg-caneta-700 text-sobre' : 'bg-papel'}`}
               >
                 {d}
               </button>

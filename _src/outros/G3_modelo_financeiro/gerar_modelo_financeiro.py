@@ -1,7 +1,7 @@
 """
 Cap. 9 - modelo financeiro da luderia (_docs/_instrucoes/8_financeiro.md).
 
-Gera `textos/planilhas/P9_financeiro.xlsx`, dirigido por premissas:
+Gera `textos-tcc/planilhas/P9_financeiro.xlsx`, dirigido por premissas:
 aba sumario (índice das abas), abas premissas, pessoal, simples, receitas, custos, investimento, dre,
 fluxo_caixa, indicadores, sensibilidade e checagens. Toda fórmula de cálculo lê
 a aba premissas (coluna "Valor usado", escolhida pelo cenário ativo em
@@ -61,13 +61,13 @@ B1a_horas_pico_indice.py), B2 (gasto por pessoa e cesta por casa,
 B2a_gasto_por_pessoa.py), B3 (contagem_resumo_visitas.csv,
 contagem_notas_intervalo.csv), B5 (orçamento e anúncios de aluguel), B4 (CAGED,
 BCB, Simples Nacional, IBGE PAS e população). As premissas de valor fixo
-(decisões e estimativas do autor) ficam em textos/capitulos/modelo_financeiro/
+(decisões e estimativas do autor) ficam em textos-tcc/capitulos/modelo_financeiro/
 P9_premissas_autor.xlsx, com fonte, código do tipo de evidência e justificativa:
 muda-se a planilha, não o código. As que saem de dados são calculadas em premissas().
 
-Saídas: o .xlsx em textos/capitulos/ (Apêndice E), o registro completo em
-textos/capitulos/modelo_financeiro/P9_premissas_registro.xlsx e as figuras 9-4_tornado.png e
-G-1_monte_carlo.png (apêndice G) em textos/graficos/; imprime os números citados no
+Saídas: o .xlsx em textos-tcc/capitulos/ (Apêndice E), o registro completo em
+textos-tcc/capitulos/modelo_financeiro/P9_premissas_registro.xlsx e as figuras 9-4_tornado.png e
+G-1_monte_carlo.png (apêndice G) em textos-tcc/graficos/; imprime os números citados no
 texto do capítulo. Log em _src/outros/G3_modelo_financeiro/logs/.
 Uso: python3 "_src/outros/G3_modelo_financeiro/gerar_modelo_financeiro.py"
 """
@@ -94,20 +94,21 @@ import pandas as pd  # noqa: E402
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side  # noqa: E402
 from openpyxl.utils import get_column_letter  # noqa: E402
 from openpyxl.workbook.defined_name import DefinedName  # noqa: E402
+from openpyxl.worksheet.hyperlink import Hyperlink  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[3]
 DADOS = ROOT / "dados"
 DADOS_AGREGADOS = ROOT / "dados-agregados"
 TAXA_SAO_JOGUE = (22.0, 28.0)  # taxa de entrada da São Jogue: terça a quinta e sexta a domingo (cap. 5)
 DADOS_BRUTOS = ROOT / "dados-brutos"
-MODELO = ROOT / "textos" / "capitulos" / "modelo_financeiro"
+MODELO = ROOT / "textos-tcc" / "capitulos" / "modelo_financeiro"
 PREMISSAS_AUTOR = MODELO / "P9_premissas_autor.xlsx"  # entrada: premissas de valor fixo (decisões e estimativas do autor)
 REGISTRO = MODELO / "P9_premissas_registro.xlsx"  # saída: as premissas com os valores resolvidos
 COLS_PREMISSAS = ["id", "nome", "unidade", "pessimista", "provavel", "otimista", "fonte", "nivel", "justificativa"]
 B3 = DADOS_AGREGADOS / "B3_contagem"
-SAIDA = ROOT / "textos" / "planilhas" / "P9_financeiro.xlsx"
-FIGURA = ROOT / "textos" / "graficos" / "9-4_tornado.png"
-FIGURA_MC = ROOT / "textos" / "graficos" / "G-1_monte_carlo.png"
+SAIDA = ROOT / "textos-tcc" / "planilhas" / "P9_financeiro.xlsx"
+FIGURA = ROOT / "textos-tcc" / "graficos" / "9-4_tornado.png"
+FIGURA_MC = ROOT / "textos-tcc" / "graficos" / "G-1_monte_carlo.png"
 SOFFICE = "/Applications/LibreOffice.app/Contents/MacOS/soffice"
 
 MESES = 60
@@ -163,12 +164,15 @@ HORA_EXTRA = 0.50  # CF, art. 7º, XVI: a hora reduzida das 22h às 23h passa da
 FERIADOS_ANO = 14  # 9 nacionais, 2 de julho (BA) e 4 de Salvador (Lei n. 9.093/1995) [AV]
 TARIFA_VT = 5.90  # ônibus de Salvador desde 05/01/2026; ida e volta por dia trabalhado (Lei n. 7.418/1985)
 SEMANAS_MES = 365.25 / 7 / 12
-# vida útil (anos) dos itens depreciáveis, a mesma da aba investimento
-VIDA_UTIL = dict(reforma=10, mobiliario=10, cozinha=10, ti=5, acervo=5, preop=5, outros=5)
-# reinvestimento anual na perpetuidade do valor residual (15/11/2026, pedido do autor): só os itens
-# físicos que se repõem; o acervo já se repõe pela C13 nos custos fixos e os gastos pré-operacionais
-# não se repetem. A DRE segue com a depreciação e a amortização de todos os itens (VIDA_UTIL)
+# vida útil física (anos), que define o reinvestimento anual na perpetuidade do valor residual
+# (15/11/2026, pedido do autor): só os itens físicos que se repõem; o acervo já se repõe pela C13 nos
+# custos fixos e os gastos pré-operacionais não se repetem
+VIDA_UTIL = dict(reforma=10, mobiliario=10, cozinha=10, ti=5, acervo=5, outros=5)
 REPOE_PERPETUIDADE = ("reforma", "mobiliario", "cozinha", "ti", "outros")
+# vida contábil (anos) da DRE (24/11/2026, D131 e D132): a reforma em imóvel alugado se amortiza no prazo
+# do contrato de 5 anos (8.3), e os gastos pré-operacionais vão ao resultado do ano 0 como despesa, sem
+# ativo diferido (Lei n. 11.941/2009 e CPC 04 (R1))
+VIDA_CONTABIL = dict(VIDA_UTIL, reforma=5)
 
 
 def reinvestimento(inv: dict) -> float:
@@ -441,7 +445,7 @@ def pessoal_detalhe(quadro, etapa: str = "etapa1") -> dict:
 
 
 def refeicoes_mes(etapa: str = "etapa1") -> float:
-    """Refeições da equipe por mês (C15): uma por turno trabalhado."""
+    """Refeições da equipe por mês: uma por turno trabalhado (conta da escala, multiplica a C14)."""
     esc = ETAPAS[etapa][0]
     return sum(6 - sum(len(sem) for sem in fl) / len(fl) for cargo in esc for fl in esc[cargo]) * SEMANAS_MES
 
@@ -481,11 +485,12 @@ def premissas(f) -> list[dict]:
     por_nota = [nf.loc[u, "notas_emitidas"] / nf.loc[u, "dias"] * 7 / eq_sj for u in ("BV", "PA")]
     circ_nfce = sum(por_nota) / len(por_nota)
     f["circulacao_nfce"], f["horas_pico_sj_semana"] = por_nota, eq_sj
-    # gasto por pessoa: média, mínimo e máximo dos gastos médios das casas (B2); parcela da taxa
+    # gasto por pessoa (seção 3.4): média das declarações dentro de cada casa e, entre as casas, a mediana
+    # (referência da luderia típica); mínimo e máximo dos gastos médios das casas (B2); parcela da taxa
     gc = f["gasto_casas"]
-    gasto = (gc["gasto_medio"].min(), gc["gasto_medio"].mean(), gc["gasto_medio"].max())
+    gasto = (gc["gasto_medio"].min(), gc["gasto_medio"].median(), gc["gasto_medio"].max())
     gcc = gc.dropna(subset=["cesta_consumo"])
-    parcela = gcc["taxa_ponderada"].mean() / gcc["cesta_consumo"].mean()
+    parcela = gcc["taxa_ponderada"].median() / gcc["cesta_consumo"].median()
     f["gasto_casas_cesta"] = gcc
     f["gasto"], f["parcela_taxa"] = gasto, parcela
     # horas de pico equivalentes: provável e otimista pela curva média do índice, pessimista pela
@@ -504,9 +509,8 @@ def premissas(f) -> list[dict]:
               for o, rc in (("Cozinheiro geral", "CNAE 56 - alimentação"), ("Recreador", "todas as atividades")))
     a = f["acervo"]
     q_ = quadro_pessoal(f)
-    refeicoes = refeicoes_mes()
     R = lambda *x: dict(zip(("id", "nome", "unidade", "pess", "prov", "otim", "fonte", "nivel", "just"), x))
-    # premissas de valor fixo: lidas de textos/capitulos/modelo_financeiro/P9_premissas_autor.xlsx (edita-se a planilha, não o código)
+    # premissas de valor fixo: lidas de textos-tcc/capitulos/modelo_financeiro/P9_premissas_autor.xlsx (edita-se a planilha, não o código)
     au = pd.read_excel(PREMISSAS_AUTOR, sheet_name="premissas", dtype={"id": str}).set_index("id")
     num = lambda x: int(x) if float(x).is_integer() else float(x)
     pessoas_ref = circ.mean() * (r15 * au.at["O06", "provavel"] + r05 * au.at["O07", "provavel"]) * 52 / 12
@@ -532,13 +536,11 @@ def premissas(f) -> list[dict]:
           f"Soma do índice médio das casas abertas em cada hora do plano (14h às 23h) ÷ índice médio nas janelas das visitas do B3; média de terça ({hp['terca']:.2f}), quarta ({hp['quarta']:.2f}) e quinta ({hp['quinta']:.2f}), {r05 / r15:.1%} do fim de semana. Pessimista pela curva mediana."),
         R("R04", "Gasto por pessoa (cesta de consumo)", "R$ por pessoa", *[round(z, 2) for z in gasto],
           f"B2, preço por pessoa declarado no Google Maps, {int(gc['avaliacoes'].sum())} avaliações de {len(gc)} casas", "N3",
-          "Média dos gastos médios das casas com taxa de entrada conhecida; pessimista e otimista na casa de menor e de maior gasto."),
-        R("R05", "Taxa de entrada de terça a quinta", "R$ por pessoa", *[round(f["taxa_menor"], 2)] * 3,
-          f"B1, média do menor valor da taxa nas {f['taxa_n']} casas que cobram conforme o dia, incluída a São Jogue (seção 6.3)", "N3",
+          "Mediana dos gastos médios das casas com taxa de entrada conhecida (dentro de cada casa, a média das declarações; seção 3.4); pessimista e otimista na casa de menor e de maior gasto."),
+        R("R05", "Taxa de entrada de terça a quinta", "R$ por pessoa", *[round(f["taxa_menor_mediana"], 2)] * 3,
+          f"B1, mediana do menor valor da taxa nas {f['taxa_n']} casas que cobram conforme o dia, incluída a São Jogue (seção 6.3)", "N3",
           "Preço adotado nos dias úteis, igual nos cenários; o restante do gasto por pessoa (R04) é A&B. Separa a receita de taxa (anexo III) da de A&B (anexo I e CMV)."),
-        R("R06", "Taxa de entrada de sexta a domingo", "R$ por pessoa", *[round(f["taxa_maior"], 2)] * 3,
-          f"B1, média do maior valor da taxa nas {f['taxa_n']} casas que cobram conforme o dia, incluída a São Jogue (seção 6.3)", "N3",
-          "Preço adotado no fim de semana, igual nos cenários. O gasto por pessoa (R04) é a média da semana: o A&B do mês é o gasto total menos a taxa."),
+        A("R06"),
         A("R07"),
         A("R08"),
         A("R09"),
@@ -580,8 +582,6 @@ def premissas(f) -> list[dict]:
         A("C12"),
         A("C13"),
         A("C14"),
-        R("C15", "Refeições da equipe", "refeições por mês", round(refeicoes, 1), round(refeicoes, 1), round(refeicoes, 1),
-          "Escala do cap. 7; decisão do autor (04/11/2026)", "N6", "Uma por turno: dias trabalhados por semana de cada empregado × semanas do mês (etapa inicial; a etapa de equipe soma os turnos da escala com o domingo)."),
         R("I01", "Reforma e instalações", "R$ por m²", *b5("I01", "i01_rs_m2"),
           "B5: SINAPI BA (Caixa, set/2026, com BDI do TCU) e coletas em sites (nov/2026); quantidades do autor", "N2 + N3 + N6",
           f"{cob('I01')} Ponto alugado sem obra estrutural; piso, forro e paredes por cenário; split de 30.000 BTU/h."),
@@ -656,10 +656,10 @@ def calcula(f, v: dict, folha: float) -> dict:
     def custo_fixo(fl, refeicoes, util):
         return (aluguel * (1 + v["C05"]) + fl * (1 + v["C06"]) * (1 + v["C07"]) + v["C08"] + v["C09"] * util
                 + v["C10"] + v["C11"] + v["C12"] + v["I05"] * v["C13"] / 12 + v["C14"] * refeicoes)
-    fixos = custo_fixo(folha, v["C15"], 1.0)
+    fixos = custo_fixo(folha, round(refeicoes_mes(), 1), 1.0)
     m["fixos"] = fixos
     if exp:
-        m.loc[m["expandido"], "fixos"] = custo_fixo(exp["folha"], exp["C15"], HORAS_SEM_EXP / HORAS_SEM)
+        m.loc[m["expandido"], "fixos"] = custo_fixo(exp["folha"], exp["refeicoes"], HORAS_SEM_EXP / HORAS_SEM)
     m["ebitda"] = m["bruta"] - m["simples"] - m["cmv"] - m["cartao"] - m["fixos"]
     inv = dict(reforma=v["I01"] * v["C03"], mobiliario=v["I02"], cozinha=v["I03"], ti=v["I04"],
                acervo=v["I05"], preop=v["I06"], outros=v["I10"], caucao=v["I07"] * aluguel, giro=v["I08"] * fixos)
@@ -820,8 +820,9 @@ def monte_carlo(f, prem, folha, quadro) -> dict:
 
 
 # --------------------------------------------------------------- planilha
-FONTE = Font(name="Arial", size=10, color="000000")
-NEGRITO = Font(name="Arial", size=10, color="000000", bold=True)
+FONTE = Font(name="Arial", size=11, color="000000")
+NEGRITO = Font(name="Arial", size=11, color="000000", bold=True)
+LINK = Font(name="Arial", size=11, color="0563C1", underline="single")
 BRANCO = PatternFill("solid", fgColor="FFFFFF")
 FINA = Side(style="thin", color="000000")
 MOEDA, PCT, DEC1, DEC2, INT = "#,##0.00", "0.00%", "#,##0.0", "#,##0.00", "#,##0"
@@ -849,20 +850,89 @@ SUMARIO_ABAS = {
 
 
 def sumario(wb, titulo_planilha):
-    """Primeira aba: lista as demais abas, com link e descrição (regra das planilhas dos planos)."""
+    """Primeira aba: lista as demais, com o link no conteúdo (mesmo desenho do sumário das planilhas
+    dos blocos, pedido do autor, 25/11/2026). Os nomes das abas ficam curtos porque as fórmulas e os
+    nomes definidos os citam."""
     ws = wb.create_sheet("sumario", 0)
-    ws["A1"] = titulo_planilha
-    ws["A1"].font = NEGRITO
-    ws["A3"], ws["B3"] = "Aba", "Conteúdo"
-    ws["A3"].font = ws["B3"].font = NEGRITO
-    for i, nome in enumerate(wb.sheetnames[1:], 4):
-        c = ws.cell(i, 1, nome)
-        c.hyperlink = f"#'{nome}'!A1"
-        c.font = Font(name="Arial", size=10, color="0563C1", underline="single")
-        ws.cell(i, 2, SUMARIO_ABAS.get(nome, ""))
+    ws.sheet_view.showGridLines = False
+    for j, h in enumerate(["Aba", "Conteúdo"], 1):
+        c = ws.cell(1, j, h)
+        c.font, c.fill = NEGRITO, BRANCO
+        c.alignment = Alignment(horizontal="center", vertical="center")
+        c.border = Border(top=FINA, bottom=FINA)
+    nomes = wb.sheetnames[1:]
+    for i, nome in enumerate(nomes, 2):
+        ws.cell(i, 1, nome).font = FONTE
+        c = ws.cell(i, 2, SUMARIO_ABAS.get(nome, nome))
+        c.hyperlink = Hyperlink(ref=c.coordinate, location=f"'{nome}'!A1")
+        c.font = LINK
+        for j in (1, 2):
+            ws.cell(i, j).alignment = Alignment(horizontal="center" if j == 1 else "left", vertical="center", wrap_text=True)
+            if i == 1 + len(nomes):
+                ws.cell(i, j).border = Border(bottom=FINA)
+    ws.cell(len(nomes) + 3, 1, titulo_planilha).font = NEGRITO
     ws.column_dimensions["A"].width = 16
     ws.column_dimensions["B"].width = 100
     wb.active = 0
+
+
+# Padding (pedido do autor, 25/11/2026), igual ao das planilhas dos blocos: planilha não tem padding de
+# célula, então o vertical sai da altura da linha (texto + 1,5 mm em cima e embaixo no corpo, 2 mm no
+# título e no cabeçalho) e o lateral de 1 mm de cada lado, de 2 mm a mais na largura da coluna. As
+# larguras acima foram medidas em Arial 10; ESCALA_LARG as alarga para o corpo 11.
+PT_MM, LINHA_PT, ESCALA_LARG, LARG_2MM = 72 / 25.4, 14.25, 1.1, 2 / 1.9
+SUBTOTAIS = {"Custos variáveis (R$)", "Custos fixos (R$)", "Custos totais (R$)"}
+ITENS_CUSTOS = list(range(4, 7)) + list(range(8, 18))  # linhas que somam nos subtotais da aba custos
+
+
+def _linhas(texto, largura, negrito):
+    if texto is None or str(texto).startswith("="):
+        return 1
+    cabe = max(1.0, largura * (0.95 if negrito else 1.1))
+    total = 0
+    for parte in str(texto).split("\n"):
+        n, atual = 1, 0
+        for w in parte.split():
+            if atual and atual + 1 + len(w) > cabe:
+                n, atual = n + 1, len(w)
+            else:
+                atual += (1 if atual else 0) + len(w)
+        total += n
+    return total
+
+
+def acabamento(wb):
+    """Corpo 11, padding, linhas de total e subtotais em negrito e itens dos custos recuados."""
+    for ws in wb.worksheets:
+        ncol = ws.max_column
+        larg = {}
+        for j in range(1, ncol + 1):
+            L = get_column_letter(j)
+            w = ws.column_dimensions[L].width if L in ws.column_dimensions and ws.column_dimensions[L].width else 8.43
+            larg[j] = w
+            ws.column_dimensions[L].width = round(w * ESCALA_LARG + LARG_2MM, 2)
+        mescla = {(m.min_row, m.min_col): sum(larg.get(j, 8.43) for j in range(m.min_col, m.max_col + 1))
+                  for m in ws.merged_cells.ranges}
+        for row in ws.iter_rows(min_row=1, max_row=ws.max_row, max_col=ncol):
+            rot = row[0].value
+            negrito_linha = isinstance(rot, str) and (rot.strip().lower().startswith(("total", "subtotal")) or rot in SUBTOTAIS)
+            n, cab, tem = 1, row[0].row == 1, False
+            for c in row:
+                f = c.font
+                bold = bool(f.b) or negrito_linha
+                c.font = Font(name="Arial", size=11, bold=bold, italic=f.i, underline=f.u, color=f.color)
+                if c.value is None:
+                    continue
+                tem = True
+                if bold and c.border.top is not None and c.border.top.style == "thin":
+                    cab = True
+                if c.alignment.wrap_text:
+                    n = max(n, _linhas(c.value, mescla.get((c.row, c.column), larg.get(c.column, 8.43)), bold))
+            if ws.title == "custos" and row[0].row in ITENS_CUSTOS:
+                row[0].alignment = Alignment(horizontal="left", vertical="center", indent=1)
+            if tem:
+                ws.row_dimensions[row[0].row].height = round(n * LINHA_PT + 2 * (2 if cab else 1.5) * PT_MM, 2)
+
 
 def titulo(ws, texto, ncol):
     ws.cell(1, 1, texto)
@@ -883,7 +953,7 @@ def estilo(ws, linha_cab, ultima, ncol, fmt=None):
                 c.border = Border(top=FINA, bottom=FINA)
             elif linha_cab < c.row <= ultima:
                 txt = isinstance(c.value, str) and not str(c.value).startswith("=")
-                c.alignment = Alignment(horizontal="left" if txt else "right", vertical="top", wrap_text=txt)
+                c.alignment = Alignment(horizontal="left" if txt else "right", vertical="center", wrap_text=txt)
                 if c.row == ultima:
                     c.border = Border(bottom=FINA)
                 if fmt and not txt and c.column > 1:
@@ -932,45 +1002,50 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
     for col, w in zip("ABCDEFGHIJK", (6, 34, 16, 12, 12, 12, 12, 36, 9, 52, 10)):
         ws.column_dimensions[col].width = w
 
-    # ---- pessoal
+    # ---- pessoal: uma tabela só, uma linha por pessoa da escala (pedido do autor, 25/11/2026)
     ws = wb.create_sheet("pessoal")
-    titulo(ws, "Quadro de pessoal de referência, salários de admissão em Salvador e adicionais da escala", 7)
     det = pessoal_detalhe(quadro)
-    for j, h in enumerate(["Cargo", "CBO", "Quantidade", "Salário mensal (R$)", "Adicionais da escala por pessoa (R$)",
-                           "Remuneração total mensal (R$)", "Fonte"], 1):
+    linhas_c = list(det[quadro[0][0]]["pessoas"][0])  # linhas do custo, do salário ao custo mensal
+    cab = ["Cargo", "CBO", "Pessoas"] + [f"{ln} (R$)" for ln in linhas_c] + ["Fonte do salário"]
+    nc = len(cab)
+    titulo(ws, "Quadro de pessoal de referência: custo mensal de cada pessoa da escala, cenário provável", nc)
+    for j, h in enumerate(cab, 1):
         ws.cell(2, j, h)
-    for i, (cargo, cbo, q, s, fonte) in enumerate(quadro):
-        r = 3 + i
-        ws.cell(r, 1, cargo); ws.cell(r, 2, cbo); ws.cell(r, 3, q); ws.cell(r, 4, s)
-        ws.cell(r, 5, det[cargo]["remuneracao"] - s)
-        ws.cell(r, 6, f"=C{r}*(D{r}+E{r})"); ws.cell(r, 7, fonte)
-    rt = 3 + len(quadro)
-    ws.cell(rt, 1, "Total"); ws.cell(rt, 3, f"=SUM(C3:C{rt - 1})"); ws.cell(rt, 6, f"=SUM(F3:F{rt - 1})")
-    estilo(ws, 2, rt, 7)
-    for r in range(3, rt + 1):
-        ws.cell(r, 3).number_format = INT
-        ws.cell(r, 4).number_format = ws.cell(r, 5).number_format = ws.cell(r, 6).number_format = MOEDA
-    wb.defined_names["FOLHA_REF"] = DefinedName("FOLHA_REF", attr_text=f"pessoal!$F${rt}")
+    col = {ln: 4 + k for k, ln in enumerate(linhas_c)}
+    r, subtot = 3, []
+    for cargo, cbo, q, sal, fonte in quadro:
+        r_ini = r
+        for i, pes in enumerate(det[cargo]["pessoas"], 1):
+            ws.cell(r, 1, f"{cargo} {i}"); ws.cell(r, 2, cbo); ws.cell(r, 3, 1)
+            for ln in linhas_c:
+                ws.cell(r, col[ln], pes[ln])
+            ws.cell(r, nc, fonte)
+            r += 1
+        ws.cell(r, 1, f"Subtotal – {cargo.lower()}")
+        for j in range(3, nc):
+            L = get_column_letter(j)
+            ws.cell(r, j, f"=SUM({L}{r_ini}:{L}{r - 1})")
+        subtot.append(r)
+        r += 1
+    rt = r
+    ws.cell(rt, 1, "Total")
+    for j in range(3, nc):
+        L = get_column_letter(j)
+        ws.cell(rt, j, "=" + "+".join(f"{L}{x}" for x in subtot))
+    estilo(ws, 2, rt, nc, MOEDA)
+    for rr in range(3, rt + 1):
+        ws.cell(rr, 3).number_format = INT
+        ws.cell(rr, 2).alignment = Alignment(horizontal="center", vertical="center")
+    L_REM = get_column_letter(col["Remuneração"])
+    wb.defined_names["FOLHA_REF"] = DefinedName("FOLHA_REF", attr_text=f"pessoal!${L_REM}${rt}")
     wb.defined_names["QUADRO_N"] = DefinedName("QUADRO_N", attr_text=f"pessoal!$C${rt}")
     nota(ws, rt + 2, "Fonte: Novo CAGED (MTE), salário de admissão, mediana, ago/2025 a jul/2026 (B4). Adicionais pela escala de turnos de 7 h "
          "(noturno, hora noturna reduzida, repouso sobre eles e feriados em dobro; CLT, art. 73; Lei n. 605/1949, art. 9º). "
-         "Acréscimo salarial e encargos na aba premissas (C06 e C07); custo linha a linha abaixo.", 7)
-    # custo linha a linha de cada pessoa da escala (provável)
-    r0 = rt + 4
-    ws.cell(r0, 1, "Custo mensal por pessoa, cenário provável (R$)")
-    linhas = list(det[quadro[0][0]]["pessoas"][0])
-    nomes = [f"{cargo} {i + 1}" for cargo, *_ in quadro for i in range(len(det[cargo]["pessoas"]))]
-    ws.cell(r0 + 1, 1, "Linha")
-    for j, nm in enumerate(nomes, 2):
-        ws.cell(r0 + 1, j, nm)
-    pessoas = [p for cargo, *_ in quadro for p in det[cargo]["pessoas"]]
-    for i, ln in enumerate(linhas):
-        ws.cell(r0 + 2 + i, 1, ln)
-        for j, p in enumerate(pessoas, 2):
-            ws.cell(r0 + 2 + i, j, round(p[ln], 2)).number_format = MOEDA
-    estilo(ws, r0 + 1, r0 + 1 + len(linhas), 1 + len(pessoas))
-    for col, w in zip("ABCDEFG", (44, 16, 16, 16, 16, 16, 50)):
-        ws.column_dimensions[col].width = w
+         "A remuneração soma o salário e os adicionais; o total dela é a folha de referência das abas custos e premissas "
+         "(acréscimo salarial C06 e encargos C07). INSS patronal, RAT e terceiros ficam no DAS do Simples (LC n. 123/2006, art. 13).", nc)
+    for j, w in enumerate([26, 9, 9] + [14] * len(linhas_c) + [50], 1):
+        ws.column_dimensions[get_column_letter(j)].width = w
+    ws.freeze_panes = "B3"
 
     # ---- simples
     ws = wb.create_sheet("simples")
@@ -1088,7 +1163,7 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
         ws[f"{c}14"] = "=P_C11"
         ws[f"{c}15"] = "=P_C12"
         ws[f"{c}16"] = "=P_I05*P_C13/12"
-        ws[f"{c}17"] = "=P_C14*P_C15"
+        ws[f"{c}17"] = "=P_C14*REFEICOES"
         ws[f"{c}18"] = f"=SUM({c}8:{c}17)"
         ws[f"{c}19"] = f"={c}7+{c}18"
     estilo(ws, 2, 19, 2 + MESES, MOEDA)
@@ -1099,27 +1174,29 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
 
     # ---- investimento
     ws = wb.create_sheet("investimento")
-    titulo(ws, "Investimento inicial e depreciação", 4)
-    for j, h in enumerate(["Item", "Valor (R$)", "Vida útil (anos)", "Depreciação anual (R$)", "Reinvestimento anual na perpetuidade (R$)"], 1):
+    titulo(ws, "Investimento inicial e depreciação", 6)
+    for j, h in enumerate(["Item", "Valor (R$)", "Vida contábil (anos)", "Depreciação e amortização anual (R$)",
+                           "Vida física (anos)", "Reinvestimento anual na perpetuidade (R$)"], 1):
         ws.cell(2, j, h)
-    itens = [("Reforma e instalações", "=P_I01*P_C03", VIDA_UTIL["reforma"]), ("Mobiliário", "=P_I02", 10),
-             ("Cozinha e bar", "=P_I03", 10), ("Caixa e informática", "=P_I04", 5),
-             ("Acervo inicial de jogos", "=P_I05", 5), ("Gastos pré-operacionais", "=P_I06", 5),
-             ("Itens sem cotação", "=P_I10", 5),
-             ("Caução do aluguel", "=P_I07*custos!$C$8", 0), ("Capital de giro", "=P_I08*custos!$C$18", 0)]
-    for i, (n, fo, vida) in enumerate(itens):
+    k = ("reforma", "mobiliario", "cozinha", "ti", "acervo", None, "outros", None, None)
+    itens = [("Reforma e instalações", "=P_I01*P_C03"), ("Mobiliário", "=P_I02"), ("Cozinha e bar", "=P_I03"),
+             ("Caixa e informática", "=P_I04"), ("Acervo inicial de jogos", "=P_I05"),
+             ("Gastos pré-operacionais (despesa do ano 0)", "=P_I06"), ("Itens sem cotação", "=P_I10"),
+             ("Caução do aluguel", "=P_I07*custos!$C$8"), ("Capital de giro", "=P_I08*custos!$C$18")]
+    for i, ((n, fo), kk) in enumerate(zip(itens, k)):
         r = 3 + i
-        ws.cell(r, 1, n); ws.cell(r, 2, fo); ws.cell(r, 3, vida)
-        ws.cell(r, 4, f"=IF(C{r}>0,B{r}/C{r},0)")
-        ws.cell(r, 5, f"=D{r}" if n in ("Reforma e instalações", "Mobiliário", "Cozinha e bar", "Caixa e informática", "Itens sem cotação") else 0)
+        ws.cell(r, 1, n); ws.cell(r, 2, fo)
+        ws.cell(r, 3, VIDA_CONTABIL[kk] if kk else 0); ws.cell(r, 4, f"=IF(C{r}>0,B{r}/C{r},0)")
+        ws.cell(r, 5, VIDA_UTIL[kk] if kk in REPOE_PERPETUIDADE else 0)
+        ws.cell(r, 6, f"=IF(E{r}>0,B{r}/E{r},0)")
     rt = 3 + len(itens)
-    ws.cell(rt, 1, "Total"); ws.cell(rt, 2, f"=SUM(B3:B{rt - 1})"); ws.cell(rt, 4, f"=SUM(D3:D{rt - 1})"); ws.cell(rt, 5, f"=SUM(E3:E{rt - 1})")
-    estilo(ws, 2, rt, 5, MOEDA)
+    ws.cell(rt, 1, "Total"); ws.cell(rt, 2, f"=SUM(B3:B{rt - 1})"); ws.cell(rt, 4, f"=SUM(D3:D{rt - 1})"); ws.cell(rt, 6, f"=SUM(F3:F{rt - 1})")
+    estilo(ws, 2, rt, 6, MOEDA)
     for r in range(3, rt):
-        ws.cell(r, 3).number_format = "0"
-    nota(ws, rt + 2, "Fonte: aba premissas (I01 a I08, I10, C03). Reforma depreciada em 10 anos. O reinvestimento da perpetuidade repõe só os itens físicos: o acervo já se repõe pela C13 nos custos fixos, e os gastos pré-operacionais não se repetem. Caução e capital de giro voltam no ano 5 só sem valor residual (o negócio fecha). Valor residual na aba fluxo_caixa (M03).", 4)
+        ws.cell(r, 3).number_format = ws.cell(r, 5).number_format = "0"
+    nota(ws, rt + 2, "Fonte: aba premissas (I01 a I08, I10, C03). Na DRE, a reforma se amortiza no prazo do contrato de aluguel (5 anos), e os gastos pré-operacionais são despesa do ano 0, sem ativo diferido (Lei n. 11.941/2009; CPC 04 (R1)). O reinvestimento da perpetuidade usa a vida física e repõe só os itens físicos: o acervo já se repõe pela C13 nos custos fixos, e os gastos pré-operacionais não se repetem. Caução e capital de giro voltam no ano 5 só sem valor residual (o negócio fecha). Valor residual na aba fluxo_caixa (M03).", 6)
     ws.column_dimensions["A"].width = 30
-    for col in "BCDE":
+    for col in "BCDEF":
         ws.column_dimensions[col].width = 18
 
     # ---- aluguel por classe de área (C03 a C05)
@@ -1150,38 +1227,49 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
     for col in "BCDEFG":
         ws.column_dimensions[col].width = 18
 
-    # ---- utilidades (C09)
+    # ---- utilidades (C09): uma tabela só, com a energia aberta por equipamento (pedido do autor, 25/11/2026)
     ws = wb.create_sheet("utilidades")
     u = f["utilidades"]
-    titulo(ws, "Utilidades por mês no provável (C09), pelas tarifas vigentes em nov/2026", 3)
-    for j, h in enumerate(["Item", "Quantidade por mês", "Valor (R$ por mês)"], 1):
+    titulo(ws, "Utilidades por mês no provável (C09), pelas tarifas vigentes em nov/2026", 5)
+    for j, h in enumerate(["Item", "Potência média (kW)", "Horas por mês", "Quantidade por mês", "Valor (R$ por mês)"], 1):
         ws.cell(2, j, h)
-    linhas = [("Energia elétrica (kWh), Neoenergia Coelba, B3", u["kwh"], u["energia"]),
-              ("Água e esgoto (m³), Embasa, comercial", u["m3"], u["agua_esgoto"]),
-              ("Gás GLP (kg), média do P13 em Salvador (ANP)", u["glp_kg"], u["gas"]),
-              ("Internet (plano de fibra)", 1, u["internet"])]
-    for i, (n, q, val) in enumerate(linhas, 3):
-        ws.cell(i, 1, n); ws.cell(i, 2, q); ws.cell(i, 3, val)
-    ws.cell(7, 1, "Total"); ws.cell(7, 3, "=SUM(C3:C6)")
-    estilo(ws, 2, 7, 3, MOEDA)
-    for rr in range(3, 8):
-        ws.cell(rr, 2).number_format = DEC2
-    nota(ws, 9, f"Fonte: Neoenergia Coelba, tarifa B3 convencional de R$ {ENERGIA_TARIFA:.5f} por kWh sem tributos (ANEEL, REH n. 3.578/2026), com ICMS de {ENERGIA_ICMS:.1%} e PIS/Cofins de {ENERGIA_PIS_COFINS:.0%} por dentro (R$ {u['preco_kwh']:.4f} por kWh); Embasa, tabela de 2026 (AGERSA n. 001/2026), comercial, R$ {AGUA_FIXA:.2f} até 6 m³ e esgoto de {ESGOTO_PCT:.0%} da água; ANP, GLP P13 em Salvador a R$ {GLP_P13:.2f}. Consumos do autor (N6): equipamentos do orçamento do B5 nas {HORAS_SEM} h abertas por semana, {AGUA_L_PESSOA} L de água e {GLP_KG_PESSOA:.2f} kg de GLP por cliente, com {f['utilidades_pessoas']:,.0f} clientes por mês no provável.", 3)
-    for i, (n, kw, uso, h) in enumerate(ENERGIA_EQUIP, 12):
-        ws.cell(i, 1, n); ws.cell(i, 2, ILUMINACAO_W_M2 * f["area_media"] / 1000 if kw is None else kw); ws.cell(i, 3, f"{h} h por dia aberto" if uso == "cozinha" else uso)
-    ws.cell(11, 1, "Equipamento"); ws.cell(11, 2, "kW médio"); ws.cell(11, 3, "Horas")
-    estilo(ws, 11, 11 + len(ENERGIA_EQUIP), 3, DEC2)
+    abertas, dias = HORAS_SEM * 52 / 12, 5 * 52 / 12
+    horas = {"aberto": abertas, "operacao": abertas + dias, "24h": 365.25 * 24 / 12}
+    ws.cell(3, 1, "Energia elétrica (kWh), Neoenergia Coelba, B3")
+    r = 4
+    for n, kw, uso, h_dia in ENERGIA_EQUIP:
+        kw = ILUMINACAO_W_M2 * f["area_media"] / 1000 if kw is None else kw
+        ws.cell(r, 1, n); ws.cell(r, 2, kw); ws.cell(r, 3, h_dia * dias if uso == "cozinha" else horas[uso])
+        ws.cell(r, 4, f"=B{r}*C{r}")
+        r += 1
+    ws.cell(3, 4, f"=SUM(D4:D{r - 1})")
+    ws.cell(3, 5, f"=D3*{u['preco_kwh']}")
+    for n, q, val in (("Água e esgoto (m³), Embasa, comercial", u["m3"], u["agua_esgoto"]),
+                      ("Gás GLP (kg), média do P13 em Salvador (ANP)", u["glp_kg"], u["gas"]),
+                      ("Internet (plano de fibra)", 1, u["internet"])):
+        ws.cell(r, 1, n); ws.cell(r, 4, q); ws.cell(r, 5, val)
+        r += 1
+    ws.cell(r, 1, "Total"); ws.cell(r, 5, f"=E3+SUM(E{r - 3}:E{r - 1})")
+    estilo(ws, 2, r, 5, DEC2)
+    for rr in range(3, r + 1):
+        ws.cell(rr, 5).number_format = MOEDA
+    for rr in range(4, 4 + len(ENERGIA_EQUIP)):
+        ws.cell(rr, 1).alignment = Alignment(horizontal="left", vertical="center", wrap_text=True, indent=1)
+    kwh_eq = sum((ILUMINACAO_W_M2 * f["area_media"] / 1000 if kw is None else kw) * (h * dias if uso == "cozinha" else horas[uso])
+                 for _, kw, uso, h in ENERGIA_EQUIP)
+    assert abs(kwh_eq - u["kwh"]) < 1e-6 and abs(kwh_eq * u["preco_kwh"] - u["energia"]) < 1e-6  # mesma conta de utilidades()
+    nota(ws, r + 2, f"Fonte: Neoenergia Coelba, tarifa B3 convencional de R$ {ENERGIA_TARIFA:.5f} por kWh sem tributos (ANEEL, REH n. 3.578/2026), com ICMS de {ENERGIA_ICMS:.1%} e PIS/Cofins de {ENERGIA_PIS_COFINS:.0%} por dentro (R$ {u['preco_kwh']:.4f} por kWh); Embasa, tabela de 2026 (AGERSA n. 001/2026), comercial, R$ {AGUA_FIXA:.2f} até 6 m³ e esgoto de {ESGOTO_PCT:.0%} da água; ANP, GLP P13 em Salvador a R$ {GLP_P13:.2f}. Consumos do autor (N6): equipamentos do orçamento do B5 nas {HORAS_SEM} h abertas por semana (operação = horas abertas mais uma hora de preparo por dia; cozinha = horas de uso por dia aberto), {AGUA_L_PESSOA} L de água e {GLP_KG_PESSOA:.2f} kg de GLP por cliente, com {f['utilidades_pessoas']:,.0f} clientes por mês no provável.", 5)
     ws.column_dimensions["A"].width = 60
-    for col in "BC":
-        ws.column_dimensions[col].width = 20
+    for col in "BCDE":
+        ws.column_dimensions[col].width = 16
 
     # ---- dre (anual)
     ws = wb.create_sheet("dre")
-    titulo(ws, "Demonstração do resultado projetada (R$, preços de out/2026)", 1 + ANOS)
+    titulo(ws, "Demonstração do resultado projetada (R$, preços de out/2026)", 2 + ANOS)
     ws["A2"] = "Conta"
-    for a in range(1, ANOS + 1):
-        ws.cell(2, 1 + a, f"Ano {a}")
-        ws.cell(3, 1 + a, a)
+    for a in range(0, ANOS + 1):
+        ws.cell(2, 2 + a, f"Ano {a}")
+        ws.cell(3, 2 + a, a)
     ws["A3"] = "Ano (número)"
     soma = lambda aba, lin, c: f"SUMIF({aba}!$C$3:$BJ$3,{c}$3,{aba}!$C${lin}:$BJ${lin})"
     contas = [(4, "Receita bruta", lambda c: "=" + soma("receitas", 12, c)),
@@ -1192,21 +1280,22 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
               (9, "Margem de contribuição", lambda c: f"={c}6+{c}7+{c}8"),
               (10, "(-) Custos fixos", lambda c: "=-" + soma("custos", 18, c)),
               (11, "EBITDA", lambda c: f"={c}9+{c}10"),
-              (12, "(-) Depreciação e amortização", lambda c: "=-investimento!$D$12"),
-              (13, "Lucro líquido", lambda c: f"={c}11+{c}12"),
-              (14, "Margem líquida", lambda c: f"=IF({c}4=0,0,{c}13/{c}4)")]
+              (12, "(-) Despesas pré-operacionais", lambda c: "=-investimento!$B$8" if c == "B" else "=0"),
+              (13, "(-) Depreciação e amortização", lambda c: "=0" if c == "B" else "=-investimento!$D$12"),
+              (14, "Lucro líquido", lambda c: f"={c}11+{c}12+{c}13"),
+              (15, "Margem líquida", lambda c: f"=IF({c}4=0,0,{c}14/{c}4)")]
     for r, n, fo in contas:
         ws.cell(r, 1, n)
-        for a in range(1, ANOS + 1):
-            c = get_column_letter(1 + a)
+        for a in range(0, ANOS + 1):
+            c = get_column_letter(2 + a)
             ws[f"{c}{r}"] = fo(c)
-    estilo(ws, 2, 14, 1 + ANOS, MOEDA)
-    for a in range(2, 2 + ANOS):
-        ws.cell(14, a).number_format = PCT
+    estilo(ws, 2, 15, 2 + ANOS, MOEDA)
+    for a in range(2, 3 + ANOS):
+        ws.cell(15, a).number_format = PCT
         ws.cell(3, a).number_format = "0"
-    nota(ws, 16, "Fonte: abas receitas, custos e investimento. No Simples Nacional, IRPJ e CSLL estão no DAS; não há imposto sobre o lucro à parte.", 1 + ANOS)
+    nota(ws, 17, "Fonte: abas receitas, custos e investimento. No Simples Nacional, IRPJ e CSLL estão no DAS; não há imposto sobre o lucro à parte. Os gastos pré-operacionais são despesa do ano 0 (Lei n. 11.941/2009; CPC 04 (R1)), e a reforma se amortiza nos 5 anos do contrato de aluguel.", 2 + ANOS)
     ws.column_dimensions["A"].width = 34
-    for a in range(2, 2 + ANOS):
+    for a in range(2, 3 + ANOS):
         ws.column_dimensions[get_column_letter(a)].width = 16
 
     # ---- fluxo de caixa (anual)
@@ -1225,9 +1314,9 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
     for t in range(ANOS + 1):
         c = get_column_letter(2 + t)
         ws[f"{c}4"] = "=-investimento!$B$12" if t == 0 else 0
-        ws[f"{c}5"] = 0 if t == 0 else f"=dre!{get_column_letter(1 + t)}11"
+        ws[f"{c}5"] = 0 if t == 0 else f"=dre!{get_column_letter(2 + t)}11"
         ws[f"{c}6"] = f"=IF({c}12>0,0,investimento!$B$10+investimento!$B$11)" if t == ANOS else 0
-        ws[f"{c}12"] = (f"=P_M03*MAX(0,(dre!{get_column_letter(1 + t)}11-investimento!$E$12)/P_M01)"
+        ws[f"{c}12"] = (f"=P_M03*MAX(0,(dre!{get_column_letter(2 + t)}11-investimento!$F$12)/P_M01)"
                         if t == ANOS else 0)
         ws[f"{c}7"] = f"=SUM({c}4:{c}6)+{c}12"
         ws[f"{c}8"] = f"=1/(1+P_M01)^{c}3"
@@ -1258,7 +1347,7 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
            ("Payback descontado", '=IF(COUNT(fluxo_caixa!C11:G11)=0,"mais de 5 anos",MIN(fluxo_caixa!C11:G11))', "anos"),
            ("Receita bruta mensal madura (mês 60)", "=receitas!BJ12", "R$"),
            ("Custos fixos mensais", "=custos!BJ18", "R$"),
-           ("Margem de contribuição (ano 5)", "=dre!F9/dre!F4", "% da receita bruta"),
+           ("Margem de contribuição (ano 5)", "=dre!G9/dre!G4", "% da receita bruta"),
            ("Receita bruta mensal de equilíbrio", "=B9/B10", "R$"),
            ("Receita madura ÷ receita de equilíbrio", "=B8/B11", "vezes"),
            ("Circulação de equilíbrio no pico de fim de semana (dia útil na mesma proporção)", "=P_R01*(B11-receitas!BJ11)/(B8-receitas!BJ11)", "pessoas por hora"),
@@ -1267,6 +1356,7 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
         ws.cell(3 + i, 1, n); ws.cell(3 + i, 2, fo); ws.cell(3 + i, 3, u)
     rt = 2 + len(ind)
     wb.defined_names["P_CEN"] = DefinedName("P_CEN", attr_text="premissas!$D$2")
+    wb.defined_names["REFEICOES"] = DefinedName("REFEICOES", attr_text=str(round(refeicoes_mes(), 1)))
     estilo(ws, 2, rt, 3, MOEDA)
     ws["B6"].number_format = PCT
     ws["B7"].number_format = DEC2
@@ -1424,8 +1514,8 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
          "NFC-e emitidas por dia, São Jogue Bela Vista, 10/10 a 16/10/2026 (B3); nota emitida só a pedido, sem medida de pessoas por nota: ordem de grandeza"),
         ("Pessoas atendidas por dia × NFC-e da Paralela", "=B3", float(notas.loc["PA", "notas_emitidas"] / notas.loc["PA", "dias"]),
          "NFC-e por dia, São Jogue Paralela, 17/10 a 30/10/2026 (B3), com o fim de semana da eleição; ordem de grandeza"),
-        ("Receita por pessoa (R$)", "=receitas!BJ12/receitas!BJ7", float(f["gasto_casas_cesta"]["cesta_consumo"].mean()),
-         "Cesta de consumo média (taxa de entrada + bebida + hambúrguer) das casas da R04 (B1)"),
+        ("Receita por pessoa (R$)", "=receitas!BJ12/receitas!BJ7", float(f["gasto_casas_cesta"]["cesta_consumo"].median()),
+         "Cesta de consumo mediana (taxa de entrada + bebida + hambúrguer) das casas da R04 (B1; seção 3.4)"),
         ("Taxa de entrada média por pessoa (R$)", "=(receitas!BJ8+receitas!BJ9)/receitas!BJ7", float(f["taxa_b1_mediana"]),
          f"Mediana do couvert ou taxa de jogo nos cardápios de {f['taxa_b1_n']} concorrentes (B1)"),
         ("Pessoas atendidas por dia por funcionário", "=B3/QUADRO_N", "",
@@ -1447,6 +1537,7 @@ def planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual):
     for col, w in zip("ABCD", (48, 18, 18, 70)):
         ws.column_dimensions[col].width = w
     sumario(wb, "P9 - Plano financeiro: modelo da luderia")
+    acabamento(wb)
     return wb
 
 
@@ -1530,7 +1621,7 @@ def gravar_premissas(df: pd.DataFrame, destino: Path, titulo_aba: str) -> None:
         ws.freeze_panes = "B2"
         info = xw.book.create_sheet("sobre")
         info["A1"] = titulo_aba
-        info["A2"] = (f"Sincronizado com textos/planilhas/{SAIDA.name} (aba premissas): o modelo confere a cada execução, "
+        info["A2"] = (f"Sincronizado com textos-tcc/planilhas/{SAIDA.name} (aba premissas): o modelo confere a cada execução, "
                       "e python3 _src/outros/G3_modelo_financeiro/gerar_modelo_financeiro.py --conferir confere sem regerar.")
         sumario(xw.book, titulo_aba)
 
@@ -1575,7 +1666,7 @@ def main():
     folha = sum(q * det[cargo]["remuneracao"] for cargo, _, q, _, _ in quadro)
     q_exp = quadro_pessoal(f, "expansao")
     d_exp = pessoal_detalhe(q_exp, "expansao")
-    f["exp"] = dict(O01=MESAS + MC_EXPANSAO, R02=f["r15_exp"], O06=3, C15=refeicoes_mes("expansao"),
+    f["exp"] = dict(O01=MESAS + MC_EXPANSAO, R02=f["r15_exp"], O06=3, refeicoes=refeicoes_mes("expansao"),
                     folha=sum(q * d_exp[c]["remuneracao"] for c, _, q, _, _ in q_exp))
     f["exp_quadro"] = {c: q for c, _, q, _, _ in q_exp}
     resultados = {c: calcula(f, valores(prem, c), folha) for c in CENARIOS}
@@ -1596,7 +1687,7 @@ def main():
 
     sem_residual = {c: calcula(f, dict(valores(prem, c), M03=0), folha) for c in CENARIOS}
     print(f"Etapa de equipe: {f['exp']['O01']} mesas fixas, {f['exp_quadro']}, folha R$ {f['exp']['folha']:,.2f}"
-          f" (etapa 1: R$ {folha:,.2f}), {f['exp']['C15']:.1f} refeições, horas de pico do fim de semana {f['exp']['R02']:.2f}")
+          f" (etapa 1: R$ {folha:,.2f}), {f['exp']['refeicoes']:.1f} refeições, horas de pico do fim de semana {f['exp']['R02']:.2f}")
     wb = planilha(f, prem, quadro, resultados, tornado, rupt, mc, sem_residual)
     registro = pd.DataFrame(prem).rename(columns={"pess": "pessimista", "prov": "provavel", "otim": "otimista", "just": "justificativa"})
     SAIDA.parent.mkdir(parents=True, exist_ok=True)

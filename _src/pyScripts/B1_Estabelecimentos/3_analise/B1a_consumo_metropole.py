@@ -5,7 +5,7 @@ não vegetariano) por metrópole, mediana entre as casas com os dois itens no ca
 A cesta segue a decisão de 04/11/2026 (hambúrguer no lugar de "uma entrada ou prato").
 
 Entrada: dados-agregados/B1_estabelecimentos/B1_resumo_estabelecimentos.xlsx (aba cesta)
-Saída: textos/graficos/5-4_consumo_por_metropole.png; imprime as estatísticas do texto (5.3.2).
+Saída: textos-tcc/graficos/5-4_consumo_por_metropole.png; imprime as estatísticas do texto (5.3.2).
 
 Uso:
     python3 "_src/pyScripts/B1_Estabelecimentos/3_analise/B1a_consumo_metropole.py"
@@ -25,7 +25,7 @@ import planilha_estilo as est
 
 ROOT = _AQUI.parents[4]
 B1 = ROOT / "dados-agregados" / "B1_estabelecimentos" / "B1_resumo_estabelecimentos.xlsx"
-FIG = ROOT / "textos" / "graficos"
+FIG = ROOT / "textos-tcc" / "graficos"
 
 
 def main():

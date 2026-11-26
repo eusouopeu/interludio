@@ -19,7 +19,7 @@ export function BarraVisita({ unidade, onComecar, onTemporizador }: { unidade: U
   const v = visitaAtiva(estado, unidade.id)
   if (!v)
     return (
-      <button onClick={onComecar} className="mx-4 mt-2 flex h-11 w-[calc(100%-2rem)] items-center justify-center gap-2 rounded-lg bg-caneta-600 font-bold text-sobre">
+      <button onClick={onComecar} className="mx-4 mt-2 flex h-11 w-[calc(100%-2rem)] items-center justify-center gap-2 rounded-lg bg-caneta-700 font-bold text-sobre">
         <PlayIcon className="size-5" /> Começar visita
       </button>
     )
@@ -31,7 +31,7 @@ export function BarraVisita({ unidade, onComecar, onTemporizador }: { unidade: U
       onClick={onTemporizador}
       className={`mx-4 mt-2 flex w-[calc(100%-2rem)] items-center gap-2 rounded-lg px-3 py-2 text-left text-[15px] ${pendencia ? 'bg-alerta-100' : 'bg-neutro-100'}`}
     >
-      <span className="size-2.5 shrink-0 animate-pulse rounded-full bg-caneta-600" aria-hidden />
+      <span className="size-2.5 shrink-0 animate-pulse rounded-full bg-caneta-700" aria-hidden />
       <span className="min-w-0 flex-1">
         <span className="block truncate">
           <b className="text-caneta-700">{v.observador || 'sem observador'}</b> desde {v.inicio.slice(11, 16)} · <b>{pessoasDentro(estado, v.id)}</b> dentro

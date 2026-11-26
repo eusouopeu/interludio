@@ -1,4 +1,4 @@
-// Gera textos/_planejamento/cronograma_luderia.docx a partir de textos/_planejamento/cronograma_luderia.md,
+// Gera textos-tcc/_planejamento/cronograma_luderia.docx a partir de textos-tcc/_planejamento/cronograma_luderia.md,
 // a única fonte do cronograma. Os .docx não são versionados: gerar quando for enviar.
 //
 // Converte títulos, parágrafos, listas e tabelas. Dentro das células, itens
@@ -6,7 +6,7 @@
 // mantidos como negrito e texto simples. Itens de checklist ("- [x]", "- [ ]")
 // viram ☑ e ☐.
 //
-// Com --resumo, gera textos/_planejamento/cronograma_luderia_atual.docx em A4 retrato,
+// Com --resumo, gera textos-tcc/_planejamento/cronograma_luderia_atual.docx em A4 retrato,
 // só com os títulos e as tabelas das seções listadas em SECOES_RESUMO (as tabelas
 // de uma seção viram uma só, com um cabeçalho).
 //
@@ -19,7 +19,7 @@ const {
 } = require("docx");
 
 const ROOT = path.resolve(__dirname, "..", "..", "..");
-const PASTA = path.join(ROOT, "textos", "_planejamento");
+const PASTA = path.join(ROOT, "textos-tcc", "_planejamento");
 const MD = path.join(PASTA, "cronograma_luderia.md");
 const RESUMO = process.argv.includes("--resumo");
 const OUT = path.join(PASTA, RESUMO ? "cronograma_luderia_atual.docx" : "cronograma_luderia.docx");

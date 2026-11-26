@@ -1,17 +1,23 @@
-﻿categoria;avaliacoes;pct_simples;pct_ponderado_estabelecimento;n_avaliacoes
-Atendimento e hospitalidade;885;55.73;56.06;1588
-Alimentos e bebidas;644;40.55;38.04;1588
-Ambiente físico e conforto;509;32.05;34.68;1588
-Acervo de jogos;427;26.89;27.45;1588
-Preço e valor percebido;203;12.78;19.88;1588
-Varejo e pós-venda;109;6.86;18.22;1588
-Mediação lúdica (monitoria);261;16.44;15.73;1588
-Retorno declarado;221;13.92;13.59;1588
-Capacidade, reserva e fila;108;6.8;9.64;1588
-Avaliação genérica;140;8.82;7.96;1588
-Programação e atrações;75;4.72;7.61;1588
-Comunidade de jogadores;35;2.2;6.36;1588
-Tempo de serviço e erros de pedido;86;5.42;6.31;1588
-Localização e acesso;22;1.39;2.19;1588
-Ruído;32;2.02;1.69;1588
-Segurança, inclusão e respeito;24;1.51;1.51;1588
+﻿categoria;avaliacoes;pct_avaliacoes;n_avaliacoes
+Atendimento presencial;905;55.6;1628
+Comida;555;34.1;1628
+Ambiente e decoração;427;26.2;1628
+Variedade do acervo;327;20.1;1628
+Explicação de jogos;233;14.3;1628
+Curadoria e conservação do acervo;149;9.2;1628
+Espaço e lotação;107;6.6;1628
+Bebidas;98;6.0;1628
+Eventos e comunidade;94;5.8;1628
+Preço de outros itens;84;5.2;1628
+Conforto e barulho;83;5.1;1628
+Preço do cardápio;74;4.5;1628
+Regras da casa;70;4.3;1628
+Rapidez do serviço;68;4.2;1628
+Variedade do cardápio;66;4.1;1628
+Indicações de jogos;59;3.6;1628
+Comemorações e grupos;51;3.1;1628
+Preço da entrada;45;2.8;1628
+Porções;40;2.5;1628
+Limpeza;34;2.1;1628
+Atendimento online;34;2.1;1628
+Localização e acesso;22;1.4;1628

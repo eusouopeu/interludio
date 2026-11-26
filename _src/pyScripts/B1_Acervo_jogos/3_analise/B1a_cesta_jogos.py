@@ -176,6 +176,29 @@ def main():
                    "custo_otimista_rs": round(prov_j * (1 - x_preco), 2), "custo_provavel_rs": round(prov_j, 2),
                    "custo_pessimista_rs": round(prov_j * (1 + x_preco), 2)})
     acervo = pd.DataFrame(acervo)
+    # Curva do acervo (pedido do autor, 25/11/2026): o custo cresce à medida que entram jogos menos
+    # presentes; uma linha por mínimo de casas (k), com a mesma regra de preço do acervo do joelho,
+    # até o primeiro k cujo acervo passa do 3º quartil dos acervos publicados.
+    banco["preco_curva"] = [faixa(list(precos_por_loja(d).values()))[1] for d in banco.venda_detalhe]
+    marcos = {"joelho da curva": len(joelho)}
+    for rot, q in [("1º quartil dos acervos", 0.25), ("mediana dos acervos", 0.5), ("3º quartil dos acervos", 0.75)]:
+        marcos[rot] = round(tamanhos.quantile(q))
+    curva, anterior = [], 0
+    for k in ks:
+        sub = banco[banco.n_casas_acervo >= k]
+        prov = sub.preco_curva.fillna(round(preco_titulo["provavel"], 2)).sum()
+        n = len(sub)
+        marco = "; ".join(r for r, t in marcos.items() if (r == "joelho da curva" and k == k_joelho)
+                          or (r != "joelho da curva" and anterior < t <= n))
+        curva.append({"casas_minimas": k, "titulos": n, "titulos_novos": n - anterior,
+                      "com_preco": int(sub.preco_curva.notna().sum()),
+                      "custo_otimista_rs": round(prov * (1 - x_preco), 2), "custo_provavel_rs": round(prov, 2),
+                      "custo_pessimista_rs": round(prov * (1 + x_preco), 2), "marco": marco})
+        anterior = n
+        if n >= marcos["3º quartil dos acervos"]:
+            break
+    curva = pd.DataFrame(curva)
+    assert curva.titulos_novos.sum() == curva.titulos.iloc[-1], "curva do acervo não fecha"
     joelho = joelho[["jogo", "n_casas_acervo", "com_preco", "preco_provavel_rs", "jogadores_min", "jogadores_max",
                      "duracao_min", "mecanicas"]].sort_values(["n_casas_acervo", "jogo"], ascending=[False, True])
 
@@ -185,6 +208,7 @@ def main():
         indice.to_excel(w, sheet_name="indice_lojas", index=False)
         acervo.to_excel(w, sheet_name="acervo_inicial", index=False)
         joelho.to_excel(w, sheet_name="acervo_joelho", index=False)
+        curva.to_excel(w, sheet_name="acervo_curva", index=False)
 
     print(f"Cesta: {len(cesta)} jogos em {MIN_CASAS}+ casas; {len(com)} com preço de venda, "
           f"{len(cesta) - len(com)} sem loja.")

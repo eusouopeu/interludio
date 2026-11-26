@@ -10,7 +10,7 @@ conferida contra o total de casas com perfil coletado (diferença zero).
 Entrada: dados-agregados/B1_redes_sociais/B1_instagram_resumo.csv (coletas de 12 e
 16/11/2026; as 61 casas com perfil, todas na população do B1), com o nome da casa de
 dados-agregados/B1_estabelecimentos/B1_resumo_estabelecimentos.xlsx.
-Saídas: textos/graficos/5-5_seguidores_instagram.png e 5-6_posts_instagram.png (estilo dos
+Saídas: textos-tcc/graficos/5-5_seguidores_instagram.png e 5-6_posts_instagram.png (estilo dos
 gráficos dos capítulos, `planilha_estilo`: slate-400 nas barras, purple-700 para Salvador) e
 os valores desenhados em dados-agregados/B1_estabelecimentos/5_graficos/graficos/valores/.
 "Posts" é o total de publicações do perfil na coleta (`n_posts_total`), não o do período.
@@ -36,7 +36,7 @@ import planilha_estilo as est  # noqa: E402
 ROOT = _AQUI.parents[4]
 IG = ROOT / "dados-agregados" / "B1_redes_sociais" / "B1_instagram_resumo.csv"
 B1 = ROOT / "dados-agregados" / "B1_estabelecimentos" / "B1_resumo_estabelecimentos.xlsx"
-GRAFICOS = ROOT / "textos" / "graficos"
+GRAFICOS = ROOT / "textos-tcc" / "graficos"
 VALORES = ROOT / "dados-agregados" / "B1_estabelecimentos" / "5_graficos" / "graficos" / "valores"
 
 

@@ -1,6 +1,6 @@
 """Gera a planta baixa da alternativa (b) da L37: 11,00 x 11,60 m, sem booths (1 px = 1 cm).
 
-Saída: textos/figuras/planta-baixa-10x12.svg. Mesmo estilo e componentes de
+Saída: textos-tcc/figuras/planta-baixa-10x12.svg. Mesmo estilo e componentes de
 gerar_planta_baixa_svg.py, lidos de lá para não duplicar código.
 
 Pedido do autor (15/11/2026, revisão): até 130 m², só mesas soltas (0,95 m entre mesas,
@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[3]
 _BASE = Path(__file__).with_name("gerar_planta_baixa_svg.py").read_text(encoding="utf-8")
 exec(_BASE.split("# ---------------------------------------------------------------- desenho")[0])
 
-SAIDA = ROOT / "textos" / "figuras" / "planta-baixa-10x12.svg"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "planta-baixa-10x12.svg"
 W, D = 1070, 1130          # medidas internas (cm): 11,00 x 11,60 m externos
 EXT, INT = 15, 15
 M = 90

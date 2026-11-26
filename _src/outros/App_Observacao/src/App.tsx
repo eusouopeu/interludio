@@ -342,7 +342,7 @@ function Inicio({ estado, onAbrir, onNova, onExportar }: { estado: Estado; onAbr
                   </span>
                 </span>
                 {ativa ? (
-                  <span className="rounded-full bg-caneta-600 px-2 py-0.5 text-[13px] font-bold text-sobre">
+                  <span className="rounded-full bg-caneta-700 px-2 py-0.5 text-[13px] font-bold text-sobre">
                     {ativa.observador} desde {ativa.inicio.slice(11, 16)}
                   </span>
                 ) : (

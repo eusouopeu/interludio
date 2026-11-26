@@ -49,7 +49,7 @@ export function SecaoMedidas({ unidade }: { unidade: Unidade }) {
                 {m.hora} · ref.: {m.referencia}
               </span>
             </span>
-            <b className="text-lg text-caneta-600">{cm(m.cm)}</b>
+            <b className="text-lg text-caneta-700">{cm(m.cm)}</b>
             <button
               aria-label="Apagar medida"
               onClick={() => {
@@ -174,7 +174,7 @@ function Medidor({ arquivo, onCancelar, onSalvar }: { arquivo: string; onCancela
         <button
           disabled={valor === null}
           onClick={() => valor !== null && onSalvar(rotulo, valor, refNome, refCm)}
-          className="h-12 w-full rounded-lg bg-caneta-600 font-bold text-sobre disabled:opacity-40"
+          className="h-12 w-full rounded-lg bg-caneta-700 font-bold text-sobre disabled:opacity-40"
         >
           {valor === null ? 'Marque os 4 pontos' : `Salvar ${cm(valor)}`}
         </button>

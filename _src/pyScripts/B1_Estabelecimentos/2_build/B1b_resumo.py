@@ -24,7 +24,7 @@ Fontes:
                                                       -> títulos do acervo
   dados-agregados/B2_avaliacoes/B2_cobertura_coleta.csv -> avaliações no recorte
 
-Cesta por pessoa (textos/_planejamento/_arquivo/registro_previo_luderia.md): couvert ou
+Cesta por pessoa (textos-tcc/_planejamento/_arquivo/registro_previo_luderia.md): couvert ou
 taxa de jogo + uma bebida + uma entrada ou um prato principal, com os preços do
 cardápio da própria casa, em três níveis: baixa (percentil 25 de cada
 categoria), mediana e alta (percentil 75). Couvert que não aparece no cardápio

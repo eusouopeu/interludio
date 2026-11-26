@@ -1,7 +1,7 @@
 """
 Bloco B1 - temas das legendas do Instagram das casas aprovadas, pelas mesmas
 categorias da análise de conteúdo do B2 (livro de códigos em
-textos/_planejamento/_instrumentos/_arquivo/analise_conteudo_bardin_B2.md, §1.4).
+textos-tcc/_planejamento/_instrumentos/_arquivo/analise_conteudo_bardin_B2.md, §1.4).
 
 Pergunta: o que as casas anunciam (legendas) bate com o que os clientes
 elogiam ou criticam (avaliações do Google, B2)? Tema muito anunciado e pouco
@@ -61,13 +61,17 @@ import pandas as pd
 
 import instagram_comum as ic
 
-SAIDA = ic.SAIDA / "temas"
+SAIDA = ic.SAIDA / "temas" / (ic.PASTA_RECORTE if ic.modo_recorte() else "")
 
 JANELA_DE, JANELA_ATE = "2024-10-01", "2026-09-30"
 MIN_POSTS = 20
 N_VALIDACAO = 25
 SEMENTE = 20261013
 Z = 1.96
+RECORTE = ic.modo_recorte()
+if RECORTE:  # versão resumida: mínimo proporcional (20 posts em 24 meses -> 4 em 4 meses)
+    JANELA_DE, JANELA_ATE = ic.RECORTE_DE, ic.RECORTE_ATE
+    MIN_POSTS = math.ceil(MIN_POSTS * ic.RECORTE_MESES / 24)
 
 # Termos sobre o texto sem acento e em minúsculas (instagram_comum.sem_acento).
 # Prefixos (\bhamburg) pegam as variações; \b nas pontas evita pedaços de palavra.
@@ -227,7 +231,9 @@ def main():
     por_casa.to_csv(SAIDA / "B1_instagram_temas_por_estabelecimento.csv", sep=";")
     ic.conferir_soma(por_casa["posts na janela"], len(base), "posts por estabelecimento")
 
-    if SAIDA_VALIDACAO.exists():
+    if RECORTE:  # a validação é a da janela completa
+        pass
+    elif SAIDA_VALIDACAO.exists():
         print(f"\n{SAIDA_VALIDACAO.name} já existe e não foi sobrescrita.")
         prec = precisao()
         if prec is not None:

@@ -349,7 +349,7 @@ $('pag').onchange = e => irPagina(+e.target.value || 1);
 $('aplicar').onclick = async () => {
   const pendentes = cartoes.filter(c => { const v = vereditoDe(c); return v && v.veredito === 'confere' && v.aplicado !== 'sim'; }).length;
   if (!pendentes) { alert('Nenhum cartão "confere" esperando aplicação.'); return; }
-  if (!confirm(`Gravar ${pendentes} cartão(ões) nos .md? A versão atual de cada capítulo vai antes para textos/capitulos/_arquivo/.`)) return;
+  if (!confirm(`Gravar ${pendentes} cartão(ões) nos .md? A versão atual de cada capítulo vai antes para textos-tcc/capitulos/_arquivo/.`)) return;
   const r = await (await fetch('/api/aplicar', { method: 'POST', body: '{}' })).json();
   alert(`${r.aplicados} aplicado(s) em: ${r.arquivos.join(', ') || 'nenhum'}` + (r.falhas.length ? `\nNão aplicado (a linha mudou no .md ou o texto está vazio):\n${r.falhas.join('\n')}` : ''));
   await carregar();

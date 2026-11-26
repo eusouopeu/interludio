@@ -134,7 +134,7 @@ export function Secao({ titulo, ajuda, children }: { titulo: string; ajuda?: Rea
 /** Opção marcável (filtro, categoria): o fundo diz se está ligada, sem borda. */
 export function Opcao({ ativo, onClick, children }: { ativo: boolean; onClick: () => void; children: ReactNode }) {
   return (
-    <button onClick={onClick} aria-pressed={ativo} className={`rounded-full px-3 py-1.5 text-[15px] ${ativo ? 'bg-caneta-600 text-sobre' : 'bg-neutro-100 text-neutro-700'}`}>
+    <button onClick={onClick} aria-pressed={ativo} className={`rounded-full px-3 py-1.5 text-[15px] ${ativo ? 'bg-caneta-700 text-sobre' : 'bg-neutro-100 text-neutro-700'}`}>
       {children}
     </button>
   )

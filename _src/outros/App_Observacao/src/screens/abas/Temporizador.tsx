@@ -108,7 +108,7 @@ export function AbaTemporizador({
       <div className="mt-5 flex gap-2">
         {lista.slice(1).map((_, i) => {
           const et = i + 1
-          const cls = feitas.has(et) ? 'bg-caneta-600' : s?.proxima === et ? 'bg-caneta-800' : 'bg-caneta-200'
+          const cls = feitas.has(et) ? 'bg-caneta-700' : s?.proxima === et ? 'bg-caneta-400' : 'bg-caneta-200'
           return <span key={et} className={`h-3 flex-1 rounded-full ${cls}`} />
         })}
         {!lista.length && Array.from({ length: 6 }, (_, i) => <span key={i} className="h-3 flex-1 rounded-full bg-caneta-200" />)}
@@ -117,7 +117,7 @@ export function AbaTemporizador({
       <div className="relative mx-auto mt-6 aspect-square w-full max-w-[290px]">
         <svg viewBox="0 0 280 280" className="absolute inset-0 -rotate-90">
           <circle cx="140" cy="140" r={R} fill="none" strokeWidth="28" className="stroke-neutro-300" />
-          {s && <circle cx="140" cy="140" r={R} fill="none" strokeWidth="28" strokeLinecap="round" className="stroke-caneta-600 transition-all" strokeDasharray={`${C * fr} ${C}`} />}
+          {s && <circle cx="140" cy="140" r={R} fill="none" strokeWidth="28" strokeLinecap="round" className="stroke-caneta-700 transition-all" strokeDasharray={`${C * fr} ${C}`} />}
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center px-10 text-center">
           {!ativa ? (
@@ -163,7 +163,7 @@ export function AbaTemporizador({
               <button onClick={() => mesa && onMesa(mesa.id)} className="inline-flex items-center gap-1 font-extrabold uppercase">
                 {mesa?.nome} <PencilSquareIcon className="size-5 text-neutro-500" />
               </button>
-              <div className="flex items-center justify-center gap-3 text-sm text-caneta-600">
+              <div className="flex items-center justify-center gap-3 text-sm text-caneta-700">
                 {reg ? (
                   <>
                     <span className="flex items-center gap-1">

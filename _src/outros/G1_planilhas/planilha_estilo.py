@@ -193,7 +193,7 @@ def empilhado_100(nome, rotulos, partes, cores=None):
     return _salvar(fig, nome)
 
 
-def linhas(nome, x, series, fmt, cores=None, tracejar_depois=None):
+def linhas(nome, x, series, fmt, cores=None, tracejar_depois=None, fmt_eixo=None):
     nomes = list(series)
     cores = cores or PALETA[: len(nomes)]
     fig, ax = plt.subplots(figsize=(8, 4.2))
@@ -206,7 +206,7 @@ def linhas(nome, x, series, fmt, cores=None, tracejar_depois=None):
         ax.axvspan(tracejar_depois, x[-1] + 0.5, color="#F8FAFC", zorder=0)  # slate-50
         ax.text(tracejar_depois + 0.15, ax.get_ylim()[1] * 0.96, "projeção (Focus)", fontsize=9,
                 color="#64748B", va="top")
-    ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: br(v, 0, suf="%")))
+    ax.yaxis.set_major_formatter(FuncFormatter(fmt_eixo or (lambda v, _: br(v, 0, suf="%"))))
     ax.tick_params(axis="x", labelsize=10)
     for t in ax.get_xticklabels():
         t.set_fontweight("bold")
@@ -216,7 +216,7 @@ def linhas(nome, x, series, fmt, cores=None, tracejar_depois=None):
 
 
 # Gráficos das planilhas que também entram nos capítulos: gravados uma só vez, em
-# textos/graficos/, com o nome <capítulo>-<ordem no capítulo>_<conteúdo> (sem cópia
+# textos-tcc/graficos/, com o nome <capítulo>-<ordem no capítulo>_<conteúdo> (sem cópia
 # na subpasta da planilha).
 CAPITULO = {
     "01_casas_por_metropole": "5-1_casas_por_metropole",
@@ -237,22 +237,78 @@ def _salvar(fig, nome):
 
 
 # ---------------------------------------------------------------- planilha
-ARIAL = Font(name="Arial", size=10, color="000000")
-ARIAL_N = Font(name="Arial", size=10, color="000000", bold=True)
+ARIAL = Font(name="Arial", size=11, color="000000")
+ARIAL_N = Font(name="Arial", size=11, color="000000", bold=True)
+LINK = Font(name="Arial", size=11, color="0563C1", underline="single")
 BRANCO = PatternFill("solid", start_color="FFFFFF", end_color="FFFFFF")
 FINA = Side(style="thin", color="000000")
 SEM = Side(style="thin", color="FFFFFF")
-FMT = {"int": "#,##0", "dec": "#,##0.00", "pct": "0.00%", "txt": "@"}
+FMT = {"int": "#,##0", "dec": "#,##0.00", "pct": "0.00%", "txt": "@", "cen": "@"}
+
+# Padding (pedido do autor, 25/11/2026). Planilha não tem padding de célula: o vertical sai da altura
+# da linha (altura do texto + 1,5 mm em cima e embaixo no corpo, 2 mm no título e no cabeçalho); o
+# lateral, de 1 mm de cada lado, sai da largura da coluna (+2 mm) somada à margem interna do Excel.
+PT_MM = 72 / 25.4
+# Corpo 11 (pedido do autor, 25/11/2026: 10 ficava pequeno a 100%). As larguras dos geradores foram
+# medidas em Arial 10; ESCALA as alarga na mesma proporção, para o texto quebrar nos mesmos pontos.
+LINHA_PT = 14.25  # altura de uma linha de Arial 11
+ESCALA = 1.1
+PAD_CORPO, PAD_CAB = 1.5 * PT_MM, 2 * PT_MM
+LARG_2MM = 2 / 1.9  # 2 mm em unidades de largura de coluna (uma unidade ≈ 1,9 mm)
+
+
+def n_linhas(texto, largura, negrito=False):
+    """Linhas que o texto ocupa numa coluna de largura dada (estimativa por quebra de palavras)."""
+    if texto is None or str(texto).startswith("="):
+        return 1
+    cabe = max(1.0, largura * (0.95 if negrito else 1.1))
+    total = 0
+    for parte in str(texto).split("\n"):
+        linhas, atual = 1, 0
+        for p in parte.split():
+            if atual and atual + 1 + len(p) > cabe:
+                linhas, atual = linhas + 1, len(p)
+            else:
+                atual += len(p) + (1 if atual else 0)
+        total += linhas
+    return total
+
+
+def altura(linhas, pad):
+    return round(linhas * LINHA_PT + 2 * pad, 2)
+
+
+def acabamento(ws, larguras, cab_linhas=(2,), titulo_linhas=(1,), corpo=None, larg_titulo=None):
+    """Larguras com o lateral de 2 mm e alturas com o padding vertical de cada linha."""
+    for j, w in enumerate(larguras, 1):
+        ws.column_dimensions[get_column_letter(j)].width = round(w * ESCALA + LARG_2MM, 2)
+    for r in titulo_linhas:
+        ws.row_dimensions[r].height = altura(n_linhas(ws.cell(r, 1).value, larg_titulo or sum(larguras), True), PAD_CAB)
+    for r in cab_linhas:
+        n = max(n_linhas(ws.cell(r, j).value, w, True) for j, w in enumerate(larguras, 1))
+        ws.row_dimensions[r].height = altura(n, PAD_CAB)
+    for r in corpo or ():
+        n = max(n_linhas(ws.cell(r, j).value, w) if ws.cell(r, j).alignment.wrap_text else 1
+                for j, w in enumerate(larguras, 1))
+        ws.row_dimensions[r].height = altura(n, PAD_CORPO)
+
 
 wb = Workbook()
 wb.remove(wb.active)
 INDICE: list[tuple[str, str, str]] = []  # (aba, título, fonte)
+NOME_ABA: dict[str, str] = {}  # aba -> nome da aba no arquivo final (o próprio título, até 31 caracteres)
 
 
-def nova_aba(aba, titulo, cabecalho, linhas_, tipos, fonte, larguras=None, grafico=None, notas=()):
+def eh_total(v):
+    return isinstance(v, str) and v.strip().lower().startswith(("total", "subtotal"))
+
+
+def nova_aba(aba, titulo, cabecalho, linhas_, tipos, fonte, larguras=None, grafico=None, notas=(), nome=None):
     """Escreve uma tabela: linha 1 título, linha 2 cabeçalho, dados, e rodapé com fonte.
 
-    tipos: um por coluna ("txt", "int", "dec", "pct"); célula que começa com "=" vira fórmula.
+    tipos: um por coluna ("txt" texto à esquerda; "cen" texto curto centralizado, para colunas de
+    agrupamento como região ou UF; "int", "dec", "pct"); célula que começa com "=" vira fórmula.
+    Linha cujo primeiro valor começa com "Total" sai toda em negrito. nome: nome da aba no arquivo final.
     """
     titulo = titulo.split(":")[0].rstrip()  # só o nome da tabela (pedido do autor, 30/10/2026)
     ws = wb.create_sheet(aba)
@@ -271,6 +327,7 @@ def nova_aba(aba, titulo, cabecalho, linhas_, tipos, fonte, larguras=None, grafi
             ws.cell(i, j, v)
     ult = 2 + len(linhas_)
     for r in range(1, ult + 1):
+        total = r > 2 and eh_total(ws.cell(r, 1).value)
         for j in range(1, nc + 1):
             cel = ws.cell(r, j)
             cel.fill = BRANCO
@@ -283,68 +340,70 @@ def nova_aba(aba, titulo, cabecalho, linhas_, tipos, fonte, larguras=None, grafi
                 cel.border = Border(top=FINA, bottom=FINA, left=SEM, right=SEM)
                 continue
             t = tipos[j - 1]
-            cel.font = ARIAL
-            cel.alignment = Alignment(horizontal="left" if t == "txt" else "right", vertical="center", wrap_text=t == "txt")
-            if t != "txt":
+            cel.font = ARIAL_N if total else ARIAL
+            hor = {"txt": "left", "cen": "center"}.get(t, "right")
+            cel.alignment = Alignment(horizontal=hor, vertical="center", wrap_text=t in ("txt", "cen"))
+            if t not in ("txt", "cen"):
                 cel.number_format = FMT[t]
             cel.border = Border(top=SEM, left=SEM, right=SEM, bottom=FINA if r == ult else SEM)
-    ws.row_dimensions[1].height = 30
-    ws.row_dimensions[2].height = 42
     rod = ult + 1
     for t in (f"Fonte: {fonte}", *notas):
         ws.cell(rod, 1, t).font = ARIAL
         ws.cell(rod, 1).alignment = Alignment(horizontal="left", vertical="top", wrap_text=False)
         rod += 1
     larguras = larguras or [28] + [14] * (nc - 1)
-    for j, w in enumerate(larguras, 1):
-        ws.column_dimensions[get_column_letter(j)].width = w
+    acabamento(ws, larguras, corpo=range(3, ult + 1))
     if grafico is not None:
         img = XLImage(str(grafico))
         escala = 620 / img.width
         img.width, img.height = img.width * escala, img.height * escala
         ws.add_image(img, f"{get_column_letter(nc + 2)}2")
     INDICE.append((aba, titulo, fonte))
+    if nome:
+        NOME_ABA[aba] = nome
     return ws
 
 
-
-
 def escrever_indice(wb_, titulo, itens, notas=()):
-    """Aba "Índice" na frente: aba (com link), tabela e fonte; notas abaixo."""
-    if "Índice" in wb_.sheetnames:
-        del wb_["Índice"]
-    ind = wb_.create_sheet("Índice", 0)
+    """Aba "Sumário" na frente (modelo do autor, 25/11/2026): nº da tabela, título com o link para a
+    aba embutido e fonte; notas abaixo. itens: (nº, título, fonte, aba)."""
+    for velho in ("Índice", "Sumário"):
+        if velho in wb_.sheetnames:
+            del wb_[velho]
+    ind = wb_.create_sheet("Sumário", 0)
     ind.sheet_view.showGridLines = False
-    ind.cell(1, 1, titulo)
-    ind.merge_cells("A1:C1")
-    for j, c in enumerate(["Aba", "Tabela", "Fonte"], 1):
-        ind.cell(2, j, c)
-    for i, (a, t, f) in enumerate(itens, 3):
-        ind.cell(i, 1, a).hyperlink = f"#'{a}'!A1"
-        ind.cell(i, 2, t)
+    for j, c in enumerate(["Nº da tabela", "Título", "Fonte"], 1):
+        ind.cell(1, j, c)
+    for i, (n, t, f, a) in enumerate(itens, 2):
+        ind.cell(i, 1, n)
+        from openpyxl.worksheet.hyperlink import Hyperlink
+        cel_t = ind.cell(i, 2, t)
+        cel_t.hyperlink = Hyperlink(ref=cel_t.coordinate, location=f"'{a}'!A1")  # link interno, sem %20
         ind.cell(i, 3, f)
-    ult = 2 + len(itens)
+    ult = 1 + len(itens)
     for rr in range(1, ult + 1):
         for j in range(1, 4):
             cel = ind.cell(rr, j)
             cel.fill = BRANCO
-            cel.font = ARIAL_N if rr <= 2 else ARIAL
-            cel.alignment = Alignment(horizontal="center" if rr <= 2 else "left", vertical="center", wrap_text=rr > 2)
-            if rr == 2:
+            cel.font = ARIAL_N if rr == 1 else (LINK if j == 2 else ARIAL)
+            cel.alignment = Alignment(horizontal="center" if rr == 1 else "left", vertical="center", wrap_text=True)
+            if rr == 1:
                 cel.border = Border(top=FINA, bottom=FINA, left=SEM, right=SEM)
-            elif rr > 2:
+            else:
                 cel.border = Border(top=SEM, left=SEM, right=SEM, bottom=FINA if rr == ult else SEM)
-    for j, w in enumerate([10, 70, 70], 1):
-        ind.column_dimensions[get_column_letter(j)].width = w
-    for k, t in enumerate(notas, ult + 2):
+    acabamento(ind, [12, 44, 70], cab_linhas=(1,), titulo_linhas=(), corpo=range(2, ult + 1))
+    for k, t in enumerate([titulo, *notas], ult + 2):
         ind.cell(k, 1, t).font = ARIAL
 
 
 def dividir(arq_total, indice, saidas):
-    """Separa a pasta completa em arquivos (um por bloco), renumerando tabelas e abas a partir de 1.
+    """Separa a pasta completa em arquivos (um por bloco), renumerando tabelas a partir de 1 e dando a
+    cada aba o nome da tabela (NOME_ABA).
 
     indice: lista (aba, título, fonte) da pasta completa.
-    saidas: lista (caminho, título do índice, abas de tabela, abas extras, notas do índice).
+    saidas: lista (caminho, título do sumário, abas de tabela, abas extras, notas); abas extras são
+    (aba, título, fonte); abas de tabela podem vir como (aba de origem, aba que a substitui no arquivo),
+    para trocar uma tabela por outra versão com a mesma numeração.
     """
     import re
     from openpyxl import load_workbook
@@ -352,19 +411,21 @@ def dividir(arq_total, indice, saidas):
     por_aba = {a: (t, f) for a, t, f in indice}
     feitos = []
     for caminho, titulo, abas, extras, notas in saidas:
+        abas = [a if isinstance(a, str) else a[1] for a in abas]
         wb_ = load_workbook(arq_total)
         for nome in list(wb_.sheetnames):
             if nome not in abas and nome not in [e for e, _, _ in extras]:
                 del wb_[nome]
+        wb_._sheets = [wb_[a] for a in abas] + [wb_[e] for e, _, _ in extras]
         itens = []
         for k, aba in enumerate(abas, 1):
             ws = wb_[aba]
             novo_t = re.sub(r"^Tabela \d+", f"Tabela {k}", por_aba[aba][0])
             ws.cell(1, 1).value = novo_t
-            ws.title = f"Tab {k}"
-            itens.append((ws.title, novo_t, por_aba[aba][1]))
+            ws.title = NOME_ABA.get(aba, f"Tab {k}")[:31]
+            itens.append((f"Tabela {k}", re.sub(r"^Tabela \d+ – ", "", novo_t), por_aba[aba][1], ws.title))
         for e, t, f in extras:
-            itens.append((e, t, f))
+            itens.append(("Base", t, f, e))
         escrever_indice(wb_, titulo, itens, notas)
         wb_.save(caminho)
         feitos.append((caminho, len(abas)))

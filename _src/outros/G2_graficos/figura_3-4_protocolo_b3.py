@@ -4,7 +4,7 @@ Figura 3.4 - Protocolo da contagem direta (Bloco B3).
 Mostra o que é registrado na porta, nas mesas e na NFC-e, as medidas que
 saem de cada registro e como a lei de Little (L = λ × W) junta circulação e
 permanência para dimensionar o salão. Diagrama sem dados.
-Saída: textos/figuras/3-4_protocolo_b3.png.
+Saída: textos-tcc/figuras/3-4_protocolo_b3.png.
 """
 
 import sys
@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import diagramas_comum as dc  # noqa: E402
 
-SAIDA = ROOT / "textos" / "figuras" / "3-4_protocolo_b3.png"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "3-4_protocolo_b3.png"
 
 
 def main():

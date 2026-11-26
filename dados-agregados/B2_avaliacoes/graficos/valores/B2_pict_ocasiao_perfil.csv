@@ -1,7 +1,5 @@
-﻿categoria;avaliacoes;pct_simples;pct_ponderado_estabelecimento;n_avaliacoes
-Ocasião: amigos;192;12.09;12.9;1588
-Funcionário citado pelo nome;397;25.0;9.58;1588
-Ocasião: família ou crianças;94;5.92;7.68;1588
-Diversão como benefício;134;8.44;6.36;1588
-Ocasião: aniversário ou comemoração;50;3.15;4.27;1588
-Ocasião: casal;25;1.57;3.15;1588
+﻿categoria;avaliacoes;pct_avaliacoes;n_avaliacoes
+Ocasião: amigos;56;3.4;1628
+Ocasião: família;40;2.5;1628
+Ocasião: aniversário;39;2.4;1628
+Ocasião: casal;13;0.8;1628

@@ -4,7 +4,7 @@ Figura 3.2 - Do dado à decisão: blocos de coleta, tratamento e uso no plano.
 Resume o Quadro 3.2 e a seção 3.3 como um fluxo: cada bloco (B1 a B5) passa
 por um tratamento próprio e alimenta capítulos do plano; todas as premissas
 recebem um nível de evidência (N1 a N6) e entram no modelo financeiro.
-Diagrama sem dados. Saída: textos/figuras/3-2_dado_decisao.png.
+Diagrama sem dados. Saída: textos-tcc/figuras/3-2_dado_decisao.png.
 """
 
 import sys
@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import diagramas_comum as dc  # noqa: E402
 import graficos_comum as gc  # noqa: E402
 
-SAIDA = ROOT / "textos" / "figuras" / "3-2_dado_decisao.png"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "3-2_dado_decisao.png"
 
 # (bloco, tratamento, uso no plano)
 LINHAS = [

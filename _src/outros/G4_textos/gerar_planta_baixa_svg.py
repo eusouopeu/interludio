@@ -1,6 +1,6 @@
 """Gera a planta baixa esquemática da luderia em SVG editável (escala 1 px = 1 cm).
 
-Saída: textos/figuras/planta-baixa.svg. Cada móvel ou peça é um grupo (<g>) com nome
+Saída: textos-tcc/figuras/planta-baixa.svg. Cada móvel ou peça é um grupo (<g>) com nome
 próprio, pronto para virar componente num editor vetorial.
 
 Desenho do autor (15/11/2026, "A4 - 2"), ajustado às normas: ponto retangular de
@@ -51,7 +51,7 @@ import random
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-SAIDA = ROOT / "textos" / "figuras" / "planta-baixa.svg"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "planta-baixa.svg"
 
 W, D = 770, 1345           # medidas internas (cm): 8,00 x 13,75 m externos
 NICHO = (695, 456, 606)    # nicho da entrada na fachada: x da parede da porta, y inicial e final

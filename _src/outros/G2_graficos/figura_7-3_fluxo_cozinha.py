@@ -1,10 +1,10 @@
 """
-Figura 7.3 - Fluxo do cozinheiro: cinco etapas do turno (seção 7.3).
+Figura 7.3 - Fluxo do cozinheiro: cinco etapas do turno (seção 7.5).
 
 Cada etapa tem o nome, o que o cozinheiro faz e o horário no turno das 14h às 23h;
 o intervalo de 1 h fica das 16h às 17h, antes do pico. Diagrama sem dados, no padrão visual dos demais
 (diagramas_comum), com o mesmo desenho da Figura 7.2.
-Saída: textos/figuras/7-3_fluxo_cozinha.png.
+Saída: textos-tcc/figuras/7-3_fluxo_cozinha.png.
 """
 
 import sys
@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import diagramas_comum as dc  # noqa: E402
 
-SAIDA = ROOT / "textos" / "figuras" / "7-3_fluxo_cozinha.png"
+SAIDA = ROOT / "textos-tcc" / "figuras" / "7-3_fluxo_cozinha.png"
 
 ETAPAS = [
     ("1. Mise en place", "Pré-preparo dos ingredientes do dia, com data de preparo e validade na etiqueta", "14:00 às 15:00"),

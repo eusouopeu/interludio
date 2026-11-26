@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Heroicons puzzle-piece (outline) em purple-600 sobre fundo branco (_shared/design-standards.md).
+<!-- Heroicons puzzle-piece (outline) em purple-700 sobre fundo branco (_shared/design-standards.md).
      Gerado por scripts/gerar-icone.ts. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="108" android:viewportHeight="108">
     <group android:translateX="21" android:translateY="21" android:scaleX="2.75" android:scaleY="2.75">
         <path
-            android:strokeColor="#9333EA"
+            android:strokeColor="#7E22CE"
             android:strokeWidth="1.5"
             android:strokeLineCap="round"
             android:strokeLineJoin="round"
